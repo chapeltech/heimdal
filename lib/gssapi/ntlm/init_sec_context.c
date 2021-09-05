@@ -376,6 +376,7 @@ _gss_ntlm_init_sec_context
 		if (RAND_bytes(nonce, sizeof(nonce)) != 1) {
 		    _gss_ntlm_delete_sec_context(minor_status,
 						 context_handle, NULL);
+		    heim_ntlm_free_type2(&type2);
 		    *minor_status = EINVAL;
 		    return GSS_S_FAILURE;
 		}
@@ -394,6 +395,7 @@ _gss_ntlm_init_sec_context
 	    }
 	    if (ret) {
 		_gss_ntlm_delete_sec_context(minor_status,context_handle,NULL);
+		heim_ntlm_free_type2(&type2);
 		*minor_status = ret;
 		return GSS_S_FAILURE;
 	    }
@@ -408,6 +410,7 @@ _gss_ntlm_init_sec_context
 		if (type3.ntlm.data)
 		    free(type3.ntlm.data);
 		_gss_ntlm_delete_sec_context(minor_status,context_handle,NULL);
+		heim_ntlm_free_type2(&type2);
 		*minor_status = ret;
 		return GSS_S_FAILURE;
 	    }
@@ -421,6 +424,7 @@ _gss_ntlm_init_sec_context
 		if (type3.ntlm.data)
 		    free(type3.ntlm.data);
 		_gss_ntlm_delete_sec_context(minor_status,context_handle,NULL);
+		heim_ntlm_free_type2(&type2);
 		*minor_status = ret;
 		return GSS_S_FAILURE;
 	    }
@@ -437,6 +441,7 @@ _gss_ntlm_init_sec_context
 	    if(ret) {
 		_gss_ntlm_delete_sec_context(minor_status,
 					     context_handle, NULL);
+		heim_ntlm_free_type2(&type2);
 		*minor_status = ret;
 		return GSS_S_DEFECTIVE_TOKEN;
 	    }
@@ -444,6 +449,7 @@ _gss_ntlm_init_sec_context
 	    if (ti.domainname && strcmp(ti.domainname, name->domain) != 0) {
 		_gss_ntlm_delete_sec_context(minor_status,
 					     context_handle, NULL);
+		heim_ntlm_free_type2(&type2);
 		*minor_status = EINVAL;
 		return GSS_S_FAILURE;
 	    }
@@ -459,6 +465,7 @@ _gss_ntlm_init_sec_context
 	    if (ret) {
 		_gss_ntlm_delete_sec_context(minor_status,
 					     context_handle, NULL);
+		heim_ntlm_free_type2(&type2);
 		*minor_status = ret;
 		return GSS_S_FAILURE;
 	    }
@@ -470,6 +477,7 @@ _gss_ntlm_init_sec_context
 	    if (ret) {
 		_gss_ntlm_delete_sec_context(minor_status,
 					     context_handle, NULL);
+		heim_ntlm_free_type2(&type2);
 		*minor_status = ret;
 		return GSS_S_FAILURE;
 	    }
@@ -482,6 +490,7 @@ _gss_ntlm_init_sec_context
 	    if (ret) {
 		_gss_ntlm_delete_sec_context(minor_status,
 					     context_handle, NULL);
+		heim_ntlm_free_type2(&type2);
 		*minor_status = ret;
 		return GSS_S_FAILURE;
 	    }
@@ -499,6 +508,7 @@ _gss_ntlm_init_sec_context
 	    free(type3.ntlm.data);
 	if (ret) {
 	    _gss_ntlm_delete_sec_context(minor_status, context_handle, NULL);
+	    heim_ntlm_free_type2(&type2);
 	    *minor_status = ret;
 	    return GSS_S_FAILURE;
 	}
@@ -515,6 +525,7 @@ _gss_ntlm_init_sec_context
 
 	ctx->status |= STATUS_OPEN;
 
+	heim_ntlm_free_type2(&type2);
 	return GSS_S_COMPLETE;
     }
 }
