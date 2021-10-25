@@ -408,13 +408,6 @@ _gss_ntlm_init_sec_context
 		}
 	    }
 	    if (ret) {
-		_gss_ntlm_delete_sec_context(minor_status,context_handle,NULL);
-		heim_ntlm_free_type2(&type2);
-		*minor_status = ret;
-		return GSS_S_FAILURE;
-	    }
-
-	    if (ret) {
 		if (type3.lm.data)
 		    free(type3.lm.data);
 		if (type3.ntlm.data)
