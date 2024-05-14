@@ -2702,13 +2702,6 @@ _kdc_as_rep(astgs_request_t r)
     if (ret)
 	goto out;
 
-    /* Add the PAC */
-    if (!r->et.flags.anonymous) {
-	ret = generate_pac(r, skey, krbtgt_key, is_tgs);
-	if (ret)
-	    goto out;
-    }
-
     if (r->client->flags.synthetic) {
 	ret = add_synthetic_princ_ad(r);
 	if (ret)
@@ -2751,6 +2744,18 @@ _kdc_as_rep(astgs_request_t r)
 	    goto out;
 	}
     }
+
+    /* Add the PAC */
+    if (!r->et.flags.anonymous) {
+        ret = generate_pac(r, skey, krbtgt_key, is_tgs);
+        if (ret)
+            goto out;
+    }
+
+    /*
+     * No more changes to the ticket (r->et) from this point on, lest
+     * the checksums in the PAC be invalidated.
+     */
 
     /*
      * Last chance for plugins to update reply
