@@ -162,6 +162,14 @@ _gss_string_to_oid(const char* s, gss_OID *oidp)
 	return (0);
 }
 
+static OM_uint32
+unimpl(OM_uint32 *minor_status, ...)
+{
+
+	*minor_status = 0;
+	return GSS_S_UNAVAILABLE;
+}
+
 #define SYM(name)							\
 do {									\
 	m->gm_mech.gm_ ## name = (_gss_##name##_t *)dlsym(so, "gss_" #name); \
@@ -169,7 +177,7 @@ do {									\
 	    m->gm_mech.gm_ ##name == gss_ ## name) {			\
 		_gss_mg_log(1, "can't find symbol gss_" #name		\
 		    " in %s", lib);					\
-		goto bad;						\
+		m->gm_mech.gm_ ## name = (_gss_##name##_t *)unimpl;	\
 	}								\
 } while (0)
 
