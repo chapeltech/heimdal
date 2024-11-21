@@ -264,6 +264,215 @@ add_builtin(gssapi_mech_interface mech)
 }
 
 static void
+enable_builtin(const char *name)
+{
+	struct {
+		const char *name;
+		gssapi_mech_interface (*interface)(void);
+	} builtins[] = {
+		{ "spnego", __gss_spnego_initialize },
+		{ "krb5",   __gss_krb5_initialize },
+		{ "sanon",  __gss_sanon_initialize },
+		{ NULL, NULL }
+	};
+	size_t i;
+
+	/* name == NULL implies add all mechs */
+	for (i=0; builtins[i].name; i++)
+		if (!name || !strcmp(builtins[i].name, name))
+			if (add_builtin(builtins[i].interface()))
+			    _gss_mg_log(1, "Out of memory while adding "
+					   "builtin %s mechanism to the GSS "
+					   "mechanism switch", builtins[i].name);
+}
+
+static int
+process_colonline(char *buf)
+{
+	char *p = buf;
+	char *name;
+
+	if (strncmp(":builtin ", buf, strlen(":builtin "))) {
+		_gss_mg_log(10, "mech colon line \"%s\" unknown", buf);
+		return 0;
+	}
+	p += strlen(":builtin ");
+	while (isspace((unsigned char)*p))
+		p++;
+	name = strsep(&p, "\n\t ");
+
+	enable_builtin(name);
+	return 1;
+}
+
+static void
+process_dlopenline(char *p)
+{
+#ifdef HAVE_DLOPEN
+	OM_uint32	major_status, minor_status;
+	_gss_mo_init	*mi;
+	char		*name, *oid, *lib, *kobj;
+	struct _gss_mech_switch *m = NULL;
+	void		*so;
+	gss_OID 	mech_oid;
+	int		found;
+
+	name = strsep(&p, "\t\n ");
+	if (p) while (isspace((unsigned char)*p)) p++;
+	oid = strsep(&p, "\t\n ");
+	if (p) while (isspace((unsigned char)*p)) p++;
+	lib = strsep(&p, "\t\n ");
+	if (p) while (isspace((unsigned char)*p)) p++;
+	kobj = strsep(&p, "\t\n ");
+	if (!name || !oid || !lib || !kobj)
+		return;
+
+	if (_gss_string_to_oid(oid, &mech_oid))
+		return;
+
+	/*
+	 * Check for duplicates, already loaded mechs.
+	 */
+	_gss_mg_log(10, "loading \"%s\"", name);
+	found = 0;
+	HEIM_TAILQ_FOREACH(m, &_gss_mechs, gm_link) {
+		if (gss_oid_equal(&m->gm_mech.gm_mech_oid, mech_oid)) {
+			_gss_mg_log(10, "duplicate mech, not loading");
+			found = 1;
+			break;
+		}
+	}
+	if (found)
+		return;
+
+	so = dlopen(lib, RTLD_LAZY | RTLD_LOCAL | RTLD_GROUP);
+	if (so == NULL) {
+		_gss_mg_log(1, "dlopen: %s", dlerror());
+		goto bad;
+	}
+
+	m = calloc(1, sizeof(*m));
+	if (m == NULL)
+		goto bad;
+
+	m->gm_so = so;
+	m->gm_mech_oid = mech_oid;
+	m->gm_mech.gm_name = strdup(name);
+	m->gm_mech.gm_mech_oid = *mech_oid;
+	m->gm_mech.gm_flags = 0;
+	m->gm_mech.gm_compat = calloc(1, sizeof(struct gss_mech_compat_desc_struct));
+	if (m->gm_mech.gm_compat == NULL)
+		goto bad;
+
+	major_status = gss_add_oid_set_member(&minor_status,
+	    &m->gm_mech.gm_mech_oid, &_gss_mech_oids);
+	if (GSS_ERROR(major_status))
+		goto bad;
+
+	SYM(acquire_cred);
+	SYM(release_cred);
+	SYM(init_sec_context);
+	SYM(accept_sec_context);
+	SYM(process_context_token);
+	SYM(delete_sec_context);
+	SYM(context_time);
+	SYM(get_mic);
+	SYM(verify_mic);
+	SYM(wrap);
+	SYM(unwrap);
+	OPTSYM(display_status);
+	OPTSYM(indicate_mechs);
+	SYM(compare_name);
+	SYM(display_name);
+	SYM(import_name);
+	SYM(export_name);
+	SYM(release_name);
+	OPTSYM(inquire_cred);
+	SYM(inquire_context);
+	SYM(wrap_size_limit);
+	OPTSYM(add_cred);
+	OPTSYM(inquire_cred_by_mech);
+	SYM(export_sec_context);
+	SYM(import_sec_context);
+	OPTSYM(inquire_names_for_mech);
+	OPTSYM(inquire_mechs_for_name);
+	SYM(canonicalize_name);
+	SYM(duplicate_name);
+	OPTSYM(inquire_cred_by_oid);
+	OPTSYM(inquire_sec_context_by_oid);
+	OPTSYM(set_sec_context_option);
+	OPTSPISYM(set_cred_option);
+	OPTSYM(pseudo_random);
+	OPTSYM(wrap_iov);
+	OPTSYM(unwrap_iov);
+	OPTSYM(wrap_iov_length);
+	OPTSYM(store_cred);
+	OPTSYM(export_cred);
+	OPTSYM(import_cred);
+	OPTSYM(acquire_cred_from);
+	OPTSYM(acquire_cred_impersonate_name);
+#if 0
+	OPTSYM(iter_creds);
+	OPTSYM(destroy_cred);
+	OPTSYM(cred_hold);
+	OPTSYM(cred_unhold);
+	OPTSYM(cred_label_get);
+	OPTSYM(cred_label_set);
+#endif
+	OPTSYM(display_name_ext);
+	OPTSYM(inquire_name);
+	OPTSYM(get_name_attribute);
+	OPTSYM(set_name_attribute);
+	OPTSYM(delete_name_attribute);
+	OPTSYM(export_name_composite);
+	OPTSYM(localname);
+	OPTSYM(duplicate_cred);
+	OPTSYM(add_cred_from);
+	OPTSYM(store_cred_into);
+	OPTSPISYM(authorize_localname);
+	OPTSPISPISYM(query_mechanism_info);
+	OPTSPISPISYM(query_meta_data);
+	OPTSPISPISYM(exchange_meta_data);
+
+	mi = (_gss_mo_init *)dlsym(so, "gss_mo_init");
+	if (mi != NULL) {
+		major_status = mi(&minor_status, mech_oid,
+				  &m->gm_mech.gm_mo, &m->gm_mech.gm_mo_num);
+		if (GSS_ERROR(major_status))
+			goto bad;
+	} else {
+		/* API-as-SPI compatibility */
+		COMPATSYM(inquire_saslname_for_mech);
+		COMPATSYM(inquire_mech_for_saslname);
+		COMPATSYM(inquire_attrs_for_mech);
+		COMPATSPISYM(acquire_cred_with_password);
+	}
+
+	/* pick up the oid sets of names */
+
+	if (m->gm_mech.gm_inquire_names_for_mech)
+		(*m->gm_mech.gm_inquire_names_for_mech)(&minor_status,
+		&m->gm_mech.gm_mech_oid, &m->gm_name_types);
+
+	if (m->gm_name_types == NULL)
+		gss_create_empty_oid_set(&minor_status, &m->gm_name_types);
+
+	HEIM_TAILQ_INSERT_TAIL(&_gss_mechs, m, gm_link);
+	return;
+
+bad:
+	if (m != NULL) {
+		free(m->gm_mech.gm_compat);
+		/* do not free OID, it has been interned */
+		free((char *)m->gm_mech.gm_name);
+		free(m);
+	}
+	if (so != NULL)
+		dlclose(so);
+#endif
+}
+
+static void
 init_mech_switch_list(void *p)
 {
     struct _gss_mech_switch_list *mechs = p;
@@ -279,17 +488,10 @@ _gss_load_mech(void)
 {
 	OM_uint32	major_status, minor_status;
 	static heim_base_once_t once = HEIM_BASE_ONCE_INIT;
-#ifdef HAVE_DLOPEN
 	FILE		*fp;
 	char		buf[256];
-	char		*p;
-	char		*name, *oid, *lib, *kobj;
-	struct _gss_mech_switch *m;
-	void		*so;
-	gss_OID 	mech_oid;
-	int		found;
 	const char	*conf = secure_getenv("GSS_MECH_CONFIG");
-#endif
+	int		particular_builtins = 0;
 
 	heim_base_once_f(&once, &_gss_mechs, init_mech_switch_list);
 
@@ -307,189 +509,40 @@ _gss_load_mech(void)
 		return;
 	}
 
-	if (add_builtin(__gss_krb5_initialize()))
-            _gss_mg_log(1, "Out of memory while adding builtin Kerberos GSS "
-                        "mechanism to the GSS mechanism switch");
-	if (add_builtin(__gss_spnego_initialize()))
-            _gss_mg_log(1, "Out of memory while adding builtin SPNEGO "
-                        "mechanism to the GSS mechanism switch");
-
-#ifdef HAVE_DLOPEN
 	fp = fopen(conf ? conf : _PATH_GSS_MECH, "r");
 	if (!fp)
 		goto out;
 	rk_cloexec_file(fp);
 
 	while (fgets(buf, sizeof(buf), fp)) {
-		_gss_mo_init *mi;
-		char *gm_name = NULL;
-
-		if (*buf == '#')
-			continue;
-		p = buf;
-		name = strsep(&p, "\t\n ");
-		if (p) while (isspace((unsigned char)*p)) p++;
-		oid = strsep(&p, "\t\n ");
-		if (p) while (isspace((unsigned char)*p)) p++;
-		lib = strsep(&p, "\t\n ");
-		if (p) while (isspace((unsigned char)*p)) p++;
-		kobj = strsep(&p, "\t\n ");
-		if (!name || !oid || !lib || !kobj)
-			continue;
-
-		if (_gss_string_to_oid(oid, &mech_oid))
-			continue;
-
-		/*
-		 * Check for duplicates, already loaded mechs.
-		 */
-                _gss_mg_log(10, "loading \"%s\"", name);
-		found = 0;
-		HEIM_TAILQ_FOREACH(m, &_gss_mechs, gm_link) {
-			if (gss_oid_equal(&m->gm_mech.gm_mech_oid, mech_oid)) {
-                                _gss_mg_log(10, "duplicate mech, not loading");
-				found = 1;
-				break;
-			}
+		switch (buf[0]) {
+		case '#':
+			break;
+		case ':':
+			if (process_colonline(buf))
+				particular_builtins = 1;
+			break;
+		default:
+			process_dlopenline(buf);
 		}
-		if (found)
-			continue;
-
-		so = dlopen(lib, RTLD_LAZY | RTLD_LOCAL | RTLD_GROUP);
-		if (so == NULL) {
-			_gss_mg_log(1, "dlopen: %s", dlerror());
-			goto bad;
-		}
-
-		m = calloc(1, sizeof(*m));
-		if (m == NULL)
-			goto bad;
-
-		m->gm_so = so;
-		m->gm_mech_oid = mech_oid;
-		m->gm_mech.gm_name = gm_name = strdup(name);
-		m->gm_mech.gm_mech_oid = *mech_oid;
-		m->gm_mech.gm_flags = 0;
-		m->gm_mech.gm_compat = calloc(1, sizeof(struct gss_mech_compat_desc_struct));
-		if (m->gm_mech.gm_compat == NULL)
-			goto bad;
-
-		major_status = gss_add_oid_set_member(&minor_status,
-		    &m->gm_mech.gm_mech_oid, &_gss_mech_oids);
-		if (GSS_ERROR(major_status))
-			goto bad;
-
-		SYM(acquire_cred);
-		SYM(release_cred);
-		SYM(init_sec_context);
-		SYM(accept_sec_context);
-		SYM(process_context_token);
-		SYM(delete_sec_context);
-		SYM(context_time);
-		SYM(get_mic);
-		SYM(verify_mic);
-		SYM(wrap);
-		SYM(unwrap);
-		OPTSYM(display_status);
-		OPTSYM(indicate_mechs);
-		SYM(compare_name);
-		SYM(display_name);
-		SYM(import_name);
-		SYM(export_name);
-		SYM(release_name);
-		OPTSYM(inquire_cred);
-		SYM(inquire_context);
-		SYM(wrap_size_limit);
-		OPTSYM(add_cred);
-		OPTSYM(inquire_cred_by_mech);
-		SYM(export_sec_context);
-		SYM(import_sec_context);
-		OPTSYM(inquire_names_for_mech);
-		OPTSYM(inquire_mechs_for_name);
-		SYM(canonicalize_name);
-		SYM(duplicate_name);
-		OPTSYM(inquire_cred_by_oid);
-		OPTSYM(inquire_sec_context_by_oid);
-		OPTSYM(set_sec_context_option);
-		OPTSPISYM(set_cred_option);
-		OPTSYM(pseudo_random);
-		OPTSYM(wrap_iov);
-		OPTSYM(unwrap_iov);
-		OPTSYM(wrap_iov_length);
-		OPTSYM(store_cred);
-		OPTSYM(export_cred);
-		OPTSYM(import_cred);
-		OPTSYM(acquire_cred_from);
-		OPTSYM(acquire_cred_impersonate_name);
-#if 0
-		OPTSYM(iter_creds);
-		OPTSYM(destroy_cred);
-		OPTSYM(cred_hold);
-		OPTSYM(cred_unhold);
-		OPTSYM(cred_label_get);
-		OPTSYM(cred_label_set);
-#endif
-		OPTSYM(display_name_ext);
-		OPTSYM(inquire_name);
-		OPTSYM(get_name_attribute);
-		OPTSYM(set_name_attribute);
-		OPTSYM(delete_name_attribute);
-		OPTSYM(export_name_composite);
-		OPTSYM(localname);
-		OPTSYM(duplicate_cred);
-		OPTSYM(add_cred_from);
-		OPTSYM(store_cred_into);
-		OPTSPISYM(authorize_localname);
-		OPTSPISPISYM(query_mechanism_info);
-		OPTSPISPISYM(query_meta_data);
-		OPTSPISPISYM(exchange_meta_data);
-
-		mi = (_gss_mo_init *)dlsym(so, "gss_mo_init");
-		if (mi != NULL) {
-			major_status = mi(&minor_status, mech_oid,
-					  &m->gm_mech.gm_mo, &m->gm_mech.gm_mo_num);
-			if (GSS_ERROR(major_status))
-				goto bad;
-		} else {
-			/* API-as-SPI compatibility */
-			COMPATSYM(inquire_saslname_for_mech);
-			COMPATSYM(inquire_mech_for_saslname);
-			COMPATSYM(inquire_attrs_for_mech);
-			COMPATSPISYM(acquire_cred_with_password);
-		}
-
-		/* pick up the oid sets of names */
-
-		if (m->gm_mech.gm_inquire_names_for_mech)
-			(*m->gm_mech.gm_inquire_names_for_mech)(&minor_status,
-			&m->gm_mech.gm_mech_oid, &m->gm_name_types);
-
-		if (m->gm_name_types == NULL)
-			gss_create_empty_oid_set(&minor_status, &m->gm_name_types);
-
-		HEIM_TAILQ_INSERT_TAIL(&_gss_mechs, m, gm_link);
-		continue;
-
-	bad:
-		if (m != NULL) {
-			free(m->gm_mech.gm_compat);
-			/* do not free OID, it has been interned */
-			free(gm_name);
-			free(m);
-		}
-		if (so != NULL)
-			dlclose(so);
-		continue;
 	}
 	fclose(fp);
 
 out:
+	if (!particular_builtins)
+		enable_builtin(NULL);	/* All builtins */
 
-#endif
-	if (add_builtin(__gss_sanon_initialize()))
-            _gss_mg_log(1, "Out of memory while adding builtin SANON "
-                        "mechanism to the GSS mechanism switch");
 	HEIMDAL_MUTEX_unlock(&_gss_mech_mutex);
+}
+
+gssapi_mech_interface
+__gss_get_default_mechanism(void)
+{
+	struct _gss_mech_switch *m;
+
+	_gss_load_mech();
+	m = HEIM_TAILQ_FIRST(&_gss_mechs);
+	return m ? &m->gm_mech : NULL;
 }
 
 gssapi_mech_interface

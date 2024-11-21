@@ -41,3 +41,4 @@ extern struct _gss_mech_switch_list _gss_mechs;
 extern gss_OID_set _gss_mech_oids;
 
 void	_gss_load_mech(void);
+gssapi_mech_interface __gss_get_default_mechanism(void);

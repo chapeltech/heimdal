@@ -103,10 +103,10 @@ log_init_sec_context(struct _gss_context *ctx,
  * 	  mechanism supports, check supported name types with
  * 	  gss_inquire_names_for_mech().
  *
- * @param input_mech_type mechanism type to use, if GSS_C_NO_OID is
- *        used, Kerberos (GSS_KRB5_MECHANISM) will be tried. Other
- *        available mechanism are listed in the @ref gssapi_mechs_intro
- *        section.
+ * @param input_mech_type mechanism type to use. If GSS_C_NO_OID is
+ *        used, the first mechanism configured in /etc/gss/mech will
+ *        be tried. Other available mechanisms are listed in the
+ *        @ref gssapi_mechs_intro section.
  *
  * @param req_flags flags using when building the context, see @ref
  *        gssapi_context_flags
@@ -176,9 +176,6 @@ gss_init_sec_context(OM_uint32 * minor_status,
 	if (time_rec)
 	    *time_rec = 0;
 
-	if (mech_type == GSS_C_NO_OID)
-	    mech_type = GSS_KRB5_MECHANISM;
-
 	_gss_mg_check_name(target_name);
 
 	if (_gss_mg_log_level(1))
@@ -198,7 +195,11 @@ gss_init_sec_context(OM_uint32 * minor_status,
 			return (GSS_S_FAILURE);
 		}
 		memset(ctx, 0, sizeof(struct _gss_context));
-		m = ctx->gc_mech = __gss_get_mechanism(mech_type);
+		if (mech_type == GSS_C_NO_OID)
+			m = __gss_get_default_mechanism();
+		else
+			m = __gss_get_mechanism(mech_type);
+		ctx->gc_mech = m;
 		if (!m) {
 			free(ctx);
 			*minor_status = 0;
@@ -207,6 +208,7 @@ gss_init_sec_context(OM_uint32 * minor_status,
 						"Unsupported mechanism requested");
 			return (GSS_S_BAD_MECH);
 		}
+		mech_type = &m->gm_mech_oid;
 		allocated_ctx = 1;
 	} else {
 		m = ctx->gc_mech;

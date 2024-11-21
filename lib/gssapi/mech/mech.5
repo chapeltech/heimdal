@@ -37,8 +37,13 @@
 The
 .Pa "/etc/gss/mech"
 file contains a list of installed GSS-API security mechanisms.
+Mechanisms are considered in file order.  The first mechanism is the
+implementation default when an application does not request a mechanism
+explicitly.  Entries for the same object identifier are providers for that
+mechanism and are considered in file order.
 Each line of the file either contains a comment if the first character
-is '#' or it contains five fields with the following meanings:
+is '#', names a built-in mechanism, or contains five fields with the
+following meanings:
 .Bl -tag
 .It Name
 The name of this GSS-API mechanism.
@@ -54,6 +59,21 @@ Optionsal parameters interpreted by the mechanism. Library options
 must be enclosed in brackets ([ ]) to differentiate them from the
 optional kernel module entry.
 .El
+.Pp
+A built-in mechanism is enabled at its position in the file with:
+.Bd -literal
+:builtin name
+.Ed
+.Pp
+The built-in names are
+.Dq spnego ,
+.Dq krb5 ,
+and
+.Dq sanon .
+Putting SPNEGO first is recommended so applications which leave mechanism
+selection to GSS-API negotiate a concrete mechanism with the peer.  This is
+configuration policy; neither Kerberos nor SPNEGO receives special priority
+from the mechanism glue.
 .Pp
 The
 .Pa "/etc/gss/qop"
@@ -76,6 +96,13 @@ This is a typical entry from
 .Pa "/etc/gss/mech" :
 .Bd -literal
 kerberosv5	1.2.840.113554.1.2.2	/usr/lib/libgssapi_krb5.so.8	-
+.Ed
+.Pp
+This is a recommended ordering for the built-in mechanisms:
+.Bd -literal
+:builtin spnego
+:builtin krb5
+:builtin sanon
 .Ed
 .Pp
 This is a typical entry from
