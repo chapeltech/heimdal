@@ -223,6 +223,10 @@ string_to_key_test(krb5_context context)
 
     for (i = 0; i < sizeof(keys)/sizeof(keys[0]); i++) {
 
+	/* ARCFOUR is deprecated and requires provider-dependent MD4 support. */
+	if (keys[i].enctype == ETYPE_ARCFOUR_HMAC_MD5)
+	    continue;
+
 	password.data = rk_UNCONST(keys[i].password);
 	password.length = strlen(password.data);
 

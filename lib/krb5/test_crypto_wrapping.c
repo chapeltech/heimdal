@@ -131,7 +131,9 @@ main(int argc, char **argv)
 #if 0
 	ETYPE_DES3_CBC_SHA1,
 #endif
+#if 0 /* Deprecated and provider-dependent. */
 	ETYPE_ARCFOUR_HMAC_MD5,
+#endif
 	ETYPE_AES128_CTS_HMAC_SHA1_96,
 	ETYPE_AES256_CTS_HMAC_SHA1_96,
 	KRB5_ENCTYPE_AES128_CTS_HMAC_SHA256_128,

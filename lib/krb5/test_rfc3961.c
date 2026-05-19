@@ -501,6 +501,10 @@ test_rfc3961_des_s2k(krb5_context context)
                                              ETYPE_DES_CBC_CRC,
                                              rfc3961_des_vectors[i].password,
                                              salt, opaque, &key);
+        if (ret == KRB5_PROG_ETYPE_NOSUPP) {
+            printf("DES string-to-key unsupported; skipping\n");
+            return;
+        }
         if (ret)
             errx(1, "DES string-to-key failed on test %zu: %d", i + 1, ret);
 
@@ -555,6 +559,10 @@ test_rfc3961_des3_s2k(krb5_context context)
                                              ETYPE_DES3_CBC_SHA1,
                                              rfc3961_des3_vectors[i].password,
                                              salt, opaque, &key);
+        if (ret == KRB5_PROG_ETYPE_NOSUPP) {
+            printf("DES3 string-to-key unsupported; skipping\n");
+            return;
+        }
         if (ret)
             errx(1, "DES3 string-to-key failed on test %zu: %d", i + 1, ret);
 
@@ -648,9 +656,11 @@ main(int argc, char **argv)
     krb5_salt salt;
 
     krb5_enctype enctypes[] = {
+#if 0 /* Weak/deprecated and provider-dependent. */
 	ETYPE_DES_CBC_CRC,
 	ETYPE_DES3_CBC_SHA1,
 	ETYPE_ARCFOUR_HMAC_MD5,
+#endif
 	ETYPE_AES128_CTS_HMAC_SHA1_96,
 	ETYPE_AES256_CTS_HMAC_SHA1_96,
 	ETYPE_AES128_CTS_HMAC_SHA256_128,
