@@ -1252,8 +1252,17 @@ main(int argc, char **argv)
     {
 	const struct test_pac_ticket *tkt;
 
-	for (tkt = pac_tickets; tkt->name != NULL; tkt++)
+	for (tkt = pac_tickets; tkt->name != NULL; tkt++) {
+#ifdef WIN32
+	    /*
+	     * Windows CI does not provide RC4 through OpenSSL. Keep the AES
+	     * ticket-signature vectors, but skip ARCFOUR-encrypted tickets.
+	     */
+	    if (tkt->key->keytype == ENCTYPE_ARCFOUR_HMAC)
+		continue;
+#endif
 	    check_ticket_signature(context, tkt);
+	}
     }
 
     krb5_free_context(context);
