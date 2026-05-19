@@ -52,7 +52,18 @@ ARCFOUR_string_to_key(krb5_context context,
     if (m == NULL)
 	return krb5_enomem(context);
 
-    EVP_DigestInit_ex(m, EVP_md4(), NULL);
+    if (context->ossl->md4 == NULL) {
+	krb5_set_error_message(context, KRB5_PROG_ETYPE_NOSUPP,
+			       "ARCFOUR string-to-key not supported");
+	ret = KRB5_PROG_ETYPE_NOSUPP;
+	goto out;
+    }
+
+    if (EVP_DigestInit_ex(m, context->ossl->md4, NULL) != 1) {
+	ret = _krb5_set_error_message_openssl(context, KRB5_CRYPTO_INTERNAL,
+					      "ARCFOUR string-to-key failed");
+	goto out;
+    }
 
     ret = wind_utf8ucs2_length(password.data, &len);
     if (ret) {
@@ -78,9 +89,17 @@ ARCFOUR_string_to_key(krb5_context context,
     for (i = 0; i < len; i++) {
 	unsigned char p;
 	p = (s[i] & 0xff);
-	EVP_DigestUpdate (m, &p, 1);
+	if (EVP_DigestUpdate (m, &p, 1) != 1) {
+	    ret = _krb5_set_error_message_openssl(context, KRB5_CRYPTO_INTERNAL,
+						  "ARCFOUR string-to-key failed");
+	    goto out;
+	}
 	p = (s[i] >> 8) & 0xff;
-	EVP_DigestUpdate (m, &p, 1);
+	if (EVP_DigestUpdate (m, &p, 1) != 1) {
+	    ret = _krb5_set_error_message_openssl(context, KRB5_CRYPTO_INTERNAL,
+						  "ARCFOUR string-to-key failed");
+	    goto out;
+	}
     }
 
     key->keytype = enctype;
@@ -89,7 +108,12 @@ ARCFOUR_string_to_key(krb5_context context,
 	krb5_enomem(context);
 	goto out;
     }
-    EVP_DigestFinal_ex (m, key->keyvalue.data, NULL);
+    if (EVP_DigestFinal_ex (m, key->keyvalue.data, NULL) != 1) {
+	krb5_data_free(&key->keyvalue);
+	ret = _krb5_set_error_message_openssl(context, KRB5_CRYPTO_INTERNAL,
+					      "ARCFOUR string-to-key failed");
+	goto out;
+    }
 
  out:
     EVP_MD_CTX_destroy(m);
