@@ -330,6 +330,7 @@ _krb5_erase_file(krb5_context context, const char *filename)
 	close(fd);
 	return ret;
     }
+#ifndef WIN32
     if (unlink(filename) < 0) {
 	ret = errno;
         close (fd);
@@ -338,6 +339,7 @@ _krb5_erase_file(krb5_context context, const char *filename)
 	    filename, strerror(ret));
         return ret;
     }
+#endif
     ret = fstat(fd, &sb2);
     if (ret < 0) {
 	ret = errno;
@@ -345,13 +347,35 @@ _krb5_erase_file(krb5_context context, const char *filename)
 	return ret;
     }
 
+#ifndef WIN32
     /* check if someone was playing with symlinks */
-
     if (sb1.st_dev != sb2.st_dev || sb1.st_ino != sb2.st_ino) {
+	krb5_set_error_message(context, EPERM,
+	    N_("Refuses to erase possible symlink for cache FILE:%s", ""),
+	    filename);
 	close(fd);
 	return EPERM;
     }
+#endif
 
+#ifdef WIN32
+    if (sb2.st_nlink <= 1) {
+	ret = scrub_file(fd);
+	if (ret) {
+	    close(fd);
+	    return ret;
+	}
+    }
+    close(fd);
+    if (unlink(filename) < 0) {
+	ret = errno;
+	krb5_set_error_message(context, errno,
+	    N_("krb5_cc_destroy: unlinking \"%s\": %s", ""),
+	    filename, strerror(ret));
+	return ret;
+    }
+    return 0;
+#else
     /* there are still hard links to this file */
 
     if (sb2.st_nlink != 0) {
@@ -362,6 +386,7 @@ _krb5_erase_file(krb5_context context, const char *filename)
     ret = scrub_file(fd);
     close(fd);
     return ret;
+#endif
 }
 
 static krb5_error_code KRB5_CALLCONV
