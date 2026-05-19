@@ -423,7 +423,11 @@ const struct {
     { "foo", 0, "foo" },
     { "foo%}", 0, "foo%}" },
     { "%{uid}", 0, NULL },
+#ifdef WIN32
+    { "%{euid}", 1, NULL },
+#else
     { "%{euid}", 0, NULL },
+#endif
     { "%{username}", 0, NULL },
     { "foo%{null}", 0, "foo" },
     { "foo%{null}bar", 0, "foobar" },
@@ -1017,7 +1021,7 @@ main(int argc, char **argv)
     cleanup();
     test_init_vs_destroy(context, krb5_cc_type_scc);
 
-#if defined(S_IRWXG) && defined(S_IRWXO)
+#if defined(S_IRWXG) && defined(S_IRWXO) && !defined(WIN32)
     {
         struct stat st;
 
