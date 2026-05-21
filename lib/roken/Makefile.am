@@ -32,6 +32,7 @@ check_PROGRAMS = 				\
 		getifaddrs-test			\
 		hex-test			\
 		test-auxval			\
+		test-closefrom			\
 		test-getuserinfo		\
 		test-readenv			\
 		resolve-test			\
