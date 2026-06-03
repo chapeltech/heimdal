@@ -1172,15 +1172,6 @@ next_kvno:
     if (ret)
 	goto out;
 
-    krb5_free_keyblock_contents(r->context,  &r->enc_ad_key);
-    if (b->enc_authorization_data) {
-	ret = krb5_copy_keyblock_contents(r->context,
-					  &r->reply_key,
-					  &r->enc_ad_key);
-	if (ret)
-	    goto out;
-    }
-
     ret = validate_fast_ad(r, r->ticket->ticket.authorization_data);
     if (ret)
 	goto out;
@@ -1193,6 +1184,15 @@ next_kvno:
     ret = _kdc_fast_unwrap_request(r, r->ticket, ac);
     if (ret)
 	goto out;
+
+    krb5_free_keyblock_contents(r->context,  &r->enc_ad_key);
+    if (b->enc_authorization_data) {
+	ret = krb5_copy_keyblock_contents(r->context,
+					  &r->reply_key,
+					  &r->enc_ad_key);
+	if (ret)
+	    goto out;
+    }
 
     krb5_auth_con_free(r->context, ac);
 
