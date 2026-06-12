@@ -1,11 +1,13 @@
 name: OS X Build
 
+# Diagnostic branch: loop the full test suite to catch the macOS iprop race.
 on:
     push:
       branches:
          - 'master'
          - 'osx-build'
          - 'heimdal-7-1-branch'
+         - 'find-iprop-race'
       paths:
          - '!docs/**'
          - '!**.md'
@@ -58,6 +60,7 @@ jobs:
             fail-fast: false
             matrix:
                 name: [osx-clang]
+                attempt: [1, 2, 3, 4, 5, 6]
                 include:
                     - name: osx-clang
                       os: macos-latest
@@ -94,7 +97,7 @@ jobs:
             #  with:
             #      limit-access-to-actor: true
             - name: Test
-              timeout-minutes: 25
+              timeout-minutes: 90
               shell: bash
               env:
                 CC: ${{ matrix.compiler }}
@@ -104,17 +107,62 @@ jobs:
                 set -vx
                 # Verify we're using Homebrew bash (faster than system bash)
                 echo "Using bash: $(which bash) version $BASH_VERSION"
-                sudo lsof -nP -i:49188 || true
+                sysctl net.inet.ip.portrange.first net.inet.ip.portrange.last net.inet.ip.portrange.hifirst net.inet.ip.portrange.hilast || true
                 cd build
-                make check
+                dump_test_state() {
+                  date
+                  ps auxww | grep -E 'kdc|ipropd|kadmin|kpasswdd|test_context|check-' | grep -v grep || true
+                  for p in 49188 49189 49190 49191 49192 49193 49194 49195; do
+                    echo "=== lsof TCP:$p ==="
+                    sudo lsof -nP -iTCP:$p || true
+                    echo "=== lsof UDP:$p ==="
+                    sudo lsof -nP -iUDP:$p || true
+                  done
+                  netstat -anv | grep -E '4918[8-9]|4919[0-5]' || true
+                  find . -name '*.trs' -exec grep -lE '^(FAIL|ERROR):' {} + 2>/dev/null |
+                  while read trs; do
+                    log=${trs%.trs}.log
+                    echo "=== $log ==="
+                    cat "$log" || true
+                  done
+                  for f in tests/kdc/messages.log tests/kdc/messages2.log \
+                      tests/kdc/iprop-stats tests/kdc/iprop-stats2 \
+                      tests/kdc/iprop-slave-status tests/kdc/iprop-slave-status2 \
+                      tests/gss/messages.log; do
+                    if [ -f "$f" ]; then
+                      echo "=== $f ==="
+                      tail -200 "$f"
+                    fi
+                  done
+                }
+                dump_test_state
+                i=0
+                while :; do
+                  if make check; then
+                    i=$((i + 1))
+                    echo "make check passed iteration $i"
+                  else
+                    ret=$?
+                    break
+                  fi
+                done
+                echo "make check failed after $i successful iterations"
+                dump_test_state
+                exit $ret
             - name: Interrupted/timed out test diagnostics
               if: ${{ cancelled() || failure() }}
               run: |
                 set -x
                 # Show any test-related processes still running
-                ps auxww | grep -E 'kdc|test_context|kinit|kadmin|check-' | grep -v grep || true
-                # Show who's on the test port
-                sudo lsof -nP -i:49188 || true
+                ps auxww | grep -E 'kdc|ipropd|test_context|kinit|kadmin|check-' | grep -v grep || true
+                # Show who's on the test ports
+                for p in 49188 49189 49190 49191 49192 49193 49194 49195; do
+                  echo "=== lsof TCP:$p ==="
+                  sudo lsof -nP -iTCP:$p || true
+                  echo "=== lsof UDP:$p ==="
+                  sudo lsof -nP -iUDP:$p || true
+                done
+                netstat -anv | grep -E '4918[8-9]|4919[0-5]' || true
                 # Show the newest .log file (the one likely interrupted)
                 newest=$(find build/tests -name '*.log' -newer build/tests/gss/Makefile -print0 2>/dev/null | xargs -0 stat -f '%m %N' 2>/dev/null | sort -rn | head -1 | cut -d' ' -f2-)
                 if [ -n "$newest" ]; then
@@ -122,10 +170,13 @@ jobs:
                   cat "$newest"
                 fi
                 # Also show KDC messages.log if any exist
-                for f in build/tests/gss/messages.log build/tests/kdc/messages.log; do
+                for f in build/tests/gss/messages.log build/tests/kdc/messages.log \
+                    build/tests/kdc/messages2.log build/tests/kdc/iprop-stats \
+                    build/tests/kdc/iprop-stats2 build/tests/kdc/iprop-slave-status \
+                    build/tests/kdc/iprop-slave-status2; do
                   if [ -f "$f" ]; then
                     echo "=== $f ==="
-                    tail -100 "$f"
+                    tail -200 "$f"
                   fi
                 done
             - name: Install

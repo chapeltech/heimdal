@@ -303,7 +303,35 @@ ipropd_master2="${ipropd_master2} --port=$ipropport2"
 ipropd_master2="${ipropd_master2} --pidfile-basename=ipropd-master2"
 ipropd_master2="${ipropd_master2} --database=${objdir}/current-db.slave --detach"
 
+dump_iprop_diagnostics() {
+    echo "=== check-iprop diagnostics ==="
+    date
+    pwd
+    for f in *.pid lt-*.pid; do
+        test -f "$f" || continue
+        echo "=== $f ==="
+        cat "$f"
+    done
+    ps auxww | grep -E 'kdc|ipropd|kadmin|check-iprop' | grep -v grep || true
+    if command -v lsof >/dev/null 2>&1; then
+        for p in $port $ipropport $ipropport2; do
+            echo "=== lsof TCP:$p ==="
+            lsof -nP -iTCP:$p || true
+            echo "=== lsof UDP:$p ==="
+            lsof -nP -iUDP:$p || true
+        done
+    fi
+    netstat -an 2>/dev/null | grep -E "$port|$ipropport|$ipropport2" || true
+    for f in messages.log messages2.log iprop-stats iprop-stats2 \
+        iprop-slave-status iprop-slave-status2; do
+        test -f "$f" || continue
+        echo "=== tail $f ==="
+        tail -100 "$f"
+    done
+}
+
 cleanup() {
+    dump_iprop_diagnostics
     echo 'killing ipropd s + m + kdc'
     test -n "$ipdm" && kill -9 $ipdm        >/dev/null 2>/dev/null
     test -n "$ipdm2" && kill -9 $ipdm2      >/dev/null 2>/dev/null
