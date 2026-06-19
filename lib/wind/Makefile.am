@@ -51,6 +51,10 @@ $(libwind_la_OBJECTS): wind_err.h
 
 libwind_la_LDFLAGS = -version-info 0:0:0
 
+check-abi:
+	$(SHELL) $(top_srcdir)/cf/check-library-abi.sh \
+	    $(top_builddir) $(top_srcdir) libwind.so $(srcdir)/abi/0
+
 libwind_la_LIBADD = \
 	$(LIB_roken) \
 	$(LIB_com_err)
@@ -113,6 +117,7 @@ punycode_examples.h punycode_examples.c: gen-punycode-examples.py rfc3492.txt
 
 EXTRA_DIST = \
 	NTMakefile \
+	abi \
 	libwind-exports.def \
 	CompositionExclusions-3.2.0.txt \
 	DerivedNormalizationProps.txt \
@@ -139,6 +144,8 @@ EXTRA_DIST = \
 	util.py \
 	version-script.map \
 	wind_err.et
+
+.PHONY: check-abi
 
 CLEANFILES = \
 	wind_err.c  \

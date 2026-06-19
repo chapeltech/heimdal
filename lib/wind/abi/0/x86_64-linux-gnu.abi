@@ -1,0 +1,545 @@
+<abi-corpus version='2.4' architecture='elf-amd-x86_64' soname='libwind.so.0'>
+  <elf-needed>
+    <dependency name='libroken.so.18'/>
+    <dependency name='libcom_err.so.2'/>
+    <dependency name='libc.so.6'/>
+  </elf-needed>
+  <elf-function-symbols>
+    <elf-symbol name='_wind_combining_class' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_wind_ldap_case_exact_attribute' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_wind_stringprep_error' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_wind_stringprep_map' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_wind_stringprep_normalize' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_wind_stringprep_prohibited' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_wind_stringprep_testbidi' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_profile' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_punycode_label_toascii' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_stringprep' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_ucs2read' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_ucs2utf8' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_ucs2utf8_length' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_ucs2write' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_ucs4utf8' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_ucs4utf8_length' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_utf8ucs2' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_utf8ucs2_length' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_utf8ucs4' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='wind_utf8ucs4_length' version='HEIMDAL_WIND_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+  </elf-function-symbols>
+  <undefined-elf-function-symbols>
+    <elf-symbol name='__assert_fail' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='__cxa_finalize' type='func-type' binding='weak-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='bsearch' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='fprintf' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='free' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='fwrite' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='malloc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='memcpy' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='memmove' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='rk_getprogname' version='HEIMDAL_ROKEN_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='strcasecmp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+  </undefined-elf-function-symbols>
+  <undefined-elf-variable-symbols>
+    <elf-symbol name='_ITM_deregisterTMCloneTable' type='no-type' binding='weak-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='_ITM_registerTMCloneTable' type='no-type' binding='weak-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='__gmon_start__' type='no-type' binding='weak-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='_et_list' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='stderr' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+  </undefined-elf-variable-symbols>
+  <abi-instr address-size='64' path='print_version.c' language='LANG_C11'>
+    <array-type-def dimensions='1' type-id='type-id-1' size-in-bits='8' hash='f7aed1c6cc6e7b3c' id='type-id-2'>
+      <subrange length='1' lower-bound='0' upper-bound='0' type-id='type-id-3' size-in-bits='64' is-anonymous='yes' hash='eba0a2b392137dcb' id='type-id-4'/>
+    </array-type-def>
+    <array-type-def dimensions='1' type-id='type-id-1' size-in-bits='160' hash='99641d293d1da856' id='type-id-5'>
+      <subrange length='20' lower-bound='0' upper-bound='19' type-id='type-id-3' size-in-bits='64' is-anonymous='yes' hash='1ca9e41140ea49be' id='type-id-6'/>
+    </array-type-def>
+    <type-decl name='signed char' size-in-bits='8' hash='3c595c3350588f18' id='type-id-7'/>
+    <class-decl name='_IO_FILE' is-struct='yes' visibility='default' size-in-bits='1728' filepath='struct_FILE.h' line='50' column='1' hash='a4bd2f88347a2dd0' id='type-id-8'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='_flags' type-id='type-id-9' visibility='default' filepath='struct_FILE.h' line='52' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='_IO_read_ptr' type-id='type-id-10' visibility='default' filepath='struct_FILE.h' line='55' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='_IO_read_end' type-id='type-id-10' visibility='default' filepath='struct_FILE.h' line='56' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='_IO_read_base' type-id='type-id-10' visibility='default' filepath='struct_FILE.h' line='57' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='_IO_write_base' type-id='type-id-10' visibility='default' filepath='struct_FILE.h' line='58' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='_IO_write_ptr' type-id='type-id-10' visibility='default' filepath='struct_FILE.h' line='59' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='384'>
+        <var-decl name='_IO_write_end' type-id='type-id-10' visibility='default' filepath='struct_FILE.h' line='60' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='448'>
+        <var-decl name='_IO_buf_base' type-id='type-id-10' visibility='default' filepath='struct_FILE.h' line='61' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='512'>
+        <var-decl name='_IO_buf_end' type-id='type-id-10' visibility='default' filepath='struct_FILE.h' line='62' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='576'>
+        <var-decl name='_IO_save_base' type-id='type-id-10' visibility='default' filepath='struct_FILE.h' line='65' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='640'>
+        <var-decl name='_IO_backup_base' type-id='type-id-10' visibility='default' filepath='struct_FILE.h' line='66' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='704'>
+        <var-decl name='_IO_save_end' type-id='type-id-10' visibility='default' filepath='struct_FILE.h' line='67' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='768'>
+        <var-decl name='_markers' type-id='type-id-11' visibility='default' filepath='struct_FILE.h' line='69' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='832'>
+        <var-decl name='_chain' type-id='type-id-12' visibility='default' filepath='struct_FILE.h' line='71' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='896'>
+        <var-decl name='_fileno' type-id='type-id-9' visibility='default' filepath='struct_FILE.h' line='73' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='928'>
+        <var-decl name='_flags2' type-id='type-id-9' visibility='default' filepath='struct_FILE.h' line='74' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='952'>
+        <var-decl name='_short_backupbuf' type-id='type-id-2' visibility='default' filepath='struct_FILE.h' line='76' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='960'>
+        <var-decl name='_old_offset' type-id='type-id-13' visibility='default' filepath='struct_FILE.h' line='77' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1024'>
+        <var-decl name='_cur_column' type-id='type-id-14' visibility='default' filepath='struct_FILE.h' line='80' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1040'>
+        <var-decl name='_vtable_offset' type-id='type-id-7' visibility='default' filepath='struct_FILE.h' line='81' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1048'>
+        <var-decl name='_shortbuf' type-id='type-id-2' visibility='default' filepath='struct_FILE.h' line='82' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1088'>
+        <var-decl name='_lock' type-id='type-id-15' visibility='default' filepath='struct_FILE.h' line='84' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1152'>
+        <var-decl name='_offset' type-id='type-id-16' visibility='default' filepath='struct_FILE.h' line='92' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1216'>
+        <var-decl name='_codecvt' type-id='type-id-17' visibility='default' filepath='struct_FILE.h' line='94' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1280'>
+        <var-decl name='_wide_data' type-id='type-id-18' visibility='default' filepath='struct_FILE.h' line='95' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1344'>
+        <var-decl name='_freeres_list' type-id='type-id-12' visibility='default' filepath='struct_FILE.h' line='96' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1408'>
+        <var-decl name='_freeres_buf' type-id='type-id-19' visibility='default' filepath='struct_FILE.h' line='97' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1472'>
+        <var-decl name='_prevchain' type-id='type-id-20' visibility='default' filepath='struct_FILE.h' line='98' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1536'>
+        <var-decl name='_mode' type-id='type-id-9' visibility='default' filepath='struct_FILE.h' line='99' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1568'>
+        <var-decl name='_unused2' type-id='type-id-5' visibility='default' filepath='struct_FILE.h' line='101' column='1'/>
+      </data-member>
+    </class-decl>
+    <typedef-decl name='FILE' type-id='type-id-8' size-in-bits='1728' filepath='FILE.h' line='7' column='1' id='type-id-21'/>
+    <typedef-decl name='_IO_lock_t' type-id='type-id-22' filepath='struct_FILE.h' line='44' column='1' id='type-id-23'/>
+    <typedef-decl name='__off64_t' type-id='type-id-24' size-in-bits='64' filepath='types.h' line='153' column='1' hash='b119fe0931d2ee10' id='type-id-16'/>
+    <typedef-decl name='__off_t' type-id='type-id-24' size-in-bits='64' filepath='types.h' line='152' column='1' hash='b119fe0931d2ee10' id='type-id-13'/>
+    <pointer-type-def type-id='type-id-21' size-in-bits='64' hash='4cdc26b379a5c62d' id='type-id-25'/>
+    <pointer-type-def type-id='type-id-8' size-in-bits='64' hash='071f36dcbe00ad00' id='type-id-12'/>
+    <pointer-type-def type-id='type-id-12' size-in-bits='64' hash='e8c018048121152c' id='type-id-20'/>
+    <pointer-type-def type-id='type-id-26' size-in-bits='64' id='type-id-17'/>
+    <pointer-type-def type-id='type-id-23' size-in-bits='64' id='type-id-15'/>
+    <pointer-type-def type-id='type-id-27' size-in-bits='64' id='type-id-11'/>
+    <pointer-type-def type-id='type-id-28' size-in-bits='64' id='type-id-18'/>
+    <class-decl name='_IO_codecvt' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-26'/>
+    <class-decl name='_IO_marker' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-27'/>
+    <class-decl name='_IO_wide_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-28'/>
+    <function-decl name='rk_getprogname' filepath='roken.h' line='303' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='rk_getprogname@@HEIMDAL_ROKEN_1.0' hash='53885bde0aa65efe'>
+      <return type-id='type-id-29'/>
+    </function-decl>
+    <var-decl name='stderr' type-id='type-id-25' visibility='default' filepath='stdio.h' line='151' column='1' elf-symbol-id='stderr'/>
+    <function-decl name='fprintf' filepath='stdio.h' line='357' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='fprintf' hash='31c19dfde3fac410'>
+      <parameter type-id='type-id-25'/>
+      <parameter type-id='type-id-29'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <type-decl name='variadic parameter type' id='type-id-30'/>
+  </abi-instr>
+  <abi-instr address-size='64' path='bidi.c' language='LANG_C11'>
+    <array-type-def dimensions='1' type-id='type-id-31' size-in-bits='unknown' hash='5ef362159371ef09' id='type-id-32'>
+      <subrange length='unknown' lower-bound='0' upper-bound='0' size-in-bits='64' is-anonymous='yes' hash='eba0a2b392137dcb' id='type-id-33'/>
+    </array-type-def>
+    <type-decl name='int' size-in-bits='32' hash='09d17c08f594edc7' id='type-id-9'/>
+    <class-decl name='range_entry' is-struct='yes' visibility='default' size-in-bits='64' filepath='bidi_table.h' line='9' column='1' hash='df6c22c9b0eacb20' id='type-id-34'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='start' type-id='type-id-35' visibility='default' filepath='bidi_table.h' line='10' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='len' type-id='type-id-36' visibility='default' filepath='bidi_table.h' line='11' column='1'/>
+      </data-member>
+    </class-decl>
+    <typedef-decl name='__compar_fn_t' type-id='type-id-37' size-in-bits='64' filepath='stdlib.h' line='948' column='1' hash='fd7a63c0c6c822c4' id='type-id-38'/>
+    <typedef-decl name='__uint32_t' type-id='type-id-36' size-in-bits='32' filepath='types.h' line='42' column='1' hash='e66b43f97c38e87a' id='type-id-39'/>
+    <typedef-decl name='size_t' type-id='type-id-3' size-in-bits='64' filepath='stddef.h' line='214' column='1' hash='8fdc5eea2983a729' id='type-id-40'/>
+    <typedef-decl name='uint32_t' type-id='type-id-39' size-in-bits='32' filepath='stdint-uintn.h' line='26' column='1' hash='e66b43f97c38e87a' id='type-id-35'/>
+    <typedef-decl name='wind_profile_flags' type-id='type-id-36' size-in-bits='32' filepath='wind.h' line='44' column='1' hash='e66b43f97c38e87a' id='type-id-41'/>
+    <type-decl name='unsigned int' size-in-bits='32' hash='e66b43f97c38e87a' id='type-id-36'/>
+    <type-decl name='unsigned long int' size-in-bits='64' hash='8fdc5eea2983a729#2' id='type-id-3'/>
+    <qualified-type-def type-id='type-id-34' const='yes' hash='bc6332be8811231b' id='type-id-31'/>
+    <qualified-type-def type-id='type-id-40' const='yes' hash='86827e66a8bd4e2d' id='type-id-42'/>
+    <qualified-type-def type-id='type-id-35' const='yes' hash='c615287ae67f9bdd' id='type-id-43'/>
+    <pointer-type-def type-id='type-id-43' size-in-bits='64' hash='1a33a64521c642b5' id='type-id-44'/>
+    <pointer-type-def type-id='type-id-45' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-37'/>
+    <var-decl name='_wind_ral_table' type-id='type-id-32' visibility='default' filepath='bidi_table.h' line='14' column='1'/>
+    <var-decl name='_wind_l_table' type-id='type-id-32' visibility='default' filepath='bidi_table.h' line='15' column='1'/>
+    <var-decl name='_wind_ral_table_size' type-id='type-id-42' visibility='default' filepath='bidi_table.h' line='17' column='1'/>
+    <var-decl name='_wind_l_table_size' type-id='type-id-42' visibility='default' filepath='bidi_table.h' line='18' column='1'/>
+    <function-decl name='_wind_stringprep_testbidi' mangled-name='_wind_stringprep_testbidi' filepath='bidi.c' line='72' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_wind_stringprep_testbidi@@HEIMDAL_WIND_1.0' hash='e829435cd439fae0'>
+      <parameter type-id='type-id-44' name='in' filepath='bidi.c' line='72' column='1'/>
+      <parameter type-id='type-id-40' name='in_len' filepath='bidi.c' line='72' column='1'/>
+      <parameter type-id='type-id-41' name='flags' filepath='bidi.c' line='72' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='bsearch' filepath='stdlib.h' line='960' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='bsearch' hash='3aa907ea60dd12ba'>
+      <parameter type-id='type-id-19'/>
+      <parameter type-id='type-id-19'/>
+      <parameter type-id='type-id-40'/>
+      <parameter type-id='type-id-40'/>
+      <parameter type-id='type-id-38'/>
+      <return type-id='type-id-19'/>
+    </function-decl>
+    <type-decl name='void' id='type-id-22'/>
+    <pointer-type-def type-id='type-id-22' id='type-id-19'/>
+    <function-type size-in-bits='64' hash='388da3fa973fde78' id='type-id-45'>
+      <parameter type-id='type-id-19'/>
+      <parameter type-id='type-id-19'/>
+      <return type-id='type-id-9'/>
+    </function-type>
+  </abi-instr>
+  <abi-instr address-size='64' path='combining.c' language='LANG_C11'>
+    <array-type-def dimensions='1' type-id='type-id-46' size-in-bits='unknown' hash='7b690d2dc6b96c4d' id='type-id-47'>
+      <subrange length='unknown' lower-bound='0' upper-bound='0' size-in-bits='64' is-anonymous='yes' hash='eba0a2b392137dcb' id='type-id-33'/>
+    </array-type-def>
+    <class-decl name='translation' is-struct='yes' visibility='default' size-in-bits='64' filepath='combining_table.h' line='9' column='1' hash='8f6b42519ff9c2c5' id='type-id-48'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='key' type-id='type-id-35' visibility='default' filepath='combining_table.h' line='10' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='combining_class' type-id='type-id-36' visibility='default' filepath='combining_table.h' line='11' column='1'/>
+      </data-member>
+    </class-decl>
+    <qualified-type-def type-id='type-id-48' const='yes' hash='744005642780c5c9' id='type-id-46'/>
+    <var-decl name='_wind_combining_table' type-id='type-id-47' visibility='default' filepath='combining_table.h' line='14' column='1'/>
+    <var-decl name='_wind_combining_table_size' type-id='type-id-42' visibility='default' filepath='combining_table.h' line='16' column='1'/>
+    <function-decl name='_wind_combining_class' mangled-name='_wind_combining_class' filepath='combining.c' line='50' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_wind_combining_class@@HEIMDAL_WIND_1.0' hash='6668baab5275d4c5'>
+      <parameter type-id='type-id-35' name='code_point' filepath='combining.c' line='50' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='errorlist.c' language='LANG_C11'>
+    <array-type-def dimensions='1' type-id='type-id-49' size-in-bits='unknown' hash='45f56a73db27221a' id='type-id-50'>
+      <subrange length='unknown' lower-bound='0' upper-bound='0' size-in-bits='64' is-anonymous='yes' hash='eba0a2b392137dcb' id='type-id-33'/>
+    </array-type-def>
+    <class-decl name='error_entry' is-struct='yes' visibility='default' size-in-bits='96' filepath='errorlist_table.h' line='9' column='1' hash='e861224a754f0ee3' id='type-id-51'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='start' type-id='type-id-35' visibility='default' filepath='errorlist_table.h' line='10' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='len' type-id='type-id-36' visibility='default' filepath='errorlist_table.h' line='11' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='flags' type-id='type-id-41' visibility='default' filepath='errorlist_table.h' line='12' column='1'/>
+      </data-member>
+    </class-decl>
+    <qualified-type-def type-id='type-id-51' const='yes' hash='bbc1a957724c2bbe' id='type-id-49'/>
+    <var-decl name='_wind_errorlist_table' type-id='type-id-50' visibility='default' filepath='errorlist_table.h' line='15' column='1'/>
+    <var-decl name='_wind_errorlist_table_size' type-id='type-id-42' visibility='default' filepath='errorlist_table.h' line='17' column='1'/>
+    <function-decl name='_wind_stringprep_error' mangled-name='_wind_stringprep_error' filepath='errorlist.c' line='52' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_wind_stringprep_error@@HEIMDAL_WIND_1.0' hash='f99d858ef4f7d559'>
+      <parameter type-id='type-id-43' name='cp' filepath='errorlist.c' line='52' column='1'/>
+      <parameter type-id='type-id-41' name='flags' filepath='errorlist.c' line='52' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='_wind_stringprep_prohibited' mangled-name='_wind_stringprep_prohibited' filepath='errorlist.c' line='68' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_wind_stringprep_prohibited@@HEIMDAL_WIND_1.0' hash='e829435cd439fae0'>
+      <parameter type-id='type-id-44' name='in' filepath='bidi.c' line='72' column='1'/>
+      <parameter type-id='type-id-40' name='in_len' filepath='bidi.c' line='72' column='1'/>
+      <parameter type-id='type-id-41' name='flags' filepath='bidi.c' line='72' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='ldap.c' language='LANG_C11'>
+    <type-decl name='char' size-in-bits='8' hash='65b2d157027b431a' id='type-id-1'/>
+    <qualified-type-def type-id='type-id-1' const='yes' hash='3e50fd33f9bb78d9' id='type-id-52'/>
+    <pointer-type-def type-id='type-id-52' size-in-bits='64' hash='c44743f354f6a443' id='type-id-29'/>
+    <function-decl name='_wind_ldap_case_exact_attribute' mangled-name='_wind_ldap_case_exact_attribute' filepath='ldap.c' line='48' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_wind_ldap_case_exact_attribute@@HEIMDAL_WIND_1.0' hash='768067501495f1bb'>
+      <parameter type-id='type-id-44' name='tmp' filepath='ldap.c' line='48' column='1'/>
+      <parameter type-id='type-id-40' name='olen' filepath='ldap.c' line='49' column='1'/>
+      <parameter type-id='type-id-53' name='out' filepath='ldap.c' line='50' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='ldap.c' line='51' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='__assert_fail' filepath='assert.h' line='69' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__assert_fail' hash='f20e7a25b596c040'>
+      <parameter type-id='type-id-29'/>
+      <parameter type-id='type-id-29'/>
+      <parameter type-id='type-id-36'/>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-22'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='map.c' language='LANG_C11'>
+    <array-type-def dimensions='1' type-id='type-id-55' size-in-bits='unknown' hash='abd74de9e97f1717#2' id='type-id-56'>
+      <subrange length='unknown' lower-bound='0' upper-bound='0' size-in-bits='64' is-anonymous='yes' hash='eba0a2b392137dcb' id='type-id-33'/>
+    </array-type-def>
+    <array-type-def dimensions='1' type-id='type-id-43' size-in-bits='unknown' hash='aea432c75365ece4' id='type-id-57'>
+      <subrange length='unknown' lower-bound='0' upper-bound='0' size-in-bits='64' is-anonymous='yes' hash='eba0a2b392137dcb' id='type-id-33'/>
+    </array-type-def>
+    <class-decl name='translation' is-struct='yes' visibility='default' size-in-bits='96' filepath='map_table.h' line='9' column='1' hash='1a70ced9154fe4f6#2' id='type-id-58'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='key' type-id='type-id-35' visibility='default' filepath='map_table.h' line='10' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='val_len' type-id='type-id-14' visibility='default' filepath='map_table.h' line='11' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='48'>
+        <var-decl name='val_offset' type-id='type-id-14' visibility='default' filepath='map_table.h' line='12' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='flags' type-id='type-id-41' visibility='default' filepath='map_table.h' line='13' column='1'/>
+      </data-member>
+    </class-decl>
+    <type-decl name='unsigned short int' size-in-bits='16' hash='d7723bb93a30b11d#3' id='type-id-14'/>
+    <qualified-type-def type-id='type-id-58' const='yes' hash='060c3b4540918990#2' id='type-id-55'/>
+    <pointer-type-def type-id='type-id-40' size-in-bits='64' hash='54c1e9f81ec7a1db' id='type-id-54'/>
+    <pointer-type-def type-id='type-id-35' size-in-bits='64' hash='a285db8f38e4ea02' id='type-id-53'/>
+    <var-decl name='_wind_map_table' type-id='type-id-56' visibility='default' filepath='map_table.h' line='16' column='1'/>
+    <var-decl name='_wind_map_table_size' type-id='type-id-42' visibility='default' filepath='map_table.h' line='18' column='1'/>
+    <var-decl name='_wind_map_table_val' type-id='type-id-57' visibility='default' filepath='map_table.h' line='20' column='1'/>
+    <function-decl name='_wind_stringprep_map' mangled-name='_wind_stringprep_map' filepath='map.c' line='53' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_wind_stringprep_map@@HEIMDAL_WIND_1.0' hash='e4ede658278262e5'>
+      <parameter type-id='type-id-44' name='in' filepath='map.c' line='53' column='1'/>
+      <parameter type-id='type-id-40' name='in_len' filepath='map.c' line='53' column='1'/>
+      <parameter type-id='type-id-53' name='out' filepath='map.c' line='54' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='map.c' line='54' column='1'/>
+      <parameter type-id='type-id-41' name='flags' filepath='map.c' line='55' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='normalize.c' language='LANG_C11'>
+    <array-type-def dimensions='1' type-id='type-id-59' size-in-bits='unknown' hash='0f0fa963455f6781' id='type-id-60'>
+      <subrange length='unknown' lower-bound='0' upper-bound='0' size-in-bits='64' is-anonymous='yes' hash='eba0a2b392137dcb' id='type-id-33'/>
+    </array-type-def>
+    <array-type-def dimensions='1' type-id='type-id-61' size-in-bits='unknown' hash='7b690d2dc6b96c4d#3' id='type-id-62'>
+      <subrange length='unknown' lower-bound='0' upper-bound='0' size-in-bits='64' is-anonymous='yes' hash='eba0a2b392137dcb' id='type-id-33'/>
+    </array-type-def>
+    <array-type-def dimensions='1' type-id='type-id-63' size-in-bits='unknown' hash='b4ecb6112456afc7' id='type-id-64'>
+      <subrange length='unknown' lower-bound='0' upper-bound='0' size-in-bits='64' is-anonymous='yes' hash='eba0a2b392137dcb' id='type-id-33'/>
+    </array-type-def>
+    <class-decl name='canon_node' is-struct='yes' visibility='default' size-in-bits='64' filepath='normalize_table.h' line='23' column='1' hash='c8c7995e63146fb4' id='type-id-65'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='val' type-id='type-id-35' visibility='default' filepath='normalize_table.h' line='24' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='next_start' type-id='type-id-66' visibility='default' filepath='normalize_table.h' line='25' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='40'>
+        <var-decl name='next_end' type-id='type-id-66' visibility='default' filepath='normalize_table.h' line='26' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='48'>
+        <var-decl name='next_offset' type-id='type-id-14' visibility='default' filepath='normalize_table.h' line='27' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='translation' is-struct='yes' visibility='default' size-in-bits='64' filepath='normalize_table.h' line='11' column='1' hash='b092d31a0a40bfbc#3' id='type-id-67'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='key' type-id='type-id-35' visibility='default' filepath='normalize_table.h' line='12' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='val_len' type-id='type-id-14' visibility='default' filepath='normalize_table.h' line='13' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='48'>
+        <var-decl name='val_offset' type-id='type-id-14' visibility='default' filepath='normalize_table.h' line='14' column='1'/>
+      </data-member>
+    </class-decl>
+    <type-decl name='unsigned char' size-in-bits='8' hash='6ebac62b3366db68' id='type-id-66'/>
+    <qualified-type-def type-id='type-id-65' const='yes' hash='f36f13895db7b36a' id='type-id-59'/>
+    <qualified-type-def type-id='type-id-67' const='yes' hash='744005642780c5c9#3' id='type-id-61'/>
+    <qualified-type-def type-id='type-id-14' const='yes' hash='8f60dd2f0b8834b6' id='type-id-63'/>
+    <var-decl name='_wind_normalize_table' type-id='type-id-62' visibility='default' filepath='normalize_table.h' line='17' column='1'/>
+    <var-decl name='_wind_normalize_val_table' type-id='type-id-57' visibility='default' filepath='normalize_table.h' line='19' column='1'/>
+    <var-decl name='_wind_normalize_table_size' type-id='type-id-42' visibility='default' filepath='normalize_table.h' line='21' column='1'/>
+    <var-decl name='_wind_canon_table' type-id='type-id-60' visibility='default' filepath='normalize_table.h' line='30' column='1'/>
+    <var-decl name='_wind_canon_next_table' type-id='type-id-64' visibility='default' filepath='normalize_table.h' line='32' column='1'/>
+    <function-decl name='_wind_stringprep_normalize' mangled-name='_wind_stringprep_normalize' filepath='normalize.c' line='297' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_wind_stringprep_normalize@@HEIMDAL_WIND_1.0' hash='768067501495f1bb'>
+      <parameter type-id='type-id-44' name='tmp' filepath='ldap.c' line='48' column='1'/>
+      <parameter type-id='type-id-40' name='olen' filepath='ldap.c' line='49' column='1'/>
+      <parameter type-id='type-id-53' name='out' filepath='ldap.c' line='50' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='ldap.c' line='51' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='malloc' filepath='stdlib.h' line='672' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='malloc' hash='e0055d99adb0e173'>
+      <parameter type-id='type-id-3'/>
+      <return type-id='type-id-19'/>
+    </function-decl>
+    <function-decl name='free' filepath='stdlib.h' line='687' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='free' hash='7f32ffea222edbe7'>
+      <parameter type-id='type-id-19'/>
+      <return type-id='type-id-22'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='punycode.c' language='LANG_C11'>
+    <pointer-type-def type-id='type-id-1' size-in-bits='64' hash='e533f42d1dd4942c' id='type-id-10'/>
+    <function-decl name='wind_punycode_label_toascii' mangled-name='wind_punycode_label_toascii' filepath='punycode.c' line='89' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_punycode_label_toascii@@HEIMDAL_WIND_1.0' hash='bc3bba6834ab12e0'>
+      <parameter type-id='type-id-44' name='in' filepath='punycode.c' line='89' column='1'/>
+      <parameter type-id='type-id-40' name='in_len' filepath='punycode.c' line='89' column='1'/>
+      <parameter type-id='type-id-10' name='out' filepath='punycode.c' line='90' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='punycode.c' line='90' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='memcpy' filepath='string.h' line='43' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='memcpy' hash='e0055d99adb0e173'>
+      <parameter type-id='type-id-19'/>
+      <parameter type-id='type-id-19'/>
+      <parameter type-id='type-id-3'/>
+      <return type-id='type-id-19'/>
+    </function-decl>
+    <function-decl name='memmove' filepath='string.h' line='47' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='memmove' hash='e0055d99adb0e173'>
+      <parameter type-id='type-id-19'/>
+      <parameter type-id='type-id-19'/>
+      <parameter type-id='type-id-3'/>
+      <return type-id='type-id-19'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='stringprep.c' language='LANG_C11'>
+    <pointer-type-def type-id='type-id-41' size-in-bits='64' hash='4a1d11c154c58df4' id='type-id-68'/>
+    <function-decl name='wind_stringprep' mangled-name='wind_stringprep' filepath='stringprep.c' line='56' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_stringprep@@HEIMDAL_WIND_1.0' hash='e4ede658278262e5'>
+      <parameter type-id='type-id-44' name='in' filepath='map.c' line='53' column='1'/>
+      <parameter type-id='type-id-40' name='in_len' filepath='map.c' line='53' column='1'/>
+      <parameter type-id='type-id-53' name='out' filepath='map.c' line='54' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='map.c' line='54' column='1'/>
+      <parameter type-id='type-id-41' name='flags' filepath='map.c' line='55' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='wind_profile' mangled-name='wind_profile' filepath='stringprep.c' line='134' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_profile@@HEIMDAL_WIND_1.0' hash='f1f17bffedc81828'>
+      <parameter type-id='type-id-29' name='name' filepath='stringprep.c' line='134' column='1'/>
+      <parameter type-id='type-id-68' name='flags' filepath='stringprep.c' line='134' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='strcasecmp' filepath='strings.h' line='116' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='strcasecmp' hash='5f03b5b551b5a51f'>
+      <parameter type-id='type-id-29'/>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='utf8.c' language='LANG_C11'>
+    <typedef-decl name='__uint16_t' type-id='type-id-14' size-in-bits='16' filepath='types.h' line='40' column='1' hash='d7723bb93a30b11d' id='type-id-69'/>
+    <typedef-decl name='uint16_t' type-id='type-id-69' size-in-bits='16' filepath='stdint-uintn.h' line='25' column='1' hash='d7723bb93a30b11d' id='type-id-70'/>
+    <qualified-type-def type-id='type-id-70' const='yes' hash='36aafc789d4497aa' id='type-id-71'/>
+    <pointer-type-def type-id='type-id-71' size-in-bits='64' hash='b701c601d134bee8' id='type-id-72'/>
+    <pointer-type-def type-id='type-id-70' size-in-bits='64' hash='bd1d889facccead8' id='type-id-73'/>
+    <pointer-type-def type-id='type-id-36' size-in-bits='64' hash='232fa04f890c2a5a' id='type-id-74'/>
+    <function-decl name='wind_utf8ucs4' mangled-name='wind_utf8ucs4' filepath='utf8.c' line='115' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_utf8ucs4@@HEIMDAL_WIND_1.0' hash='d38683b9d9f2dd02'>
+      <parameter type-id='type-id-29' name='in' filepath='utf8.c' line='115' column='1'/>
+      <parameter type-id='type-id-53' name='out' filepath='utf8.c' line='115' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='utf8.c' line='115' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='wind_utf8ucs4_length' mangled-name='wind_utf8ucs4_length' filepath='utf8.c' line='151' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_utf8ucs4_length@@HEIMDAL_WIND_1.0' hash='71a86865f38f69c6'>
+      <parameter type-id='type-id-29' name='in' filepath='utf8.c' line='439' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='utf8.c' line='439' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='wind_ucs4utf8' mangled-name='wind_ucs4utf8' filepath='utf8.c' line='179' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_ucs4utf8@@HEIMDAL_WIND_1.0' hash='bc3bba6834ab12e0'>
+      <parameter type-id='type-id-44' name='in' filepath='punycode.c' line='89' column='1'/>
+      <parameter type-id='type-id-40' name='in_len' filepath='punycode.c' line='89' column='1'/>
+      <parameter type-id='type-id-10' name='out' filepath='punycode.c' line='90' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='punycode.c' line='90' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='wind_ucs4utf8_length' mangled-name='wind_ucs4utf8_length' filepath='utf8.c' line='245' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_ucs4utf8_length@@HEIMDAL_WIND_1.0' hash='61cb550a5bad293b'>
+      <parameter type-id='type-id-44' name='in' filepath='utf8.c' line='245' column='1'/>
+      <parameter type-id='type-id-40' name='in_len' filepath='utf8.c' line='245' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='utf8.c' line='245' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='wind_ucs2read' mangled-name='wind_ucs2read' filepath='utf8.c' line='264' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_ucs2read@@HEIMDAL_WIND_1.0' hash='7b73e8ddea35b5c9'>
+      <parameter type-id='type-id-19' name='ptr' filepath='utf8.c' line='264' column='1'/>
+      <parameter type-id='type-id-40' name='len' filepath='utf8.c' line='264' column='1'/>
+      <parameter type-id='type-id-74' name='flags' filepath='utf8.c' line='264' column='1'/>
+      <parameter type-id='type-id-73' name='out' filepath='utf8.c' line='265' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='utf8.c' line='265' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='wind_ucs2write' mangled-name='wind_ucs2write' filepath='utf8.c' line='329' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_ucs2write@@HEIMDAL_WIND_1.0' hash='2b8a5a14cd011118'>
+      <parameter type-id='type-id-72' name='in' filepath='utf8.c' line='329' column='1'/>
+      <parameter type-id='type-id-40' name='in_len' filepath='utf8.c' line='329' column='1'/>
+      <parameter type-id='type-id-74' name='flags' filepath='utf8.c' line='329' column='1'/>
+      <parameter type-id='type-id-19' name='ptr' filepath='utf8.c' line='330' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='utf8.c' line='330' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='wind_utf8ucs2' mangled-name='wind_utf8ucs2' filepath='utf8.c' line='400' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_utf8ucs2@@HEIMDAL_WIND_1.0' hash='098d3eb841e03d1b'>
+      <parameter type-id='type-id-29' name='in' filepath='utf8.c' line='400' column='1'/>
+      <parameter type-id='type-id-73' name='out' filepath='utf8.c' line='400' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='utf8.c' line='400' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='wind_utf8ucs2_length' mangled-name='wind_utf8ucs2_length' filepath='utf8.c' line='439' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_utf8ucs2_length@@HEIMDAL_WIND_1.0' hash='71a86865f38f69c6'>
+      <parameter type-id='type-id-29' name='in' filepath='utf8.c' line='439' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='utf8.c' line='439' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='wind_ucs2utf8' mangled-name='wind_ucs2utf8' filepath='utf8.c' line='462' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_ucs2utf8@@HEIMDAL_WIND_1.0' hash='b4a79152757a8da1'>
+      <parameter type-id='type-id-72' name='in' filepath='utf8.c' line='462' column='1'/>
+      <parameter type-id='type-id-40' name='in_len' filepath='utf8.c' line='462' column='1'/>
+      <parameter type-id='type-id-10' name='out' filepath='utf8.c' line='462' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='utf8.c' line='462' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='wind_ucs2utf8_length' mangled-name='wind_ucs2utf8_length' filepath='utf8.c' line='520' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='wind_ucs2utf8_length@@HEIMDAL_WIND_1.0' hash='fe2537e8b28ae7c8'>
+      <parameter type-id='type-id-72' name='in' filepath='utf8.c' line='520' column='1'/>
+      <parameter type-id='type-id-40' name='in_len' filepath='utf8.c' line='520' column='1'/>
+      <parameter type-id='type-id-54' name='out_len' filepath='utf8.c' line='520' column='1'/>
+      <return type-id='type-id-9'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='bidi_table.c' language='LANG_C11'>
+  </abi-instr>
+  <abi-instr address-size='64' path='combining_table.c' language='LANG_C11'>
+  </abi-instr>
+  <abi-instr address-size='64' path='errorlist_table.c' language='LANG_C11'>
+  </abi-instr>
+  <abi-instr address-size='64' path='map_table.c' language='LANG_C11'>
+  </abi-instr>
+  <abi-instr address-size='64' path='normalize_table.c' language='LANG_C11'>
+  </abi-instr>
+  <abi-instr address-size='64' path='wind_err.c' language='LANG_C11'>
+    <type-decl name='long int' size-in-bits='64' hash='b119fe0931d2ee10#2' id='type-id-24'/>
+    <class-decl name='error_table' is-struct='yes' visibility='default' size-in-bits='192' filepath='wind_err.c' line='25' column='1' hash='70b2c0fa630a1576' id='type-id-75'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='msgs' type-id='type-id-76' visibility='default' filepath='wind_err.c' line='26' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='base' type-id='type-id-24' visibility='default' filepath='wind_err.c' line='27' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='n_msgs' type-id='type-id-9' visibility='default' filepath='wind_err.c' line='28' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='et_list' is-struct='yes' visibility='default' size-in-bits='128' filepath='wind_err.c' line='30' column='1' hash='9fc0e8eed74ac322' id='type-id-77'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='next' type-id='type-id-78' visibility='default' filepath='wind_err.c' line='31' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='table' type-id='type-id-79' visibility='default' filepath='wind_err.c' line='32' column='1'/>
+      </data-member>
+    </class-decl>
+    <qualified-type-def type-id='type-id-29' const='yes' hash='ec42cf78a9d93a8c' id='type-id-80'/>
+    <pointer-type-def type-id='type-id-80' size-in-bits='64' hash='b529075cb120abc3' id='type-id-76'/>
+    <qualified-type-def type-id='type-id-75' const='yes' hash='96e273fec35ba180' id='type-id-81'/>
+    <pointer-type-def type-id='type-id-81' size-in-bits='64' hash='7b5eb6f20b89ae7f' id='type-id-79'/>
+    <pointer-type-def type-id='type-id-77' size-in-bits='64' hash='20d62611b17db487' id='type-id-78'/>
+    <var-decl name='_et_list' type-id='type-id-78' visibility='default' filepath='wind_err.c' line='34' column='1' elf-symbol-id='_et_list'/>
+  </abi-instr>
+</abi-corpus>
