@@ -17,4 +17,10 @@ libheimsqlite_la_SOURCES = sqlite3.c
 
 libheimsqlite_la_LIBADD = $(PTHREAD_LIBADD)
 
-EXTRA_DIST = NTMakefile
+check-abi:
+	$(SHELL) $(top_srcdir)/cf/check-library-abi.sh \
+	    $(top_builddir) $(top_srcdir) libheimsqlite.so $(srcdir)/abi/0
+
+EXTRA_DIST = NTMakefile abi
+
+.PHONY: check-abi
