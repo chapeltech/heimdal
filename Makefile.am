@@ -36,6 +36,7 @@ EXTRA_DIST = \
 	ChangeLog.2006 \
 	Makefile.am.common \
 	autogen.sh \
+	cf/check-library-abi.sh \
 	krb5.conf \
 	cf/make-proto.pl \
 	cf/roken-h-process.pl \
@@ -68,4 +69,3 @@ clean-local-gcov:
 	find . '(' -name '*.gcno' -o -name '*.gcda' -o -name '*.gcov' ')' -a -print|xargs rm -f
 
 .PHONY: clean-local-gcov
-
