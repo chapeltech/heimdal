@@ -71,7 +71,7 @@ jobs:
               if: startsWith(matrix.os, 'ubuntu')
               run: |
                 sudo apt-get update -qq
-                sudo apt-get install -y bison comerr-dev flex doxygen
+                sudo apt-get install -y abigail-tools bison comerr-dev flex doxygen
                 sudo apt-get install -y libcap-ng-dev libdb-dev libedit-dev libjson-perl
                 sudo apt-get install -y libldap2-dev libncurses5-dev libperl4-corelibs-perl
                 sudo apt-get install -y libsqlite3-dev libkeyutils-dev libreadline-dev pkg-config python3
@@ -101,6 +101,14 @@ jobs:
                 sudo sysctl kernel.core_pattern=core.%p || true
                 ulimit -c unlimited
                 make check
+            - name: ABI compatibility
+              env:
+                ABI_PLATFORM: x86_64-linux-gnu
+                CC: ${{ matrix.compiler }}
+                MAKEVARS: ${{ matrix.makevars }}
+              run: |
+                cd build
+                make check-abi
             - name: Make Install
               env:
                 CC: ${{ matrix.compiler }}
