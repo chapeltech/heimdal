@@ -16,6 +16,10 @@ include_HEADERS = sl.h
 lib_LTLIBRARIES = libsl.la
 libsl_la_LDFLAGS = -version-info 2:1:2
 
+check-abi:
+	$(SHELL) $(top_srcdir)/cf/check-library-abi.sh \
+	    $(top_builddir) $(top_srcdir) libsl.so $(srcdir)/abi/0
+
 libsl_la_LIBADD = @LIB_readline@
 
 dist_libsl_la_SOURCES = sl_locl.h sl.c roken_rename.h
@@ -47,4 +51,6 @@ strupr.c:
 
 slc-lex.c: slc-gram.h
 
-EXTRA_DIST = NTMakefile
+EXTRA_DIST = NTMakefile abi
+
+.PHONY: check-abi
