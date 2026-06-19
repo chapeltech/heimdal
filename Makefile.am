@@ -63,6 +63,7 @@ EXTRA_DIST = \
 	cf/vararray.m4
 
 ABI_CHECK_DIRS = \
+	lib/base \
 	lib/sl \
 	lib/wind \
 	lib/sqlite

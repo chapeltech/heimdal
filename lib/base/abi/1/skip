@@ -1,0 +1,3 @@
+libheimbase has a known Heimdal 7.8 ABI difference: heim_number_create()
+changed from int to int64_t.  Do not gate this initial ABI-checking PR on
+libheimbase until the release ABI decision for that symbol is made.

@@ -20,6 +20,10 @@ test_base_CFLAGS = -Wno-string-concatenation
 
 libheimbase_la_LDFLAGS = -version-info 1:0:0
 
+check-abi:
+	$(SHELL) $(top_srcdir)/cf/check-library-abi.sh \
+	    $(top_builddir) $(top_srcdir) libheimbase.so $(srcdir)/abi/1
+
 if FRAMEWORK_COREFOUNDATION
 libheimbase_la_LDFLAGS += -framework CoreFoundation
 endif
@@ -90,7 +94,7 @@ fuzz_json.$(OBJEXT): $(srcdir)/heimbase-protos.h heim_err.h
 
 CLEANFILES = base64.c test_db.json heim_err.c heim_err.h
 
-EXTRA_DIST = NTMakefile version-script.map config_reg.c heim_err.et
+EXTRA_DIST = NTMakefile abi version-script.map config_reg.c heim_err.et
 
 dist_include_HEADERS = heimbase-protos.h
 
@@ -101,3 +105,5 @@ heim_err.h: heim_err.et
 base64.c:
 	rm -f base64.c
 	$(LN_S) $(srcdir)/../roken/base64.c .
+
+.PHONY: check-abi

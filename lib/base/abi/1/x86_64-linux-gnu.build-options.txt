@@ -1,0 +1,13 @@
+Baseline: heimdal-7.8.0
+Platform: x86_64-linux-gnu
+
+Generated from an installed Heimdal 7.8 tree built with:
+
+  ./configure --prefix=... --enable-shared --disable-static --disable-otp CFLAGS="-g -O0" LIBS=-lcrypt
+
+The ABI XML files were generated with libabigail `abidw` using:
+
+  --no-corpus-path --no-comp-dir-path --short-locs
+
+Only libraries that also exist in the Heimdal 8 development tree are included
+in this baseline set.

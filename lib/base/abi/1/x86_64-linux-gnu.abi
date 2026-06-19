@@ -1,0 +1,1653 @@
+<abi-corpus version='2.4' architecture='elf-amd-x86_64' soname='libheimbase.so.1'>
+  <elf-needed>
+    <dependency name='libc.so.6'/>
+  </elf-needed>
+  <elf-function-symbols>
+    <elf-symbol name='__heim_string_constant' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_bsearch_file' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_bsearch_file_close' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_bsearch_file_info' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_bsearch_file_open' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_bsearch_text' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_abort' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_abortv' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_alloc' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_append_value' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_copy_value' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_delete_value' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_filter_f' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_get_length' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_get_type_id' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_get_value' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_insert_value' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_iterate_f' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_iterate_reverse_f' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_array_set_value' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_auto_release' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_auto_release_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_auto_release_drain' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_base_once_f' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_bool_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_bool_val' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_cmp' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_data_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_data_get_data' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_data_get_length' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_data_get_ptr' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_data_get_type_id' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_data_ref_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_db_begin' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_db_clone' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_db_commit' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_db_copy_value' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_db_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_db_delete_key' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_db_get_type_id' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_db_iterate_f' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_db_register' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_db_rollback' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_db_set_value' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_dict_copy_value' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_dict_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_dict_delete_key' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_dict_get_type_id' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_dict_get_value' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_dict_iterate_f' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_dict_set_value' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_error_append' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_error_copy_string' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_error_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_error_create_enomem' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_error_create_opt' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_error_createv' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_error_get_code' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_get_hash' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_get_tid' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_json_copy_serialize' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_json_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_json_create_with_bytes' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_null_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_number_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_number_get_int' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_number_get_type_id' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_path_copy' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_path_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_path_delete' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_path_get' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_path_vcopy' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_path_vcreate' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_path_vdelete' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_path_vget' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_release' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_retain' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_show' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_string_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_string_create_with_bytes' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_string_create_with_format' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_string_get_type_id' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_string_get_utf8' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='heim_string_ref_create' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+  </elf-function-symbols>
+  <elf-variable-symbols>
+    <elf-symbol name='heim_sorted_text_file_dbtype' size='112' version='HEIMDAL_BASE_1.0' is-default-version='yes' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+  </elf-variable-symbols>
+  <undefined-elf-function-symbols>
+    <elf-symbol name='__ctype_b_loc' version='GLIBC_2.3' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='__cxa_finalize' type='func-type' binding='weak-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='__errno_location' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='abort' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='calloc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='close' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='flock' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='fprintf' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='fputs' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='free' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='fstat' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='fsync' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='fwrite' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='lseek' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='malloc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='memcmp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='memcpy' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='memmove' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='memset' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='open' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='pthread_getspecific' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='pthread_key_create' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='pthread_mutex_lock' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='pthread_mutex_unlock' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='pthread_once' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='pthread_setspecific' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='read' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='realloc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='rename' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='snprintf' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='stat' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='strchr' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='strcmp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='strerror' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='strlen' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='strncasecmp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='strncmp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='strnlen' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='strrchr' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='strspn' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='strstr' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='syslog' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='time' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='unlink' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='vasprintf' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='vsnprintf' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='write' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+  </undefined-elf-function-symbols>
+  <undefined-elf-variable-symbols>
+    <elf-symbol name='_ITM_deregisterTMCloneTable' type='no-type' binding='weak-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='_ITM_registerTMCloneTable' type='no-type' binding='weak-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='__gmon_start__' type='no-type' binding='weak-binding' visibility='default-visibility' is-defined='no'/>
+    <elf-symbol name='stderr' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='no'/>
+  </undefined-elf-variable-symbols>
+  <abi-instr address-size='64' path='array.c' language='LANG_C11'>
+    <type-decl name='char' size-in-bits='8' hash='65b2d157027b431a' id='type-id-1'/>
+    <type-decl name='int' size-in-bits='32' hash='09d17c08f594edc7' id='type-id-2'/>
+    <class-decl name='heim_array_data' is-struct='yes' visibility='default' size-in-bits='256' filepath='array.c' line='42' column='1' hash='d28cd9118017a409' id='type-id-3'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='len' type-id='type-id-4' visibility='default' filepath='array.c' line='43' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='val' type-id='type-id-5' visibility='default' filepath='array.c' line='44' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='allocated_len' type-id='type-id-4' visibility='default' filepath='array.c' line='45' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='allocated' type-id='type-id-5' visibility='default' filepath='array.c' line='46' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='heim_type_data' is-struct='yes' visibility='default' size-in-bits='512' filepath='heimbasepriv.h' line='71' column='1' hash='b2db4a70409e5ecd' id='type-id-6'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='tid' type-id='type-id-7' visibility='default' filepath='heimbasepriv.h' line='72' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='name' type-id='type-id-8' visibility='default' filepath='heimbasepriv.h' line='73' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='init' type-id='type-id-9' visibility='default' filepath='heimbasepriv.h' line='74' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='dealloc' type-id='type-id-10' visibility='default' filepath='heimbasepriv.h' line='75' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='copy' type-id='type-id-11' visibility='default' filepath='heimbasepriv.h' line='76' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='cmp' type-id='type-id-12' visibility='default' filepath='heimbasepriv.h' line='77' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='384'>
+        <var-decl name='hash' type-id='type-id-13' visibility='default' filepath='heimbasepriv.h' line='78' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='448'>
+        <var-decl name='desc' type-id='type-id-14' visibility='default' filepath='heimbasepriv.h' line='79' column='1'/>
+      </data-member>
+    </class-decl>
+    <typedef-decl name='heim_array_filter_f_t' type-id='type-id-15' size-in-bits='64' filepath='heimbase.h' line='150' column='1' hash='fd7a63c0c6c822c4' id='type-id-16'/>
+    <typedef-decl name='heim_array_iterator_f_t' type-id='type-id-17' size-in-bits='64' filepath='heimbase.h' line='149' column='1' hash='fd7a63c0c6c822c4' id='type-id-18'/>
+    <typedef-decl name='heim_array_t' type-id='type-id-19' size-in-bits='64' filepath='heimbase.h' line='144' column='1' hash='cb7705b903b3be57' id='type-id-20'/>
+    <typedef-decl name='heim_tid_t' type-id='type-id-21' size-in-bits='32' filepath='heimbase.h' line='59' column='1' hash='e66b43f97c38e87a' id='type-id-7'/>
+    <typedef-decl name='heim_type_cmp' type-id='type-id-22' size-in-bits='64' filepath='heimbasepriv.h' line='44' column='1' hash='fd7a63c0c6c822c4' id='type-id-12'/>
+    <typedef-decl name='heim_type_copy' type-id='type-id-23' size-in-bits='64' filepath='heimbasepriv.h' line='43' column='1' hash='fd7a63c0c6c822c4' id='type-id-11'/>
+    <typedef-decl name='heim_type_dealloc' type-id='type-id-24' size-in-bits='64' filepath='heimbase.h' line='97' column='1' hash='fd7a63c0c6c822c4' id='type-id-10'/>
+    <typedef-decl name='heim_type_description' type-id='type-id-25' size-in-bits='64' filepath='heimbasepriv.h' line='46' column='1' hash='fd7a63c0c6c822c4' id='type-id-14'/>
+    <typedef-decl name='heim_type_hash' type-id='type-id-26' size-in-bits='64' filepath='heimbasepriv.h' line='45' column='1' hash='fd7a63c0c6c822c4' id='type-id-13'/>
+    <typedef-decl name='heim_type_init' type-id='type-id-24' size-in-bits='64' filepath='heimbasepriv.h' line='42' column='1' hash='fd7a63c0c6c822c4' id='type-id-9'/>
+    <typedef-decl name='heim_type_t' type-id='type-id-27' size-in-bits='64' filepath='heimbasepriv.h' line='48' column='1' hash='d46f4530636f5b6d' id='type-id-28'/>
+    <typedef-decl name='size_t' type-id='type-id-29' size-in-bits='64' filepath='stddef.h' line='214' column='1' hash='8fdc5eea2983a729' id='type-id-4'/>
+    <type-decl name='unsigned int' size-in-bits='32' hash='e66b43f97c38e87a' id='type-id-21'/>
+    <type-decl name='unsigned long int' size-in-bits='64' hash='8fdc5eea2983a729#2' id='type-id-29'/>
+    <qualified-type-def type-id='type-id-1' const='yes' hash='3e50fd33f9bb78d9' id='type-id-30'/>
+    <pointer-type-def type-id='type-id-30' size-in-bits='64' hash='c44743f354f6a443' id='type-id-8'/>
+    <pointer-type-def type-id='type-id-3' size-in-bits='64' hash='cb7705b903b3be57' id='type-id-19'/>
+    <pointer-type-def type-id='type-id-31' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-23'/>
+    <pointer-type-def type-id='type-id-32' size-in-bits='64' hash='8a419f842e9b582f' id='type-id-5'/>
+    <pointer-type-def type-id='type-id-33' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-25'/>
+    <pointer-type-def type-id='type-id-6' size-in-bits='64' hash='d46f4530636f5b6d' id='type-id-27'/>
+    <pointer-type-def type-id='type-id-34' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-15'/>
+    <pointer-type-def type-id='type-id-35' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-22'/>
+    <pointer-type-def type-id='type-id-2' size-in-bits='64' hash='3fd83b2c14ae2f2f' id='type-id-36'/>
+    <pointer-type-def type-id='type-id-37' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-26'/>
+    <pointer-type-def type-id='type-id-38' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-17'/>
+    <pointer-type-def type-id='type-id-39' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-24'/>
+    <pointer-type-def type-id='type-id-40' size-in-bits='64' id='type-id-41'/>
+    <class-decl name='heim_string_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-40'/>
+    <typedef-decl name='heim_string_t' type-id='type-id-41' size-in-bits='64' filepath='heimbase.h' line='199' column='1' id='type-id-42'/>
+    <type-decl name='variadic parameter type' id='type-id-43'/>
+    <type-decl name='void' id='type-id-44'/>
+    <function-decl name='heim_array_create' mangled-name='heim_array_create' filepath='array.c' line='77' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_create@@HEIMDAL_BASE_1.0' hash='e324aac366a65c79'>
+      <return type-id='type-id-20'/>
+    </function-decl>
+    <function-decl name='heim_array_get_type_id' mangled-name='heim_array_get_type_id' filepath='array.c' line='100' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_get_type_id@@HEIMDAL_BASE_1.0' hash='2bb88322482ae81c'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='heim_array_append_value' mangled-name='heim_array_append_value' filepath='array.c' line='115' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_append_value@@HEIMDAL_BASE_1.0' hash='375376f0cb8e9cf6'>
+      <parameter type-id='type-id-20' name='array' filepath='array.c' line='115' column='1'/>
+      <parameter type-id='type-id-32' name='object' filepath='array.c' line='115' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_array_insert_value' mangled-name='heim_array_insert_value' filepath='array.c' line='217' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_insert_value@@HEIMDAL_BASE_1.0' hash='5d0e01a19c7c17e8'>
+      <parameter type-id='type-id-20' name='array' filepath='array.c' line='217' column='1'/>
+      <parameter type-id='type-id-4' name='idx' filepath='array.c' line='217' column='1'/>
+      <parameter type-id='type-id-32' name='object' filepath='array.c' line='217' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_array_iterate_f' mangled-name='heim_array_iterate_f' filepath='array.c' line='255' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_iterate_f@@HEIMDAL_BASE_1.0' hash='96bff945dd9d17d4'>
+      <parameter type-id='type-id-20' name='array' filepath='array.c' line='296' column='1'/>
+      <parameter type-id='type-id-45' name='ctx' filepath='array.c' line='296' column='1'/>
+      <parameter type-id='type-id-18' name='fn' filepath='array.c' line='296' column='1'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_array_iterate_reverse_f' mangled-name='heim_array_iterate_reverse_f' filepath='array.c' line='296' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_iterate_reverse_f@@HEIMDAL_BASE_1.0' hash='96bff945dd9d17d4'>
+      <parameter type-id='type-id-20' name='array' filepath='array.c' line='296' column='1'/>
+      <parameter type-id='type-id-45' name='ctx' filepath='array.c' line='296' column='1'/>
+      <parameter type-id='type-id-18' name='fn' filepath='array.c' line='296' column='1'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_array_get_length' mangled-name='heim_array_get_length' filepath='array.c' line='338' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_get_length@@HEIMDAL_BASE_1.0' hash='573b28efa152a930'>
+      <parameter type-id='type-id-20' name='array' filepath='array.c' line='338' column='1'/>
+      <return type-id='type-id-4'/>
+    </function-decl>
+    <function-decl name='heim_array_get_value' mangled-name='heim_array_get_value' filepath='array.c' line='354' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_get_value@@HEIMDAL_BASE_1.0' hash='7fbfab36dc6241ec'>
+      <parameter type-id='type-id-20' name='array' filepath='array.c' line='372' column='1'/>
+      <parameter type-id='type-id-4' name='idx' filepath='array.c' line='372' column='1'/>
+      <return type-id='type-id-32'/>
+    </function-decl>
+    <function-decl name='heim_array_copy_value' mangled-name='heim_array_copy_value' filepath='array.c' line='372' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_copy_value@@HEIMDAL_BASE_1.0' hash='7fbfab36dc6241ec'>
+      <parameter type-id='type-id-20' name='array' filepath='array.c' line='372' column='1'/>
+      <parameter type-id='type-id-4' name='idx' filepath='array.c' line='372' column='1'/>
+      <return type-id='type-id-32'/>
+    </function-decl>
+    <function-decl name='heim_array_set_value' mangled-name='heim_array_set_value' filepath='array.c' line='390' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_set_value@@HEIMDAL_BASE_1.0' hash='7fbfab36dc6241ec'>
+      <parameter type-id='type-id-20' name='array' filepath='array.c' line='390' column='1'/>
+      <parameter type-id='type-id-4' name='idx' filepath='array.c' line='390' column='1'/>
+      <parameter type-id='type-id-32' name='value' filepath='array.c' line='390' column='1'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_array_delete_value' mangled-name='heim_array_delete_value' filepath='array.c' line='406' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_delete_value@@HEIMDAL_BASE_1.0' hash='7fbfab36dc6241ec'>
+      <parameter type-id='type-id-20' name='array' filepath='array.c' line='406' column='1'/>
+      <parameter type-id='type-id-4' name='idx' filepath='array.c' line='406' column='1'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_array_filter_f' mangled-name='heim_array_filter_f' filepath='array.c' line='442' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_array_filter_f@@HEIMDAL_BASE_1.0' hash='96bff945dd9d17d4'>
+      <parameter type-id='type-id-20' name='array' filepath='array.c' line='442' column='1'/>
+      <parameter type-id='type-id-45' name='ctx' filepath='array.c' line='442' column='1'/>
+      <parameter type-id='type-id-16' name='fn' filepath='array.c' line='442' column='1'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-32'/>
+    <function-decl name='realloc' filepath='stdlib.h' line='683' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='realloc' hash='e0055d99adb0e173'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-45'/>
+    </function-decl>
+    <function-decl name='free' filepath='stdlib.h' line='687' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='free' hash='7f32ffea222edbe7'>
+      <parameter type-id='type-id-45'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='memmove' filepath='string.h' line='47' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='memmove' hash='e0055d99adb0e173'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-45'/>
+    </function-decl>
+    <pointer-type-def type-id='type-id-44' id='type-id-45'/>
+    <function-type size-in-bits='64' hash='7f32ffea222edbe7' id='type-id-31'>
+      <parameter type-id='type-id-45'/>
+      <return type-id='type-id-32'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='7f32ffea222edbe7' id='type-id-33'>
+      <parameter type-id='type-id-45'/>
+      <return type-id='type-id-42'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='388da3fa973fde78' id='type-id-34'>
+      <parameter type-id='type-id-32'/>
+      <parameter type-id='type-id-45'/>
+      <return type-id='type-id-2'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='388da3fa973fde78' id='type-id-35'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-45'/>
+      <return type-id='type-id-2'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='e0055d99adb0e173' id='type-id-37'>
+      <parameter type-id='type-id-45'/>
+      <return type-id='type-id-29'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='c0e4f5f42afc96e0' id='type-id-38'>
+      <parameter type-id='type-id-32'/>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-36'/>
+      <return type-id='type-id-44'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='7f32ffea222edbe7' id='type-id-39'>
+      <parameter type-id='type-id-45'/>
+      <return type-id='type-id-44'/>
+    </function-type>
+  </abi-instr>
+  <abi-instr address-size='64' path='bool.c' language='LANG_C11'>
+    <function-decl name='heim_bool_create' mangled-name='heim_bool_create' filepath='bool.c' line='50' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_bool_create@@HEIMDAL_BASE_1.0' hash='388da3fa973fde78'>
+      <parameter type-id='type-id-2' name='val' filepath='bool.c' line='50' column='1'/>
+      <return type-id='type-id-46'/>
+    </function-decl>
+    <function-decl name='heim_bool_val' mangled-name='heim_bool_val' filepath='bool.c' line='56' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_bool_val@@HEIMDAL_BASE_1.0' hash='388da3fa973fde78'>
+      <parameter type-id='type-id-46' name='ptr' filepath='bool.c' line='56' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-47'/>
+    <typedef-decl name='heim_bool_t' type-id='type-id-47' filepath='heimbase.h' line='60' column='1' id='type-id-46'/>
+    <var-decl name='_heim_bool_object' type-id='type-id-6' visibility='default' filepath='heimbasepriv.h' line='111' column='1'/>
+  </abi-instr>
+  <abi-instr address-size='64' path='bsearch.c' language='LANG_C11'>
+    <array-type-def dimensions='1' type-id='type-id-48' size-in-bits='192' hash='9904ddbe9e0e1da6' id='type-id-49'>
+      <subrange length='3' lower-bound='0' upper-bound='2' type-id='type-id-29' size-in-bits='64' is-anonymous='yes' hash='30d99d19f0f4b2ea' id='type-id-50'/>
+    </array-type-def>
+    <type-decl name='long int' size-in-bits='64' hash='b119fe0931d2ee10#2' id='type-id-51'/>
+    <class-decl name='bsearch_file_handle' is-struct='yes' visibility='default' size-in-bits='384' filepath='bsearch.c' line='85' column='1' hash='adee063cf2f270a6' id='type-id-52'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='fd' type-id='type-id-2' visibility='default' filepath='bsearch.c' line='86' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='cache' type-id='type-id-53' visibility='default' filepath='bsearch.c' line='87' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='page' type-id='type-id-53' visibility='default' filepath='bsearch.c' line='88' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='file_sz' type-id='type-id-4' visibility='default' filepath='bsearch.c' line='89' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='cache_sz' type-id='type-id-4' visibility='default' filepath='bsearch.c' line='90' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='page_sz' type-id='type-id-4' visibility='default' filepath='bsearch.c' line='91' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='heim_base_data' is-struct='yes' visibility='default' size-in-bits='128' filepath='heimbase.h' line='261' column='1' hash='4a72cb7460d8dd79' id='type-id-54'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='length' type-id='type-id-4' visibility='default' filepath='heimbase.h' line='262' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='data' type-id='type-id-45' visibility='default' filepath='heimbase.h' line='263' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='heim_db_type' is-struct='yes' visibility='default' size-in-bits='896' filepath='heimbase.h' line='307' column='1' hash='15bdef4e05abec36' id='type-id-55'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='version' type-id='type-id-2' visibility='default' filepath='heimbase.h' line='308' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='openf' type-id='type-id-56' visibility='default' filepath='heimbase.h' line='309' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='clonef' type-id='type-id-57' visibility='default' filepath='heimbase.h' line='310' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='closef' type-id='type-id-58' visibility='default' filepath='heimbase.h' line='311' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='lockf' type-id='type-id-59' visibility='default' filepath='heimbase.h' line='312' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='unlockf' type-id='type-id-60' visibility='default' filepath='heimbase.h' line='313' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='384'>
+        <var-decl name='syncf' type-id='type-id-61' visibility='default' filepath='heimbase.h' line='314' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='448'>
+        <var-decl name='beginf' type-id='type-id-62' visibility='default' filepath='heimbase.h' line='315' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='512'>
+        <var-decl name='commitf' type-id='type-id-63' visibility='default' filepath='heimbase.h' line='316' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='576'>
+        <var-decl name='rollbackf' type-id='type-id-64' visibility='default' filepath='heimbase.h' line='317' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='640'>
+        <var-decl name='copyf' type-id='type-id-65' visibility='default' filepath='heimbase.h' line='318' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='704'>
+        <var-decl name='setf' type-id='type-id-66' visibility='default' filepath='heimbase.h' line='319' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='768'>
+        <var-decl name='delf' type-id='type-id-67' visibility='default' filepath='heimbase.h' line='320' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='832'>
+        <var-decl name='iterf' type-id='type-id-68' visibility='default' filepath='heimbase.h' line='321' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='stat' is-struct='yes' visibility='default' size-in-bits='1152' filepath='struct_stat.h' line='26' column='1' hash='4f24305487cf2e09' id='type-id-69'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='st_dev' type-id='type-id-70' visibility='default' filepath='struct_stat.h' line='31' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='st_ino' type-id='type-id-71' visibility='default' filepath='struct_stat.h' line='36' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='st_nlink' type-id='type-id-72' visibility='default' filepath='struct_stat.h' line='44' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='st_mode' type-id='type-id-73' visibility='default' filepath='struct_stat.h' line='45' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='224'>
+        <var-decl name='st_uid' type-id='type-id-74' visibility='default' filepath='struct_stat.h' line='47' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='st_gid' type-id='type-id-75' visibility='default' filepath='struct_stat.h' line='48' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='288'>
+        <var-decl name='__pad0' type-id='type-id-2' visibility='default' filepath='struct_stat.h' line='50' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='st_rdev' type-id='type-id-70' visibility='default' filepath='struct_stat.h' line='52' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='384'>
+        <var-decl name='st_size' type-id='type-id-76' visibility='default' filepath='struct_stat.h' line='57' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='448'>
+        <var-decl name='st_blksize' type-id='type-id-77' visibility='default' filepath='struct_stat.h' line='61' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='512'>
+        <var-decl name='st_blocks' type-id='type-id-78' visibility='default' filepath='struct_stat.h' line='63' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='576'>
+        <var-decl name='st_atim' type-id='type-id-79' visibility='default' filepath='struct_stat.h' line='74' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='704'>
+        <var-decl name='st_mtim' type-id='type-id-79' visibility='default' filepath='struct_stat.h' line='75' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='832'>
+        <var-decl name='st_ctim' type-id='type-id-79' visibility='default' filepath='struct_stat.h' line='76' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='960'>
+        <var-decl name='__glibc_reserved' type-id='type-id-49' visibility='default' filepath='struct_stat.h' line='89' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='timespec' is-struct='yes' visibility='default' size-in-bits='128' filepath='struct_timespec.h' line='11' column='1' hash='7451f9a3207df4f1' id='type-id-79'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='tv_sec' type-id='type-id-80' visibility='default' filepath='struct_timespec.h' line='16' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='tv_nsec' type-id='type-id-48' visibility='default' filepath='struct_timespec.h' line='21' column='1'/>
+      </data-member>
+    </class-decl>
+    <typedef-decl name='__blkcnt_t' type-id='type-id-51' size-in-bits='64' filepath='types.h' line='180' column='1' hash='b119fe0931d2ee10' id='type-id-78'/>
+    <typedef-decl name='__blksize_t' type-id='type-id-51' size-in-bits='64' filepath='types.h' line='175' column='1' hash='b119fe0931d2ee10' id='type-id-77'/>
+    <typedef-decl name='__dev_t' type-id='type-id-29' size-in-bits='64' filepath='types.h' line='145' column='1' hash='8fdc5eea2983a729' id='type-id-70'/>
+    <typedef-decl name='__gid_t' type-id='type-id-21' size-in-bits='32' filepath='types.h' line='147' column='1' hash='e66b43f97c38e87a' id='type-id-75'/>
+    <typedef-decl name='__ino_t' type-id='type-id-29' size-in-bits='64' filepath='types.h' line='148' column='1' hash='8fdc5eea2983a729' id='type-id-71'/>
+    <typedef-decl name='__mode_t' type-id='type-id-21' size-in-bits='32' filepath='types.h' line='150' column='1' hash='e66b43f97c38e87a' id='type-id-73'/>
+    <typedef-decl name='__nlink_t' type-id='type-id-29' size-in-bits='64' filepath='types.h' line='151' column='1' hash='8fdc5eea2983a729' id='type-id-72'/>
+    <typedef-decl name='__off_t' type-id='type-id-51' size-in-bits='64' filepath='types.h' line='152' column='1' hash='b119fe0931d2ee10' id='type-id-76'/>
+    <typedef-decl name='__ssize_t' type-id='type-id-51' size-in-bits='64' filepath='types.h' line='194' column='1' hash='b119fe0931d2ee10' id='type-id-81'/>
+    <typedef-decl name='__syscall_slong_t' type-id='type-id-51' size-in-bits='64' filepath='types.h' line='197' column='1' hash='b119fe0931d2ee10' id='type-id-48'/>
+    <typedef-decl name='__time_t' type-id='type-id-51' size-in-bits='64' filepath='types.h' line='160' column='1' hash='b119fe0931d2ee10' id='type-id-80'/>
+    <typedef-decl name='__uid_t' type-id='type-id-21' size-in-bits='32' filepath='types.h' line='146' column='1' hash='e66b43f97c38e87a' id='type-id-74'/>
+    <typedef-decl name='bsearch_file_handle' type-id='type-id-82' size-in-bits='64' filepath='heimbase.h' line='410' column='1' hash='395052c53462a4df' id='type-id-83'/>
+    <typedef-decl name='heim_data_t' type-id='type-id-84' size-in-bits='64' filepath='heimbase.h' line='268' column='1' hash='a27df2988ee5d5b4' id='type-id-85'/>
+    <typedef-decl name='heim_db_iterator_f_t' type-id='type-id-86' size-in-bits='64' filepath='heimbase.h' line='285' column='1' hash='fd7a63c0c6c822c4' id='type-id-87'/>
+    <typedef-decl name='heim_db_plug_begin_f_t' type-id='type-id-88' size-in-bits='64' filepath='heimbase.h' line='294' column='1' hash='fd7a63c0c6c822c4' id='type-id-62'/>
+    <typedef-decl name='heim_db_plug_clone_f_t' type-id='type-id-89' size-in-bits='64' filepath='heimbase.h' line='289' column='1' hash='fd7a63c0c6c822c4' id='type-id-57'/>
+    <typedef-decl name='heim_db_plug_close_f_t' type-id='type-id-90' size-in-bits='64' filepath='heimbase.h' line='290' column='1' hash='fd7a63c0c6c822c4' id='type-id-58'/>
+    <typedef-decl name='heim_db_plug_commit_f_t' type-id='type-id-90' size-in-bits='64' filepath='heimbase.h' line='295' column='1' hash='fd7a63c0c6c822c4' id='type-id-63'/>
+    <typedef-decl name='heim_db_plug_copy_value_f_t' type-id='type-id-91' size-in-bits='64' filepath='heimbase.h' line='297' column='1' hash='fd7a63c0c6c822c4' id='type-id-65'/>
+    <typedef-decl name='heim_db_plug_del_key_f_t' type-id='type-id-92' size-in-bits='64' filepath='heimbase.h' line='302' column='1' hash='fd7a63c0c6c822c4' id='type-id-67'/>
+    <typedef-decl name='heim_db_plug_iter_f_t' type-id='type-id-93' size-in-bits='64' filepath='heimbase.h' line='304' column='1' hash='fd7a63c0c6c822c4' id='type-id-68'/>
+    <typedef-decl name='heim_db_plug_lock_f_t' type-id='type-id-88' size-in-bits='64' filepath='heimbase.h' line='291' column='1' hash='fd7a63c0c6c822c4' id='type-id-59'/>
+    <typedef-decl name='heim_db_plug_open_f_t' type-id='type-id-94' size-in-bits='64' filepath='heimbase.h' line='287' column='1' hash='fd7a63c0c6c822c4' id='type-id-56'/>
+    <typedef-decl name='heim_db_plug_rollback_f_t' type-id='type-id-90' size-in-bits='64' filepath='heimbase.h' line='296' column='1' hash='fd7a63c0c6c822c4' id='type-id-64'/>
+    <typedef-decl name='heim_db_plug_set_value_f_t' type-id='type-id-95' size-in-bits='64' filepath='heimbase.h' line='300' column='1' hash='fd7a63c0c6c822c4' id='type-id-66'/>
+    <typedef-decl name='heim_db_plug_sync_f_t' type-id='type-id-90' size-in-bits='64' filepath='heimbase.h' line='293' column='1' hash='fd7a63c0c6c822c4' id='type-id-61'/>
+    <typedef-decl name='heim_db_plug_unlock_f_t' type-id='type-id-90' size-in-bits='64' filepath='heimbase.h' line='292' column='1' hash='fd7a63c0c6c822c4' id='type-id-60'/>
+    <typedef-decl name='heim_dict_t' type-id='type-id-96' size-in-bits='64' filepath='heimbase.h' line='176' column='1' hash='f4c15e74a676b7c1' id='type-id-97'/>
+    <typedef-decl name='heim_error_t' type-id='type-id-98' size-in-bits='64' filepath='heimbase.h' line='218' column='1' hash='cdf62f809829a43c' id='type-id-99'/>
+    <type-decl name='unsigned short int' size-in-bits='16' hash='d7723bb93a30b11d#3' id='type-id-100'/>
+    <pointer-type-def type-id='type-id-52' size-in-bits='64' hash='395052c53462a4df' id='type-id-82'/>
+    <pointer-type-def type-id='type-id-83' size-in-bits='64' hash='9d9792c26612afe2#2' id='type-id-101'/>
+    <pointer-type-def type-id='type-id-1' size-in-bits='64' hash='e533f42d1dd4942c' id='type-id-53'/>
+    <pointer-type-def type-id='type-id-53' size-in-bits='64' hash='a93039fe023ed77b' id='type-id-102'/>
+    <qualified-type-def type-id='type-id-100' const='yes' hash='8f60dd2f0b8834b6' id='type-id-103'/>
+    <pointer-type-def type-id='type-id-103' size-in-bits='64' hash='7da4750c0c4a7ea5' id='type-id-104'/>
+    <pointer-type-def type-id='type-id-104' size-in-bits='64' hash='fd89690d624a6590' id='type-id-105'/>
+    <pointer-type-def type-id='type-id-54' size-in-bits='64' hash='a27df2988ee5d5b4' id='type-id-84'/>
+    <pointer-type-def type-id='type-id-106' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-91'/>
+    <pointer-type-def type-id='type-id-107' size-in-bits='64' hash='f4c15e74a676b7c1' id='type-id-96'/>
+    <pointer-type-def type-id='type-id-108' size-in-bits='64' hash='cdf62f809829a43c' id='type-id-98'/>
+    <pointer-type-def type-id='type-id-99' size-in-bits='64' hash='f90d48d7790f07df' id='type-id-109'/>
+    <pointer-type-def type-id='type-id-110' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-94'/>
+    <pointer-type-def type-id='type-id-111' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-90'/>
+    <pointer-type-def type-id='type-id-112' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-95'/>
+    <pointer-type-def type-id='type-id-113' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-92'/>
+    <pointer-type-def type-id='type-id-114' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-88'/>
+    <pointer-type-def type-id='type-id-115' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-89'/>
+    <pointer-type-def type-id='type-id-4' size-in-bits='64' hash='54c1e9f81ec7a1db' id='type-id-116'/>
+    <pointer-type-def type-id='type-id-69' size-in-bits='64' hash='925ad1338878bb49' id='type-id-117'/>
+    <pointer-type-def type-id='type-id-118' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-86'/>
+    <pointer-type-def type-id='type-id-119' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-93'/>
+    <pointer-type-def type-id='type-id-45' size-in-bits='64' hash='473a9667a2856e32' id='type-id-120'/>
+    <pointer-type-def type-id='type-id-121' size-in-bits='64' id='type-id-122'/>
+    <class-decl name='heim_dict_data' is-struct='yes' visibility='default' size-in-bits='128' filepath='dict.c' line='45' column='1' hash='51c380ce7ddcc78a' id='type-id-107'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='size' type-id='type-id-4' visibility='default' filepath='dict.c' line='46' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='tab' type-id='type-id-123' visibility='default' filepath='dict.c' line='47' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='heim_error' is-struct='yes' visibility='default' size-in-bits='192' filepath='error.c' line='38' column='1' hash='d60860588962ac54' id='type-id-108'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='error_code' type-id='type-id-2' visibility='default' filepath='error.c' line='39' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='msg' type-id='type-id-124' visibility='default' filepath='error.c' line='40' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='next' type-id='type-id-98' visibility='default' filepath='error.c' line='41' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='heim_string_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-121'/>
+    <function-decl name='_bsearch_text' mangled-name='_bsearch_text' filepath='bsearch.c' line='323' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_bsearch_text@@HEIMDAL_BASE_1.0' hash='365d1a7f2eed15c1'>
+      <parameter type-id='type-id-8' name='buf' filepath='bsearch.c' line='323' column='1'/>
+      <parameter type-id='type-id-4' name='buf_sz' filepath='bsearch.c' line='323' column='1'/>
+      <parameter type-id='type-id-8' name='key' filepath='bsearch.c' line='323' column='1'/>
+      <parameter type-id='type-id-102' name='value' filepath='bsearch.c' line='324' column='1'/>
+      <parameter type-id='type-id-116' name='location' filepath='bsearch.c' line='324' column='1'/>
+      <parameter type-id='type-id-116' name='loops' filepath='bsearch.c' line='324' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='_bsearch_file_open' mangled-name='_bsearch_file_open' filepath='bsearch.c' line='351' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_bsearch_file_open@@HEIMDAL_BASE_1.0' hash='013e9e2a528cfa33'>
+      <parameter type-id='type-id-8' name='fname' filepath='bsearch.c' line='351' column='1'/>
+      <parameter type-id='type-id-4' name='max_sz' filepath='bsearch.c' line='351' column='1'/>
+      <parameter type-id='type-id-4' name='page_sz' filepath='bsearch.c' line='351' column='1'/>
+      <parameter type-id='type-id-101' name='bfh' filepath='bsearch.c' line='352' column='1'/>
+      <parameter type-id='type-id-116' name='reads' filepath='bsearch.c' line='352' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='_bsearch_file_info' mangled-name='_bsearch_file_info' filepath='bsearch.c' line='482' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_bsearch_file_info@@HEIMDAL_BASE_1.0' hash='fba0b0aa283abca3'>
+      <parameter type-id='type-id-83' name='bfh' filepath='bsearch.c' line='482' column='1'/>
+      <parameter type-id='type-id-116' name='page_sz' filepath='bsearch.c' line='483' column='1'/>
+      <parameter type-id='type-id-116' name='max_sz' filepath='bsearch.c' line='483' column='1'/>
+      <parameter type-id='type-id-36' name='blockwise' filepath='bsearch.c' line='483' column='1'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='_bsearch_file_close' mangled-name='_bsearch_file_close' filepath='bsearch.c' line='501' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_bsearch_file_close@@HEIMDAL_BASE_1.0' hash='d2b1fa123b99ad40'>
+      <parameter type-id='type-id-101' name='bfh' filepath='bsearch.c' line='501' column='1'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='_bsearch_file' mangled-name='_bsearch_file' filepath='bsearch.c' line='693' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_bsearch_file@@HEIMDAL_BASE_1.0' hash='eabe31b694d5117b'>
+      <parameter type-id='type-id-83' name='bfh' filepath='bsearch.c' line='693' column='1'/>
+      <parameter type-id='type-id-8' name='key' filepath='bsearch.c' line='693' column='1'/>
+      <parameter type-id='type-id-102' name='value' filepath='bsearch.c' line='694' column='1'/>
+      <parameter type-id='type-id-116' name='location' filepath='bsearch.c' line='694' column='1'/>
+      <parameter type-id='type-id-116' name='loops' filepath='bsearch.c' line='694' column='1'/>
+      <parameter type-id='type-id-116' name='reads' filepath='bsearch.c' line='694' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <var-decl name='heim_sorted_text_file_dbtype' type-id='type-id-55' mangled-name='heim_sorted_text_file_dbtype' visibility='default' filepath='bsearch.c' line='885' column='1' elf-symbol-id='heim_sorted_text_file_dbtype@@HEIMDAL_BASE_1.0'/>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-125'/>
+    <typedef-decl name='heim_string_t' type-id='type-id-122' size-in-bits='64' filepath='heimbase.h' line='199' column='1' id='type-id-126'/>
+    <function-decl name='__ctype_b_loc' filepath='ctype.h' line='79' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__ctype_b_loc@@GLIBC_2.3' hash='2d54aef0745cb1f9'>
+      <return type-id='type-id-105'/>
+    </function-decl>
+    <function-decl name='__errno_location' filepath='errno.h' line='37' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__errno_location' hash='c0e4f5f42afc96e0'>
+      <return type-id='type-id-36'/>
+    </function-decl>
+    <function-decl name='open' filepath='fcntl.h' line='209' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='open' hash='1d81aff51c388187'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-2'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='malloc' filepath='stdlib.h' line='672' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='malloc' hash='e0055d99adb0e173'>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-45'/>
+    </function-decl>
+    <function-decl name='calloc' filepath='stdlib.h' line='675' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='calloc' hash='91495cdf6321a116'>
+      <parameter type-id='type-id-29'/>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-45'/>
+    </function-decl>
+    <function-decl name='memcpy' filepath='string.h' line='43' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='memcpy' hash='e0055d99adb0e173'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-45'/>
+    </function-decl>
+    <function-decl name='strcmp' filepath='string.h' line='156' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='strcmp' hash='5f03b5b551b5a51f'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-8'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='strncmp' filepath='string.h' line='159' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='strncmp' hash='2f99ec08ee54ebb4'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='strrchr' filepath='string.h' line='273' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='strrchr' hash='1b0d39e45ce45198'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-2'/>
+      <return type-id='type-id-53'/>
+    </function-decl>
+    <function-decl name='strlen' filepath='string.h' line='407' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='strlen' hash='ed7b6a29124427dd'>
+      <parameter type-id='type-id-8'/>
+      <return type-id='type-id-4'/>
+    </function-decl>
+    <function-decl name='strerror' filepath='string.h' line='419' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='strerror' hash='64137bddd2d8bd37'>
+      <parameter type-id='type-id-2'/>
+      <return type-id='type-id-53'/>
+    </function-decl>
+    <function-decl name='lseek' filepath='unistd.h' line='339' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='lseek' hash='e90b592389225111'>
+      <parameter type-id='type-id-2'/>
+      <parameter type-id='type-id-76'/>
+      <parameter type-id='type-id-2'/>
+      <return type-id='type-id-76'/>
+    </function-decl>
+    <function-decl name='close' filepath='unistd.h' line='358' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='close' hash='d628501fd2223339'>
+      <parameter type-id='type-id-2'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='read' filepath='unistd.h' line='371' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='read' hash='e1f135b405ab837f'>
+      <parameter type-id='type-id-2'/>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-4'/>
+      <return type-id='type-id-127'/>
+    </function-decl>
+    <function-decl name='fstat' filepath='stat.h' line='210' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='fstat' hash='5227d00433989f9c'>
+      <parameter type-id='type-id-2'/>
+      <parameter type-id='type-id-117'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-type size-in-bits='64' hash='a73a6f8fb03663c3' id='type-id-106'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-126'/>
+      <parameter type-id='type-id-85'/>
+      <parameter type-id='type-id-109'/>
+      <return type-id='type-id-85'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='5bd45275661708e5' id='type-id-110'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-97'/>
+      <parameter type-id='type-id-120'/>
+      <parameter type-id='type-id-109'/>
+      <return type-id='type-id-2'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='1c2d8e110fd57bbf' id='type-id-111'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-109'/>
+      <return type-id='type-id-2'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='180d55a6cce030f3' id='type-id-112'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-126'/>
+      <parameter type-id='type-id-85'/>
+      <parameter type-id='type-id-85'/>
+      <parameter type-id='type-id-109'/>
+      <return type-id='type-id-2'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='a1edfde6ef289491' id='type-id-113'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-126'/>
+      <parameter type-id='type-id-85'/>
+      <parameter type-id='type-id-109'/>
+      <return type-id='type-id-2'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='4e934c3a8ef66510' id='type-id-114'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-2'/>
+      <parameter type-id='type-id-109'/>
+      <return type-id='type-id-2'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='2016139b2d4492df' id='type-id-115'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-120'/>
+      <parameter type-id='type-id-109'/>
+      <return type-id='type-id-2'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='0df32cb3c8bf2823' id='type-id-118'>
+      <parameter type-id='type-id-85'/>
+      <parameter type-id='type-id-85'/>
+      <parameter type-id='type-id-45'/>
+      <return type-id='type-id-44'/>
+    </function-type>
+    <function-type size-in-bits='64' hash='8efb574ffee26b0a' id='type-id-119'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-126'/>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-87'/>
+      <parameter type-id='type-id-109'/>
+      <return type-id='type-id-44'/>
+    </function-type>
+  </abi-instr>
+  <abi-instr address-size='64' path='data.c' language='LANG_C11'>
+    <typedef-decl name='heim_data_free_f_t' type-id='type-id-24' size-in-bits='64' filepath='heimbase.h' line='269' column='1' hash='fd7a63c0c6c822c4' id='type-id-128'/>
+    <typedef-decl name='heim_octet_string' type-id='type-id-54' size-in-bits='128' filepath='heimbase.h' line='265' column='1' id='type-id-129'/>
+    <qualified-type-def type-id='type-id-129' const='yes' hash='87ccc9d9dc94fe4b' id='type-id-130'/>
+    <pointer-type-def type-id='type-id-130' size-in-bits='64' hash='9b40f0398b37b0cc' id='type-id-131'/>
+    <function-decl name='heim_data_create' mangled-name='heim_data_create' filepath='data.c' line='96' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_data_create@@HEIMDAL_BASE_1.0' hash='152ee8631419a1c0'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-4'/>
+      <return type-id='type-id-85'/>
+    </function-decl>
+    <function-decl name='heim_data_ref_create' mangled-name='heim_data_ref_create' filepath='data.c' line='110' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_data_ref_create@@HEIMDAL_BASE_1.0' hash='f775a6e0ddb7fe7d'>
+      <parameter type-id='type-id-45' name='data' filepath='data.c' line='110' column='1'/>
+      <parameter type-id='type-id-4' name='length' filepath='data.c' line='110' column='1'/>
+      <parameter type-id='type-id-128' name='dealloc' filepath='data.c' line='111' column='1'/>
+      <return type-id='type-id-85'/>
+    </function-decl>
+    <function-decl name='heim_data_get_type_id' mangled-name='heim_data_get_type_id' filepath='data.c' line='134' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_data_get_type_id@@HEIMDAL_BASE_1.0' hash='2bb88322482ae81c'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='heim_data_get_data' mangled-name='heim_data_get_data' filepath='data.c' line='148' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_data_get_data@@HEIMDAL_BASE_1.0' hash='87a11150c0b2eed3'>
+      <parameter type-id='type-id-85' name='data' filepath='data.c' line='148' column='1'/>
+      <return type-id='type-id-131'/>
+    </function-decl>
+    <function-decl name='heim_data_get_ptr' mangled-name='heim_data_get_ptr' filepath='data.c' line='155' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_data_get_ptr@@HEIMDAL_BASE_1.0' hash='90fae21d138cf6dc'>
+      <parameter type-id='type-id-85'/>
+      <return type-id='type-id-45'/>
+    </function-decl>
+    <function-decl name='heim_data_get_length' mangled-name='heim_data_get_length' filepath='data.c' line='161' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_data_get_length@@HEIMDAL_BASE_1.0' hash='27bf9199e11db21c'>
+      <parameter type-id='type-id-85' name='data' filepath='data.c' line='161' column='1'/>
+      <return type-id='type-id-4'/>
+    </function-decl>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-132'/>
+    <function-decl name='memcmp' filepath='string.h' line='64' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='memcmp' hash='b6a97d07f8261bc0'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='db.c' language='LANG_C11'>
+    <array-type-def dimensions='1' type-id='type-id-1' size-in-bits='320' hash='e7f9696e246a3049' id='type-id-133'>
+      <subrange length='40' lower-bound='0' upper-bound='39' type-id='type-id-29' size-in-bits='64' is-anonymous='yes' hash='6281bd35fbce8744' id='type-id-134'/>
+    </array-type-def>
+    <enum-decl name='heim_json_flags' size-in-bits='32' alignment-in-bits='32' filepath='heimbase.h' line='377' column='1' hash='1be6c8e28ff54116' id='type-id-135'>
+      <underlying-type type-id='type-id-136'/>
+      <enumerator name='HEIM_JSON_F_NO_C_NULL' value='1'/>
+      <enumerator name='HEIM_JSON_F_STRICT_STRINGS' value='2'/>
+      <enumerator name='HEIM_JSON_F_NO_DATA' value='4'/>
+      <enumerator name='HEIM_JSON_F_NO_DATA_DICT' value='8'/>
+      <enumerator name='HEIM_JSON_F_STRICT_DICT' value='16'/>
+      <enumerator name='HEIM_JSON_F_STRICT' value='31'/>
+      <enumerator name='HEIM_JSON_F_CNULL2JSNULL' value='32'/>
+      <enumerator name='HEIM_JSON_F_TRY_DECODE_DATA' value='64'/>
+      <enumerator name='HEIM_JSON_F_ONE_LINE' value='128'/>
+    </enum-decl>
+    <type-decl name='short int' size-in-bits='16' hash='6c2352eccdcd3eea#3' id='type-id-137'/>
+    <class-decl name='__pthread_internal_list' is-struct='yes' visibility='default' size-in-bits='128' filepath='thread-shared-types.h' line='51' column='1' hash='5bcfb7f1ab39fa47' id='type-id-138'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='__prev' type-id='type-id-139' visibility='default' filepath='thread-shared-types.h' line='53' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='__next' type-id='type-id-139' visibility='default' filepath='thread-shared-types.h' line='54' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='__pthread_mutex_s' is-struct='yes' visibility='default' size-in-bits='320' filepath='struct_mutex.h' line='22' column='1' hash='765d7e157ef2ec37' id='type-id-140'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='__lock' type-id='type-id-2' visibility='default' filepath='struct_mutex.h' line='24' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='__count' type-id='type-id-21' visibility='default' filepath='struct_mutex.h' line='25' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='__owner' type-id='type-id-2' visibility='default' filepath='struct_mutex.h' line='26' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='96'>
+        <var-decl name='__nusers' type-id='type-id-21' visibility='default' filepath='struct_mutex.h' line='28' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='__kind' type-id='type-id-2' visibility='default' filepath='struct_mutex.h' line='32' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='160'>
+        <var-decl name='__spins' type-id='type-id-137' visibility='default' filepath='struct_mutex.h' line='34' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='176'>
+        <var-decl name='__elision' type-id='type-id-137' visibility='default' filepath='struct_mutex.h' line='35' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='__list' type-id='type-id-141' visibility='default' filepath='struct_mutex.h' line='36' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='db_plugin' is-struct='yes' visibility='default' size-in-bits='960' filepath='db.c' line='105' column='1' hash='3932d5afcec85584' id='type-id-142'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='name' type-id='type-id-143' visibility='default' filepath='db.c' line='106' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='openf' type-id='type-id-56' visibility='default' filepath='db.c' line='107' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='clonef' type-id='type-id-57' visibility='default' filepath='db.c' line='108' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='closef' type-id='type-id-58' visibility='default' filepath='db.c' line='109' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='lockf' type-id='type-id-59' visibility='default' filepath='db.c' line='110' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='unlockf' type-id='type-id-60' visibility='default' filepath='db.c' line='111' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='384'>
+        <var-decl name='syncf' type-id='type-id-61' visibility='default' filepath='db.c' line='112' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='448'>
+        <var-decl name='beginf' type-id='type-id-62' visibility='default' filepath='db.c' line='113' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='512'>
+        <var-decl name='commitf' type-id='type-id-63' visibility='default' filepath='db.c' line='114' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='576'>
+        <var-decl name='rollbackf' type-id='type-id-64' visibility='default' filepath='db.c' line='115' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='640'>
+        <var-decl name='copyf' type-id='type-id-65' visibility='default' filepath='db.c' line='116' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='704'>
+        <var-decl name='setf' type-id='type-id-66' visibility='default' filepath='db.c' line='117' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='768'>
+        <var-decl name='delf' type-id='type-id-67' visibility='default' filepath='db.c' line='118' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='832'>
+        <var-decl name='iterf' type-id='type-id-68' visibility='default' filepath='db.c' line='119' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='896'>
+        <var-decl name='data' type-id='type-id-45' visibility='default' filepath='db.c' line='120' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='heim_db_data' is-struct='yes' visibility='default' size-in-bits='704' filepath='db.c' line='123' column='1' hash='e265a34ee0d22042' id='type-id-144'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='plug' type-id='type-id-145' visibility='default' filepath='db.c' line='124' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='dbtype' type-id='type-id-143' visibility='default' filepath='db.c' line='125' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='dbname' type-id='type-id-143' visibility='default' filepath='db.c' line='126' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='options' type-id='type-id-97' visibility='default' filepath='db.c' line='127' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='db_data' type-id='type-id-45' visibility='default' filepath='db.c' line='128' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='to_release' type-id='type-id-85' visibility='default' filepath='db.c' line='129' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='384'>
+        <var-decl name='error' type-id='type-id-99' visibility='default' filepath='db.c' line='130' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='448'>
+        <var-decl name='ret' type-id='type-id-2' visibility='default' filepath='db.c' line='131' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='480'>
+        <var-decl name='in_transaction' type-id='type-id-21' visibility='default' filepath='db.c' line='132' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='481'>
+        <var-decl name='ro' type-id='type-id-21' visibility='default' filepath='db.c' line='133' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='482'>
+        <var-decl name='ro_tx' type-id='type-id-21' visibility='default' filepath='db.c' line='134' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='512'>
+        <var-decl name='set_keys' type-id='type-id-97' visibility='default' filepath='db.c' line='135' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='576'>
+        <var-decl name='del_keys' type-id='type-id-97' visibility='default' filepath='db.c' line='136' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='640'>
+        <var-decl name='current_table' type-id='type-id-143' visibility='default' filepath='db.c' line='137' column='1'/>
+      </data-member>
+    </class-decl>
+    <typedef-decl name='__pthread_list_t' type-id='type-id-138' size-in-bits='128' filepath='thread-shared-types.h' line='55' column='1' id='type-id-141'/>
+    <typedef-decl name='db_plugin' type-id='type-id-146' size-in-bits='64' filepath='db.c' line='121' column='1' hash='cbd1fae110d04a84' id='type-id-145'/>
+    <typedef-decl name='heim_base_once_t' type-id='type-id-147' size-in-bits='32' filepath='heimbase.h' line='69' column='1' hash='09d17c08f594edc7' id='type-id-148'/>
+    <typedef-decl name='heim_db_t' type-id='type-id-149' size-in-bits='64' filepath='heimbase.h' line='283' column='1' hash='23d62deb70c52c81' id='type-id-150'/>
+    <typedef-decl name='heim_dict_iterator_f_t' type-id='type-id-151' size-in-bits='64' filepath='heimbase.h' line='181' column='1' hash='fd7a63c0c6c822c4' id='type-id-152'/>
+    <typedef-decl name='heim_json_flags_t' type-id='type-id-135' size-in-bits='32' alignment-in-bits='32' filepath='heimbase.h' line='387' column='1' hash='1be6c8e28ff54116' id='type-id-153'/>
+    <typedef-decl name='heim_string_free_f_t' type-id='type-id-24' size-in-bits='64' filepath='heimbase.h' line='200' column='1' hash='fd7a63c0c6c822c4' id='type-id-154'/>
+    <typedef-decl name='pthread_mutex_t' type-id='type-id-155' size-in-bits='320' filepath='pthreadtypes.h' line='72' column='1' id='type-id-156'/>
+    <typedef-decl name='pthread_once_t' type-id='type-id-2' size-in-bits='32' filepath='pthreadtypes.h' line='53' column='1' hash='09d17c08f594edc7' id='type-id-147'/>
+    <typedef-decl name='ssize_t' type-id='type-id-81' size-in-bits='64' filepath='stdio.h' line='78' column='1' hash='b119fe0931d2ee10' id='type-id-127'/>
+    <typedef-decl name='time_t' type-id='type-id-80' size-in-bits='64' filepath='time_t.h' line='10' column='1' hash='b119fe0931d2ee10' id='type-id-157'/>
+    <union-decl name='pthread_mutex_t' naming-typedef-id='type-id-156' visibility='default' size-in-bits='320' filepath='pthreadtypes.h' line='67' column='1' hash='8e3e5ddbcaed875f' id='type-id-155'>
+      <data-member access='public'>
+        <var-decl name='__data' type-id='type-id-140' visibility='default' filepath='pthreadtypes.h' line='69' column='1'/>
+      </data-member>
+      <data-member access='public'>
+        <var-decl name='__size' type-id='type-id-133' visibility='default' filepath='pthreadtypes.h' line='70' column='1'/>
+      </data-member>
+      <data-member access='public'>
+        <var-decl name='__align' type-id='type-id-51' visibility='default' filepath='pthreadtypes.h' line='71' column='1'/>
+      </data-member>
+    </union-decl>
+    <type-decl name='unnamed-enum-underlying-type-32' size-in-bits='32' alignment-in-bits='32' is-anonymous='yes' hash='5181a58e665b3619' id='type-id-136'/>
+    <pointer-type-def type-id='type-id-138' size-in-bits='64' hash='b83eb2deac70d470' id='type-id-139'/>
+    <qualified-type-def type-id='type-id-8' restrict='yes' hash='b7d5472019e79b5f' id='type-id-158'/>
+    <pointer-type-def type-id='type-id-142' size-in-bits='64' hash='cbd1fae110d04a84' id='type-id-146'/>
+    <pointer-type-def type-id='type-id-148' size-in-bits='64' hash='36aa58833b60b80e' id='type-id-159'/>
+    <pointer-type-def type-id='type-id-144' size-in-bits='64' hash='23d62deb70c52c81' id='type-id-149'/>
+    <pointer-type-def type-id='type-id-55' size-in-bits='64' hash='e3dbd9c713e07bac' id='type-id-160'/>
+    <pointer-type-def type-id='type-id-156' size-in-bits='64' hash='8f341987365c3f23' id='type-id-161'/>
+    <qualified-type-def type-id='type-id-117' restrict='yes' hash='625d51349de39d13' id='type-id-162'/>
+    <pointer-type-def type-id='type-id-157' size-in-bits='64' hash='784a05f2083b5c30' id='type-id-163'/>
+    <pointer-type-def type-id='type-id-164' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-151'/>
+    <pointer-type-def type-id='type-id-165' size-in-bits='64' id='type-id-166'/>
+    <pointer-type-def type-id='type-id-167' size-in-bits='64' id='type-id-168'/>
+    <class-decl name='heim_number_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-165'/>
+    <class-decl name='heim_string_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-167'/>
+    <function-decl name='heim_db_register' mangled-name='heim_db_register' filepath='db.c' line='185' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_db_register@@HEIMDAL_BASE_1.0' hash='df0b282c2575fbb8'>
+      <parameter type-id='type-id-8' name='dbtype' filepath='db.c' line='185' column='1'/>
+      <parameter type-id='type-id-45' name='data' filepath='db.c' line='186' column='1'/>
+      <parameter type-id='type-id-160' name='plugin' filepath='db.c' line='187' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_db_create' mangled-name='heim_db_create' filepath='db.c' line='316' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_db_create@@HEIMDAL_BASE_1.0' hash='9f32a460bd7ab3a0'>
+      <parameter type-id='type-id-8' name='dbtype' filepath='db.c' line='316' column='1'/>
+      <parameter type-id='type-id-8' name='dbname' filepath='db.c' line='316' column='1'/>
+      <parameter type-id='type-id-97' name='options' filepath='db.c' line='317' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='db.c' line='317' column='1'/>
+      <return type-id='type-id-150'/>
+    </function-decl>
+    <function-decl name='heim_db_clone' mangled-name='heim_db_clone' filepath='db.c' line='440' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_db_clone@@HEIMDAL_BASE_1.0' hash='88b9f4faa164c2e4'>
+      <parameter type-id='type-id-150' name='db' filepath='db.c' line='440' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='db.c' line='440' column='1'/>
+      <return type-id='type-id-150'/>
+    </function-decl>
+    <function-decl name='heim_db_begin' mangled-name='heim_db_begin' filepath='db.c' line='488' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_db_begin@@HEIMDAL_BASE_1.0' hash='425bd24055082a06'>
+      <parameter type-id='type-id-150' name='db' filepath='db.c' line='488' column='1'/>
+      <parameter type-id='type-id-2' name='read_only' filepath='db.c' line='488' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='db.c' line='488' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_db_commit' mangled-name='heim_db_commit' filepath='db.c' line='553' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_db_commit@@HEIMDAL_BASE_1.0' hash='06d1e09245322cd8'>
+      <parameter type-id='type-id-150' name='db' filepath='db.c' line='688' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='db.c' line='688' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_db_rollback' mangled-name='heim_db_rollback' filepath='db.c' line='688' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_db_rollback@@HEIMDAL_BASE_1.0' hash='06d1e09245322cd8'>
+      <parameter type-id='type-id-150' name='db' filepath='db.c' line='688' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='db.c' line='688' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_db_get_type_id' mangled-name='heim_db_get_type_id' filepath='db.c' line='718' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_db_get_type_id@@HEIMDAL_BASE_1.0' hash='2bb88322482ae81c'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='heim_db_copy_value' mangled-name='heim_db_copy_value' filepath='db.c' line='747' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_db_copy_value@@HEIMDAL_BASE_1.0' hash='5dd703a3d85c7aee'>
+      <parameter type-id='type-id-150' name='db' filepath='db.c' line='747' column='1'/>
+      <parameter type-id='type-id-143' name='table' filepath='db.c' line='747' column='1'/>
+      <parameter type-id='type-id-85' name='key' filepath='db.c' line='747' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='db.c' line='748' column='1'/>
+      <return type-id='type-id-85'/>
+    </function-decl>
+    <function-decl name='heim_db_set_value' mangled-name='heim_db_set_value' filepath='db.c' line='801' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_db_set_value@@HEIMDAL_BASE_1.0' hash='8823827f0805bd88'>
+      <parameter type-id='type-id-150' name='db' filepath='db.c' line='801' column='1'/>
+      <parameter type-id='type-id-143' name='table' filepath='db.c' line='801' column='1'/>
+      <parameter type-id='type-id-85' name='key' filepath='db.c' line='802' column='1'/>
+      <parameter type-id='type-id-85' name='value' filepath='db.c' line='802' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='db.c' line='802' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_db_delete_key' mangled-name='heim_db_delete_key' filepath='db.c' line='879' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_db_delete_key@@HEIMDAL_BASE_1.0' hash='38484e0dcd632f47'>
+      <parameter type-id='type-id-150' name='db' filepath='db.c' line='879' column='1'/>
+      <parameter type-id='type-id-143' name='table' filepath='db.c' line='879' column='1'/>
+      <parameter type-id='type-id-85' name='key' filepath='db.c' line='879' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='db.c' line='880' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_db_iterate_f' mangled-name='heim_db_iterate_f' filepath='db.c' line='946' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_db_iterate_f@@HEIMDAL_BASE_1.0' hash='8e57644747f3c412'>
+      <parameter type-id='type-id-150' name='db' filepath='db.c' line='946' column='1'/>
+      <parameter type-id='type-id-143' name='table' filepath='db.c' line='946' column='1'/>
+      <parameter type-id='type-id-45' name='iter_data' filepath='db.c' line='946' column='1'/>
+      <parameter type-id='type-id-87' name='iter_f' filepath='db.c' line='947' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='db.c' line='947' column='1'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-169'/>
+    <typedef-decl name='heim_string_t' type-id='type-id-168' size-in-bits='64' filepath='heimbase.h' line='199' column='1' id='type-id-143'/>
+    <typedef-decl name='heim_number_t' type-id='type-id-166' size-in-bits='64' filepath='heimbase.h' line='358' column='1' id='type-id-170'/>
+    <function-decl name='pthread_mutex_lock' filepath='pthread.h' line='794' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pthread_mutex_lock' hash='0e581935b984ff36'>
+      <parameter type-id='type-id-161'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='pthread_mutex_unlock' filepath='pthread.h' line='835' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pthread_mutex_unlock' hash='0e581935b984ff36'>
+      <parameter type-id='type-id-161'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='rename' filepath='stdio.h' line='160' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='rename' hash='5f03b5b551b5a51f'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-8'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='snprintf' filepath='stdio.h' line='385' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='snprintf' hash='9e970561a213ee08'>
+      <parameter type-id='type-id-53'/>
+      <parameter type-id='type-id-29'/>
+      <parameter type-id='type-id-8'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='strchr' filepath='string.h' line='246' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='strchr' hash='1b0d39e45ce45198'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-2'/>
+      <return type-id='type-id-53'/>
+    </function-decl>
+    <function-decl name='strstr' filepath='string.h' line='350' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='strstr' hash='21babdbcb7a34ebe'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-8'/>
+      <return type-id='type-id-53'/>
+    </function-decl>
+    <function-decl name='strnlen' filepath='string.h' line='413' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='strnlen' hash='e62a7a46b2904b02'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-4'/>
+    </function-decl>
+    <function-decl name='time' filepath='time.h' line='76' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='time' hash='dfbf0d86b5e56f45'>
+      <parameter type-id='type-id-163'/>
+      <return type-id='type-id-157'/>
+    </function-decl>
+    <function-decl name='write' filepath='unistd.h' line='378' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='write' hash='e1f135b405ab837f'>
+      <parameter type-id='type-id-2'/>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-4'/>
+      <return type-id='type-id-127'/>
+    </function-decl>
+    <function-decl name='unlink' filepath='unistd.h' line='858' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='unlink' hash='e9ea91a7eab8302c'>
+      <parameter type-id='type-id-8'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='fsync' filepath='unistd.h' line='989' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='fsync' hash='d628501fd2223339'>
+      <parameter type-id='type-id-2'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='flock' filepath='file.h' line='50' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='flock' hash='a9fd86e6e981c3b5'>
+      <parameter type-id='type-id-2'/>
+      <parameter type-id='type-id-2'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='stat' filepath='stat.h' line='205' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='stat' hash='5ffe6a576201da98'>
+      <parameter type-id='type-id-158'/>
+      <parameter type-id='type-id-162'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-type size-in-bits='64' hash='7f32ffea222edbe7' id='type-id-164'>
+      <parameter type-id='type-id-169'/>
+      <parameter type-id='type-id-169'/>
+      <parameter type-id='type-id-45'/>
+      <return type-id='type-id-44'/>
+    </function-type>
+  </abi-instr>
+  <abi-instr address-size='64' path='dict.c' language='LANG_C11'>
+    <class-decl name='hashentry' is-struct='yes' visibility='default' size-in-bits='256' filepath='dict.c' line='38' column='1' hash='c6b28e0cb850d69b' id='type-id-171'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='prev' type-id='type-id-123' visibility='default' filepath='dict.c' line='39' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='next' type-id='type-id-172' visibility='default' filepath='dict.c' line='40' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='key' type-id='type-id-173' visibility='default' filepath='dict.c' line='41' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='value' type-id='type-id-173' visibility='default' filepath='dict.c' line='42' column='1'/>
+      </data-member>
+    </class-decl>
+    <pointer-type-def type-id='type-id-171' size-in-bits='64' hash='7e17e8a046ca86dc' id='type-id-172'/>
+    <pointer-type-def type-id='type-id-172' size-in-bits='64' hash='d1191f19d1f5e881' id='type-id-123'/>
+    <function-decl name='heim_dict_create' mangled-name='heim_dict_create' filepath='dict.c' line='113' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_dict_create@@HEIMDAL_BASE_1.0' hash='34b8bb528626ba6f'>
+      <parameter type-id='type-id-4'/>
+      <return type-id='type-id-97'/>
+    </function-decl>
+    <function-decl name='heim_dict_get_type_id' mangled-name='heim_dict_get_type_id' filepath='dict.c' line='142' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_dict_get_type_id@@HEIMDAL_BASE_1.0' hash='2bb88322482ae81c'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='heim_dict_get_value' mangled-name='heim_dict_get_value' filepath='dict.c' line='172' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_dict_get_value@@HEIMDAL_BASE_1.0' hash='789b37079fe02599'>
+      <parameter type-id='type-id-97'/>
+      <parameter type-id='type-id-169'/>
+      <return type-id='type-id-169'/>
+    </function-decl>
+    <function-decl name='heim_dict_copy_value' mangled-name='heim_dict_copy_value' filepath='dict.c' line='192' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_dict_copy_value@@HEIMDAL_BASE_1.0' hash='789b37079fe02599'>
+      <parameter type-id='type-id-97'/>
+      <parameter type-id='type-id-169'/>
+      <return type-id='type-id-169'/>
+    </function-decl>
+    <function-decl name='heim_dict_set_value' mangled-name='heim_dict_set_value' filepath='dict.c' line='213' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_dict_set_value@@HEIMDAL_BASE_1.0' hash='ff5c9a80d0db5b94'>
+      <parameter type-id='type-id-97'/>
+      <parameter type-id='type-id-169'/>
+      <parameter type-id='type-id-169'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_dict_delete_key' mangled-name='heim_dict_delete_key' filepath='dict.c' line='252' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_dict_delete_key@@HEIMDAL_BASE_1.0' hash='789b37079fe02599'>
+      <parameter type-id='type-id-97'/>
+      <parameter type-id='type-id-169'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_dict_iterate_f' mangled-name='heim_dict_iterate_f' filepath='dict.c' line='277' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_dict_iterate_f@@HEIMDAL_BASE_1.0' hash='6e461c2cb786a85a'>
+      <parameter type-id='type-id-97'/>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-152'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-173'/>
+  </abi-instr>
+  <abi-instr address-size='64' path='error.c' language='LANG_C11'>
+    <class-decl name='__va_list_tag' is-struct='yes' visibility='default' size-in-bits='192' hash='3cf0fd8284404e34' id='type-id-174'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='gp_offset' type-id='type-id-21' visibility='default'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='fp_offset' type-id='type-id-21' visibility='default'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='overflow_arg_area' type-id='type-id-45' visibility='default'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='reg_save_area' type-id='type-id-45' visibility='default'/>
+      </data-member>
+    </class-decl>
+    <pointer-type-def type-id='type-id-174' size-in-bits='64' hash='39fc40d7ba4ca689' id='type-id-175'/>
+    <pointer-type-def type-id='type-id-176' size-in-bits='64' id='type-id-177'/>
+    <pointer-type-def type-id='type-id-178' size-in-bits='64' id='type-id-179'/>
+    <class-decl name='heim_number_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-176'/>
+    <class-decl name='heim_string_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-178'/>
+    <function-decl name='heim_error_create_enomem' mangled-name='heim_error_create_enomem' filepath='error.c' line='80' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_error_create_enomem@@HEIMDAL_BASE_1.0' hash='de9594c9bd19ef67'>
+      <return type-id='type-id-99'/>
+    </function-decl>
+    <function-decl name='heim_error_create_opt' mangled-name='heim_error_create_opt' filepath='error.c' line='88' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_error_create_opt@@HEIMDAL_BASE_1.0' hash='5e6b0667c3577c44'>
+      <parameter type-id='type-id-109' name='error' filepath='error.c' line='88' column='1'/>
+      <parameter type-id='type-id-2' name='error_code' filepath='error.c' line='88' column='1'/>
+      <parameter type-id='type-id-8' name='fmt' filepath='error.c' line='88' column='1'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_error_create' mangled-name='heim_error_create' filepath='error.c' line='99' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_error_create@@HEIMDAL_BASE_1.0' hash='ec13fe9a4fe5b1ed'>
+      <parameter type-id='type-id-2'/>
+      <parameter type-id='type-id-8'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-99'/>
+    </function-decl>
+    <function-decl name='heim_error_createv' mangled-name='heim_error_createv' filepath='error.c' line='112' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_error_createv@@HEIMDAL_BASE_1.0' hash='2bba0802e393ff4a'>
+      <parameter type-id='type-id-2' name='error_code' filepath='error.c' line='112' column='1'/>
+      <parameter type-id='type-id-8' name='fmt' filepath='error.c' line='112' column='1'/>
+      <parameter type-id='type-id-175' name='ap' filepath='error.c' line='112' column='1'/>
+      <return type-id='type-id-99'/>
+    </function-decl>
+    <function-decl name='heim_error_copy_string' mangled-name='heim_error_copy_string' filepath='error.c' line='142' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_error_copy_string@@HEIMDAL_BASE_1.0' hash='de9594c9bd19ef67'>
+      <parameter type-id='type-id-99' name='error' filepath='error.c' line='142' column='1'/>
+      <return type-id='type-id-124'/>
+    </function-decl>
+    <function-decl name='heim_error_get_code' mangled-name='heim_error_get_code' filepath='error.c' line='154' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_error_get_code@@HEIMDAL_BASE_1.0' hash='5cfe23b3f327fb28'>
+      <parameter type-id='type-id-99'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_error_append' mangled-name='heim_error_append' filepath='error.c' line='167' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_error_append@@HEIMDAL_BASE_1.0' hash='517fac8db9a60458'>
+      <parameter type-id='type-id-99' name='top' filepath='error.c' line='167' column='1'/>
+      <parameter type-id='type-id-99' name='append' filepath='error.c' line='167' column='1'/>
+      <return type-id='type-id-99'/>
+    </function-decl>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-180'/>
+    <typedef-decl name='heim_string_t' type-id='type-id-179' size-in-bits='64' filepath='heimbase.h' line='199' column='1' id='type-id-124'/>
+    <typedef-decl name='heim_number_t' type-id='type-id-177' size-in-bits='64' filepath='heimbase.h' line='358' column='1' id='type-id-181'/>
+    <function-decl name='vsnprintf' filepath='stdio.h' line='389' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='vsnprintf' hash='235a4ca206b6277d'>
+      <parameter type-id='type-id-53'/>
+      <parameter type-id='type-id-29'/>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-175'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='heimbase.c' language='LANG_C11'>
+    <array-type-def dimensions='1' type-id='type-id-1' size-in-bits='8' hash='f7aed1c6cc6e7b3c' id='type-id-182'>
+      <subrange length='1' lower-bound='0' upper-bound='0' type-id='type-id-29' size-in-bits='64' is-anonymous='yes' hash='eba0a2b392137dcb' id='type-id-183'/>
+    </array-type-def>
+    <array-type-def dimensions='1' type-id='type-id-1' size-in-bits='160' hash='99641d293d1da856' id='type-id-184'>
+      <subrange length='20' lower-bound='0' upper-bound='19' type-id='type-id-29' size-in-bits='64' is-anonymous='yes' hash='1ca9e41140ea49be' id='type-id-185'/>
+    </array-type-def>
+    <type-decl name='signed char' size-in-bits='8' hash='3c595c3350588f18' id='type-id-186'/>
+    <class-decl name='_IO_FILE' is-struct='yes' visibility='default' size-in-bits='1728' filepath='struct_FILE.h' line='50' column='1' hash='a4bd2f88347a2dd0' id='type-id-187'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='_flags' type-id='type-id-2' visibility='default' filepath='struct_FILE.h' line='52' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='_IO_read_ptr' type-id='type-id-53' visibility='default' filepath='struct_FILE.h' line='55' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='_IO_read_end' type-id='type-id-53' visibility='default' filepath='struct_FILE.h' line='56' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='_IO_read_base' type-id='type-id-53' visibility='default' filepath='struct_FILE.h' line='57' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='_IO_write_base' type-id='type-id-53' visibility='default' filepath='struct_FILE.h' line='58' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='_IO_write_ptr' type-id='type-id-53' visibility='default' filepath='struct_FILE.h' line='59' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='384'>
+        <var-decl name='_IO_write_end' type-id='type-id-53' visibility='default' filepath='struct_FILE.h' line='60' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='448'>
+        <var-decl name='_IO_buf_base' type-id='type-id-53' visibility='default' filepath='struct_FILE.h' line='61' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='512'>
+        <var-decl name='_IO_buf_end' type-id='type-id-53' visibility='default' filepath='struct_FILE.h' line='62' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='576'>
+        <var-decl name='_IO_save_base' type-id='type-id-53' visibility='default' filepath='struct_FILE.h' line='65' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='640'>
+        <var-decl name='_IO_backup_base' type-id='type-id-53' visibility='default' filepath='struct_FILE.h' line='66' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='704'>
+        <var-decl name='_IO_save_end' type-id='type-id-53' visibility='default' filepath='struct_FILE.h' line='67' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='768'>
+        <var-decl name='_markers' type-id='type-id-188' visibility='default' filepath='struct_FILE.h' line='69' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='832'>
+        <var-decl name='_chain' type-id='type-id-189' visibility='default' filepath='struct_FILE.h' line='71' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='896'>
+        <var-decl name='_fileno' type-id='type-id-2' visibility='default' filepath='struct_FILE.h' line='73' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='928'>
+        <var-decl name='_flags2' type-id='type-id-2' visibility='default' filepath='struct_FILE.h' line='74' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='952'>
+        <var-decl name='_short_backupbuf' type-id='type-id-182' visibility='default' filepath='struct_FILE.h' line='76' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='960'>
+        <var-decl name='_old_offset' type-id='type-id-76' visibility='default' filepath='struct_FILE.h' line='77' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1024'>
+        <var-decl name='_cur_column' type-id='type-id-100' visibility='default' filepath='struct_FILE.h' line='80' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1040'>
+        <var-decl name='_vtable_offset' type-id='type-id-186' visibility='default' filepath='struct_FILE.h' line='81' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1048'>
+        <var-decl name='_shortbuf' type-id='type-id-182' visibility='default' filepath='struct_FILE.h' line='82' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1088'>
+        <var-decl name='_lock' type-id='type-id-190' visibility='default' filepath='struct_FILE.h' line='84' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1152'>
+        <var-decl name='_offset' type-id='type-id-191' visibility='default' filepath='struct_FILE.h' line='92' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1216'>
+        <var-decl name='_codecvt' type-id='type-id-192' visibility='default' filepath='struct_FILE.h' line='94' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1280'>
+        <var-decl name='_wide_data' type-id='type-id-193' visibility='default' filepath='struct_FILE.h' line='95' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1344'>
+        <var-decl name='_freeres_list' type-id='type-id-189' visibility='default' filepath='struct_FILE.h' line='96' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1408'>
+        <var-decl name='_freeres_buf' type-id='type-id-45' visibility='default' filepath='struct_FILE.h' line='97' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1472'>
+        <var-decl name='_prevchain' type-id='type-id-194' visibility='default' filepath='struct_FILE.h' line='98' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1536'>
+        <var-decl name='_mode' type-id='type-id-2' visibility='default' filepath='struct_FILE.h' line='99' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1568'>
+        <var-decl name='_unused2' type-id='type-id-184' visibility='default' filepath='struct_FILE.h' line='101' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='heim_auto_release' is-struct='yes' visibility='default' size-in-bits='512' filepath='heimbase.c' line='71' column='1' hash='71ab1f0205042fbd' id='type-id-195'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='pool' type-id='type-id-196' visibility='default' filepath='heimbase.c' line='72' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='pool_mutex' type-id='type-id-156' visibility='default' filepath='heimbase.c' line='73' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='448'>
+        <var-decl name='parent' type-id='type-id-197' visibility='default' filepath='heimbase.c' line='74' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='heim_base' is-struct='yes' visibility='default' size-in-bits='512' filepath='heimbase.c' line='41' column='1' hash='d3b876e9d1f1aaee' id='type-id-198'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='isa' type-id='type-id-28' visibility='default' filepath='heimbase.c' line='42' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='ref_cnt' type-id='type-id-21' visibility='default' filepath='heimbase.c' line='43' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='autorel' type-id='type-id-199' visibility='default' filepath='heimbase.c' line='44' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='autorelpool' type-id='type-id-200' visibility='default' filepath='heimbase.c' line='45' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='isaextra' type-id='type-id-201' visibility='default' filepath='heimbase.c' line='46' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='__anonymous_struct__1' is-struct='yes' visibility='default' size-in-bits='128' is-anonymous='yes' filepath='heimbase.c' line='44' column='1' hash='6ba3d862d242ff9f' id='type-id-199'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='tqe_next' type-id='type-id-202' visibility='default' filepath='heimbase.c' line='44' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='tqe_prev' type-id='type-id-203' visibility='default' filepath='heimbase.c' line='44' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='__anonymous_struct__' is-struct='yes' visibility='default' size-in-bits='128' is-anonymous='yes' filepath='heimbase.c' line='72' column='1' hash='105efcac5baaebee#2' id='type-id-196'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='tqh_first' type-id='type-id-202' visibility='default' filepath='heimbase.c' line='72' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='tqh_last' type-id='type-id-203' visibility='default' filepath='heimbase.c' line='72' column='1'/>
+      </data-member>
+    </class-decl>
+    <typedef-decl name='FILE' type-id='type-id-187' size-in-bits='1728' filepath='FILE.h' line='7' column='1' id='type-id-204'/>
+    <typedef-decl name='_IO_lock_t' type-id='type-id-44' filepath='struct_FILE.h' line='44' column='1' id='type-id-205'/>
+    <typedef-decl name='__off64_t' type-id='type-id-51' size-in-bits='64' filepath='types.h' line='153' column='1' hash='b119fe0931d2ee10' id='type-id-191'/>
+    <typedef-decl name='heim_auto_release_t' type-id='type-id-197' size-in-bits='64' filepath='heimbase.h' line='368' column='1' hash='ac82d1c9374dd479' id='type-id-200'/>
+    <typedef-decl name='pthread_key_t' type-id='type-id-21' size-in-bits='32' filepath='pthreadtypes.h' line='49' column='1' hash='e66b43f97c38e87a' id='type-id-206'/>
+    <typedef-decl name='uintptr_t' type-id='type-id-29' size-in-bits='64' filepath='stdint.h' line='79' column='1' hash='8fdc5eea2983a729' id='type-id-207'/>
+    <array-type-def dimensions='1' type-id='type-id-207' size-in-bits='192' hash='83013596d0d8787f' id='type-id-201'>
+      <subrange length='3' lower-bound='0' upper-bound='2' type-id='type-id-29' size-in-bits='64' is-anonymous='yes' hash='30d99d19f0f4b2ea' id='type-id-50'/>
+    </array-type-def>
+    <pointer-type-def type-id='type-id-204' size-in-bits='64' hash='4cdc26b379a5c62d' id='type-id-208'/>
+    <pointer-type-def type-id='type-id-187' size-in-bits='64' hash='071f36dcbe00ad00' id='type-id-189'/>
+    <pointer-type-def type-id='type-id-189' size-in-bits='64' hash='e8c018048121152c' id='type-id-194'/>
+    <pointer-type-def type-id='type-id-195' size-in-bits='64' hash='ac82d1c9374dd479' id='type-id-197'/>
+    <pointer-type-def type-id='type-id-198' size-in-bits='64' hash='45719dbd59b906b2' id='type-id-202'/>
+    <pointer-type-def type-id='type-id-202' size-in-bits='64' hash='2b3a9ed5043164cc' id='type-id-203'/>
+    <pointer-type-def type-id='type-id-206' size-in-bits='64' hash='4a0ba5adb9c3ac10' id='type-id-209'/>
+    <pointer-type-def type-id='type-id-147' size-in-bits='64' hash='a9d5a79abcefcfe6' id='type-id-210'/>
+    <pointer-type-def type-id='type-id-211' size-in-bits='64' hash='fd7a63c0c6c822c4' id='type-id-212'/>
+    <pointer-type-def type-id='type-id-213' size-in-bits='64' id='type-id-192'/>
+    <pointer-type-def type-id='type-id-205' size-in-bits='64' id='type-id-190'/>
+    <pointer-type-def type-id='type-id-214' size-in-bits='64' id='type-id-188'/>
+    <pointer-type-def type-id='type-id-215' size-in-bits='64' id='type-id-193'/>
+    <pointer-type-def type-id='type-id-216' size-in-bits='64' id='type-id-217'/>
+    <pointer-type-def type-id='type-id-218' size-in-bits='64' id='type-id-219'/>
+    <class-decl name='_IO_codecvt' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-213'/>
+    <class-decl name='_IO_marker' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-214'/>
+    <class-decl name='_IO_wide_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-215'/>
+    <class-decl name='heim_number_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-216'/>
+    <class-decl name='heim_string_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-218'/>
+    <function-decl name='heim_retain' mangled-name='heim_retain' filepath='heimbase.c' line='87' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_retain@@HEIMDAL_BASE_1.0' hash='7f32ffea222edbe7'>
+      <parameter type-id='type-id-45' name='ptr' filepath='heimbase.c' line='87' column='1'/>
+      <return type-id='type-id-45'/>
+    </function-decl>
+    <function-decl name='heim_release' mangled-name='heim_release' filepath='heimbase.c' line='110' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_release@@HEIMDAL_BASE_1.0' hash='7f32ffea222edbe7'>
+      <parameter type-id='type-id-45'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_get_tid' mangled-name='heim_get_tid' filepath='heimbase.c' line='201' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_get_tid@@HEIMDAL_BASE_1.0' hash='2bb88322482ae81c'>
+      <parameter type-id='type-id-125'/>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='heim_get_hash' mangled-name='heim_get_hash' filepath='heimbase.c' line='216' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_get_hash@@HEIMDAL_BASE_1.0' hash='e0055d99adb0e173'>
+      <parameter type-id='type-id-173'/>
+      <return type-id='type-id-29'/>
+    </function-decl>
+    <function-decl name='heim_cmp' mangled-name='heim_cmp' filepath='heimbase.c' line='235' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_cmp@@HEIMDAL_BASE_1.0' hash='388da3fa973fde78'>
+      <parameter type-id='type-id-173'/>
+      <parameter type-id='type-id-173'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_alloc' mangled-name='heim_alloc' filepath='heimbase.c' line='293' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_alloc@@HEIMDAL_BASE_1.0' hash='b9e9b30e6a93d430'>
+      <parameter type-id='type-id-4'/>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-10'/>
+      <return type-id='type-id-45'/>
+    </function-decl>
+    <function-decl name='heim_base_once_f' mangled-name='heim_base_once_f' filepath='heimbase.c' line='409' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_base_once_f@@HEIMDAL_BASE_1.0' hash='58e0467aeffc9fd3'>
+      <parameter type-id='type-id-159'/>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-24'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_abort' mangled-name='heim_abort' filepath='heimbase.c' line='502' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_abort@@HEIMDAL_BASE_1.0' hash='53885bde0aa65efe'>
+      <parameter type-id='type-id-8'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_abortv' mangled-name='heim_abortv' filepath='heimbase.c' line='515' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_abortv@@HEIMDAL_BASE_1.0' hash='fa6379259abe5cbc'>
+      <parameter type-id='type-id-8' name='fmt' filepath='heimbase.c' line='515' column='1'/>
+      <parameter type-id='type-id-175' name='ap' filepath='heimbase.c' line='515' column='1'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_auto_release_create' mangled-name='heim_auto_release_create' filepath='heimbase.c' line='644' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_auto_release_create@@HEIMDAL_BASE_1.0' hash='8dc45e290f4ed3c8'>
+      <return type-id='type-id-200'/>
+    </function-decl>
+    <function-decl name='heim_auto_release' mangled-name='heim_auto_release' filepath='heimbase.c' line='672' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_auto_release@@HEIMDAL_BASE_1.0' hash='7f32ffea222edbe7'>
+      <parameter type-id='type-id-220' name='ptr' filepath='heimbase.c' line='672' column='1'/>
+      <return type-id='type-id-220'/>
+    </function-decl>
+    <function-decl name='heim_auto_release_drain' mangled-name='heim_auto_release_drain' filepath='heimbase.c' line='708' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_auto_release_drain@@HEIMDAL_BASE_1.0' hash='8dc45e290f4ed3c8'>
+      <parameter type-id='type-id-200' name='autorel' filepath='heimbase.c' line='708' column='1'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_path_vget' mangled-name='heim_path_vget' filepath='heimbase.c' line='806' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_path_vget@@HEIMDAL_BASE_1.0' hash='e7dd01fedc4edd62'>
+      <parameter type-id='type-id-220' name='ptr' filepath='heimbase.c' line='826' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='heimbase.c' line='826' column='1'/>
+      <parameter type-id='type-id-175' name='ap' filepath='heimbase.c' line='826' column='1'/>
+      <return type-id='type-id-220'/>
+    </function-decl>
+    <function-decl name='heim_path_vcopy' mangled-name='heim_path_vcopy' filepath='heimbase.c' line='826' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_path_vcopy@@HEIMDAL_BASE_1.0' hash='e7dd01fedc4edd62'>
+      <parameter type-id='type-id-220' name='ptr' filepath='heimbase.c' line='826' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='heimbase.c' line='826' column='1'/>
+      <parameter type-id='type-id-175' name='ap' filepath='heimbase.c' line='826' column='1'/>
+      <return type-id='type-id-220'/>
+    </function-decl>
+    <function-decl name='heim_path_get' mangled-name='heim_path_get' filepath='heimbase.c' line='846' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_path_get@@HEIMDAL_BASE_1.0' hash='b1781cee5f834814'>
+      <parameter type-id='type-id-169'/>
+      <parameter type-id='type-id-109'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-169'/>
+    </function-decl>
+    <function-decl name='heim_path_copy' mangled-name='heim_path_copy' filepath='heimbase.c' line='874' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_path_copy@@HEIMDAL_BASE_1.0' hash='b1781cee5f834814'>
+      <parameter type-id='type-id-169'/>
+      <parameter type-id='type-id-109'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-169'/>
+    </function-decl>
+    <function-decl name='heim_path_vcreate' mangled-name='heim_path_vcreate' filepath='heimbase.c' line='908' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_path_vcreate@@HEIMDAL_BASE_1.0' hash='dda9f1d44951046e'>
+      <parameter type-id='type-id-220' name='ptr' filepath='heimbase.c' line='908' column='1'/>
+      <parameter type-id='type-id-4' name='size' filepath='heimbase.c' line='908' column='1'/>
+      <parameter type-id='type-id-220' name='leaf' filepath='heimbase.c' line='908' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='heimbase.c' line='909' column='1'/>
+      <parameter type-id='type-id-175' name='ap' filepath='heimbase.c' line='909' column='1'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_path_create' mangled-name='heim_path_create' filepath='heimbase.c' line='1028' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_path_create@@HEIMDAL_BASE_1.0' hash='5be28768fb6bbd97'>
+      <parameter type-id='type-id-169'/>
+      <parameter type-id='type-id-4'/>
+      <parameter type-id='type-id-169'/>
+      <parameter type-id='type-id-109'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='heim_path_vdelete' mangled-name='heim_path_vdelete' filepath='heimbase.c' line='1051' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_path_vdelete@@HEIMDAL_BASE_1.0' hash='e7dd01fedc4edd62'>
+      <parameter type-id='type-id-220' name='ptr' filepath='heimbase.c' line='1051' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='heimbase.c' line='1051' column='1'/>
+      <parameter type-id='type-id-175' name='ap' filepath='heimbase.c' line='1051' column='1'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_path_delete' mangled-name='heim_path_delete' filepath='heimbase.c' line='1078' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_path_delete@@HEIMDAL_BASE_1.0' hash='b1781cee5f834814'>
+      <parameter type-id='type-id-169'/>
+      <parameter type-id='type-id-109'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-220'/>
+    <typedef-decl name='heim_string_t' type-id='type-id-219' size-in-bits='64' filepath='heimbase.h' line='199' column='1' id='type-id-221'/>
+    <typedef-decl name='heim_number_t' type-id='type-id-217' size-in-bits='64' filepath='heimbase.h' line='358' column='1' id='type-id-222'/>
+    <var-decl name='_heim_null_object' type-id='type-id-6' visibility='default' filepath='heimbasepriv.h' line='110' column='1'/>
+    <var-decl name='_heim_number_object' type-id='type-id-6' visibility='default' filepath='heimbasepriv.h' line='112' column='1'/>
+    <function-decl name='pthread_once' filepath='pthread.h' line='509' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pthread_once' hash='022106852535817c'>
+      <parameter type-id='type-id-210'/>
+      <parameter type-id='type-id-212'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='pthread_key_create' filepath='pthread.h' line='1297' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pthread_key_create' hash='8d98229b80136b23'>
+      <parameter type-id='type-id-209'/>
+      <parameter type-id='type-id-24'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='pthread_getspecific' filepath='pthread.h' line='1305' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pthread_getspecific' hash='2bb88322482ae81c'>
+      <parameter type-id='type-id-206'/>
+      <return type-id='type-id-45'/>
+    </function-decl>
+    <function-decl name='pthread_setspecific' filepath='pthread.h' line='1308' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pthread_setspecific' hash='6668baab5275d4c5'>
+      <parameter type-id='type-id-206'/>
+      <parameter type-id='type-id-45'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <var-decl name='stderr' type-id='type-id-208' visibility='default' filepath='stdio.h' line='151' column='1' elf-symbol-id='stderr'/>
+    <function-decl name='fprintf' filepath='stdio.h' line='357' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='fprintf' hash='31c19dfde3fac410'>
+      <parameter type-id='type-id-208'/>
+      <parameter type-id='type-id-8'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='abort' filepath='stdlib.h' line='730' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='abort' hash='7f32ffea222edbe7'>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='syslog' filepath='syslog.h' line='190' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='syslog' hash='e9ea91a7eab8302c'>
+      <parameter type-id='type-id-2'/>
+      <parameter type-id='type-id-8'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-type size-in-bits='64' hash='7f32ffea222edbe7' id='type-id-211'>
+      <return type-id='type-id-44'/>
+    </function-type>
+  </abi-instr>
+  <abi-instr address-size='64' path='json.c' language='LANG_C11'>
+    <pointer-type-def type-id='type-id-223' size-in-bits='64' id='type-id-224'/>
+    <pointer-type-def type-id='type-id-225' size-in-bits='64' id='type-id-226'/>
+    <class-decl name='heim_number_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-223'/>
+    <class-decl name='heim_string_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-225'/>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-227'/>
+    <typedef-decl name='heim_bool_t' type-id='type-id-227' filepath='heimbase.h' line='60' column='1' id='type-id-228'/>
+    <typedef-decl name='heim_null_t' type-id='type-id-227' filepath='heimbase.h' line='61' column='1' id='type-id-229'/>
+    <typedef-decl name='heim_string_t' type-id='type-id-226' size-in-bits='64' filepath='heimbase.h' line='199' column='1' id='type-id-230'/>
+    <typedef-decl name='heim_number_t' type-id='type-id-224' size-in-bits='64' filepath='heimbase.h' line='358' column='1' id='type-id-231'/>
+    <function-decl name='heim_json_create' mangled-name='heim_json_create' filepath='json.c' line='666' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_json_create@@HEIMDAL_BASE_1.0' hash='777e16cdbe41f2ae'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-4'/>
+      <parameter type-id='type-id-153'/>
+      <parameter type-id='type-id-109'/>
+      <return type-id='type-id-169'/>
+    </function-decl>
+    <function-decl name='heim_json_create_with_bytes' mangled-name='heim_json_create_with_bytes' filepath='json.c' line='674' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_json_create_with_bytes@@HEIMDAL_BASE_1.0' hash='1a4262af720b2a71'>
+      <parameter type-id='type-id-45' name='data' filepath='json.c' line='674' column='1'/>
+      <parameter type-id='type-id-4' name='length' filepath='json.c' line='674' column='1'/>
+      <parameter type-id='type-id-4' name='max_depth' filepath='json.c' line='674' column='1'/>
+      <parameter type-id='type-id-153' name='flags' filepath='json.c' line='675' column='1'/>
+      <parameter type-id='type-id-109' name='error' filepath='json.c' line='675' column='1'/>
+      <return type-id='type-id-227'/>
+    </function-decl>
+    <function-decl name='heim_show' mangled-name='heim_show' filepath='json.c' line='718' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_show@@HEIMDAL_BASE_1.0' hash='7f32ffea222edbe7'>
+      <parameter type-id='type-id-32'/>
+      <return type-id='type-id-44'/>
+    </function-decl>
+    <function-decl name='heim_json_copy_serialize' mangled-name='heim_json_copy_serialize' filepath='json.c' line='767' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_json_copy_serialize@@HEIMDAL_BASE_1.0' hash='442a1cd9be62057f'>
+      <parameter type-id='type-id-169'/>
+      <parameter type-id='type-id-153'/>
+      <parameter type-id='type-id-109'/>
+      <return type-id='type-id-143'/>
+    </function-decl>
+    <function-decl name='memset' filepath='string.h' line='61' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='memset' hash='b6a97d07f8261bc0'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-2'/>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-45'/>
+    </function-decl>
+    <function-decl name='strspn' filepath='string.h' line='297' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='strspn' hash='70d41fbc12e2dbd9'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-8'/>
+      <return type-id='type-id-4'/>
+    </function-decl>
+    <function-decl name='strncasecmp' filepath='strings.h' line='120' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='strncasecmp' hash='2f99ec08ee54ebb4'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-29'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='null.c' language='LANG_C11'>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-232'/>
+    <typedef-decl name='heim_null_t' type-id='type-id-232' filepath='heimbase.h' line='61' column='1' id='type-id-233'/>
+    <function-decl name='heim_null_create' mangled-name='heim_null_create' filepath='null.c' line='50' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_null_create@@HEIMDAL_BASE_1.0' hash='7f32ffea222edbe7'>
+      <return type-id='type-id-229'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='number.c' language='LANG_C11'>
+    <pointer-type-def type-id='type-id-234' size-in-bits='64' id='type-id-235'/>
+    <class-decl name='heim_number_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-234'/>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-236'/>
+    <typedef-decl name='heim_number_t' type-id='type-id-235' size-in-bits='64' filepath='heimbase.h' line='358' column='1' id='type-id-237'/>
+    <function-decl name='heim_number_create' mangled-name='heim_number_create' filepath='number.c' line='89' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_number_create@@HEIMDAL_BASE_1.0' hash='388da3fa973fde78'>
+      <parameter type-id='type-id-2'/>
+      <return type-id='type-id-170'/>
+    </function-decl>
+    <function-decl name='heim_number_get_type_id' mangled-name='heim_number_get_type_id' filepath='number.c' line='109' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_number_get_type_id@@HEIMDAL_BASE_1.0' hash='2bb88322482ae81c'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='heim_number_get_int' mangled-name='heim_number_get_int' filepath='number.c' line='123' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_number_get_int@@HEIMDAL_BASE_1.0' hash='388da3fa973fde78'>
+      <parameter type-id='type-id-181'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='string.c' language='LANG_C11'>
+    <qualified-type-def type-id='type-id-102' restrict='yes' hash='b04f089b5ae14a6d' id='type-id-238'/>
+    <pointer-type-def type-id='type-id-239' size-in-bits='64' id='type-id-240'/>
+    <class-decl name='heim_string_data' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-239'/>
+    <typedef-decl name='heim_object_t' type-id='type-id-45' filepath='heimbase.h' line='58' column='1' id='type-id-241'/>
+    <typedef-decl name='heim_string_t' type-id='type-id-240' size-in-bits='64' filepath='heimbase.h' line='199' column='1' id='type-id-242'/>
+    <var-decl name='_heim_string_object' type-id='type-id-6' visibility='default' filepath='heimbasepriv.h' line='113' column='1'/>
+    <function-decl name='heim_string_create' mangled-name='heim_string_create' filepath='string.c' line='107' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_string_create@@HEIMDAL_BASE_1.0' hash='53885bde0aa65efe'>
+      <parameter type-id='type-id-8'/>
+      <return type-id='type-id-126'/>
+    </function-decl>
+    <function-decl name='heim_string_ref_create' mangled-name='heim_string_ref_create' filepath='string.c' line='122' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_string_ref_create@@HEIMDAL_BASE_1.0' hash='6123409445473da8'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-154'/>
+      <return type-id='type-id-143'/>
+    </function-decl>
+    <function-decl name='heim_string_create_with_bytes' mangled-name='heim_string_create_with_bytes' filepath='string.c' line='150' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_string_create_with_bytes@@HEIMDAL_BASE_1.0' hash='e0055d99adb0e173'>
+      <parameter type-id='type-id-45'/>
+      <parameter type-id='type-id-4'/>
+      <return type-id='type-id-143'/>
+    </function-decl>
+    <function-decl name='heim_string_create_with_format' mangled-name='heim_string_create_with_format' filepath='string.c' line='172' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_string_create_with_format@@HEIMDAL_BASE_1.0' hash='53885bde0aa65efe'>
+      <parameter type-id='type-id-8' name='fmt' filepath='string.c' line='172' column='1'/>
+      <parameter is-variadic='yes'/>
+      <return type-id='type-id-242'/>
+    </function-decl>
+    <function-decl name='heim_string_get_type_id' mangled-name='heim_string_get_type_id' filepath='string.c' line='198' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_string_get_type_id@@HEIMDAL_BASE_1.0' hash='2bb88322482ae81c'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='heim_string_get_utf8' mangled-name='heim_string_get_utf8' filepath='string.c' line='212' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='heim_string_get_utf8@@HEIMDAL_BASE_1.0' hash='53885bde0aa65efe'>
+      <parameter type-id='type-id-126'/>
+      <return type-id='type-id-8'/>
+    </function-decl>
+    <function-decl name='__heim_string_constant' mangled-name='__heim_string_constant' filepath='string.c' line='238' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__heim_string_constant@@HEIMDAL_BASE_1.0' hash='53885bde0aa65efe'>
+      <parameter type-id='type-id-8'/>
+      <return type-id='type-id-126'/>
+    </function-decl>
+    <function-decl name='vasprintf' filepath='stdio.h' line='397' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='vasprintf' hash='cf2e9adf5c1c1adb'>
+      <parameter type-id='type-id-238'/>
+      <parameter type-id='type-id-158'/>
+      <parameter type-id='type-id-175'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='base64.c' language='LANG_C11'>
+  </abi-instr>
+</abi-corpus>
