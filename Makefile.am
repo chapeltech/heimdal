@@ -36,6 +36,7 @@ EXTRA_DIST = \
 	ChangeLog.2006 \
 	Makefile.am.common \
 	autogen.sh \
+	cf/check-library-abi.sh \
 	krb5.conf \
 	cf/make-proto.pl \
 	cf/roken-h-process.pl \
@@ -61,11 +62,21 @@ EXTRA_DIST = \
 	cf/w32-list-externs-from-objs.pl \
 	cf/vararray.m4
 
+ABI_CHECK_DIRS = \
+	lib/sl \
+	lib/wind \
+	lib/sqlite
+
+check-abi: all
+	@status=0; for dir in $(ABI_CHECK_DIRS); do \
+	    echo "Making check-abi in $$dir"; \
+	    $(MAKE) -C $$dir check-abi || status=$$?; \
+	done; exit $$status
+
 print-distdir:
 	@echo $(distdir)
 
 clean-local-gcov:
 	find . '(' -name '*.gcno' -o -name '*.gcda' -o -name '*.gcov' ')' -a -print|xargs rm -f
 
-.PHONY: clean-local-gcov
-
+.PHONY: check-abi clean-local-gcov
