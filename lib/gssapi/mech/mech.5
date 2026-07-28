@@ -75,6 +75,16 @@ selection to GSS-API negotiate a concrete mechanism with the peer.  This is
 configuration policy; neither Kerberos nor SPNEGO receives special priority
 from the mechanism glue.
 .Pp
+An object identifier of
+.Dq *
+registers the library as a provider for each configured concrete mechanism.
+SPNEGO and mechanisms marked as negotiation, pseudo, or composite mechanisms
+are excluded.  If the library implements
+.Fn gss_indicate_mechs ,
+it is registered only for the concrete mechanism OIDs it advertises.
+The wildcard entry's position in the file determines its priority relative to
+each mechanism's other providers.
+.Pp
 The
 .Pa "/etc/gss/qop"
 file contains a list of Quality of Protection values for use with
@@ -101,6 +111,15 @@ kerberosv5	1.2.840.113554.1.2.2	/usr/lib/libgssapi_krb5.so.8	-
 This is a recommended ordering for the built-in mechanisms:
 .Bd -literal
 :builtin spnego
+:builtin krb5
+:builtin sanon
+.Ed
+.Pp
+This tries an agent provider before the native provider for each concrete
+mechanism while keeping SPNEGO as the default:
+.Bd -literal
+:builtin spnego
+gss-agent	*	/usr/lib/libmechagent.so	-
 :builtin krb5
 :builtin sanon
 .Ed

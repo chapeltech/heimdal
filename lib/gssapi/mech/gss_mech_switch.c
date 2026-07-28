@@ -37,6 +37,24 @@ struct _gss_mech_switch_list _gss_mechs = { NULL, NULL } ;
 gss_OID_set _gss_mech_oids;
 static HEIMDAL_MUTEX _gss_mech_mutex = HEIMDAL_MUTEX_INITIALIZER;
 
+struct _gss_wildcard_mech {
+	HEIM_TAILQ_ENTRY(_gss_wildcard_mech) link;
+	char *name;
+	char *lib;
+	size_t order;
+};
+HEIM_TAILQ_HEAD(_gss_wildcard_mech_list, _gss_wildcard_mech);
+
+static const struct {
+	const char *name;
+	gssapi_mech_interface (*interface)(void);
+} builtin_mechs[] = {
+	{ "spnego", __gss_spnego_initialize },
+	{ "krb5",   __gss_krb5_initialize },
+	{ "sanon",  __gss_sanon_initialize },
+	{ NULL, NULL }
+};
+
 /*
  * Convert a string containing an OID in 'dot' form
  * (e.g. 1.2.840.113554.1.2.2) to a gss_OID.
@@ -220,7 +238,7 @@ do {									\
  *
  */
 static int
-add_builtin(gssapi_mech_interface mech)
+add_builtin(gssapi_mech_interface mech, size_t order)
 {
     struct _gss_mech_switch *m;
     OM_uint32 minor_status;
@@ -233,17 +251,12 @@ add_builtin(gssapi_mech_interface mech)
     if (m == NULL)
 	return ENOMEM;
     m->gm_so = NULL;
+    m->gm_order = order;
     m->gm_mech = *mech;
     _gss_intern_oid(&minor_status, &mech->gm_mech_oid, &m->gm_mech_oid);
     if (minor_status) {
 	free(m);
 	return minor_status;
-    }
-
-    if (gss_add_oid_set_member(&minor_status, &m->gm_mech.gm_mech_oid,
-			       &_gss_mech_oids) != GSS_S_COMPLETE) {
-	free(m);
-	return ENOMEM;
     }
 
     /* pick up the oid sets of names */
@@ -264,30 +277,22 @@ add_builtin(gssapi_mech_interface mech)
 }
 
 static void
-enable_builtin(const char *name)
+enable_builtin(const char *name, size_t *order)
 {
-	struct {
-		const char *name;
-		gssapi_mech_interface (*interface)(void);
-	} builtins[] = {
-		{ "spnego", __gss_spnego_initialize },
-		{ "krb5",   __gss_krb5_initialize },
-		{ "sanon",  __gss_sanon_initialize },
-		{ NULL, NULL }
-	};
 	size_t i;
 
 	/* name == NULL implies add all mechs */
-	for (i=0; builtins[i].name; i++)
-		if (!name || !strcmp(builtins[i].name, name))
-			if (add_builtin(builtins[i].interface()))
+	for (i=0; builtin_mechs[i].name; i++)
+		if (!name || !strcmp(builtin_mechs[i].name, name)) {
+			if (add_builtin(builtin_mechs[i].interface(), (*order)++))
 			    _gss_mg_log(1, "Out of memory while adding "
 					   "builtin %s mechanism to the GSS "
-					   "mechanism switch", builtins[i].name);
+					   "mechanism switch", builtin_mechs[i].name);
+		}
 }
 
 static int
-process_colonline(char *buf)
+process_colonline(char *buf, size_t *order)
 {
 	char *p = buf;
 	char *name;
@@ -301,50 +306,22 @@ process_colonline(char *buf)
 		p++;
 	name = strsep(&p, "\n\t ");
 
-	enable_builtin(name);
+	enable_builtin(name, order);
 	return 1;
 }
 
-static void
-process_dlopenline(char *p)
+static struct _gss_mech_switch *
+load_dlopen_mech(const char *name, gss_OID mech_oid, const char *lib,
+		 size_t order, int wildcard)
 {
 #ifdef HAVE_DLOPEN
 	OM_uint32	major_status, minor_status;
 	_gss_mo_init	*mi;
-	char		*name, *oid, *lib, *kobj;
 	struct _gss_mech_switch *m = NULL;
-	void		*so;
-	gss_OID 	mech_oid;
-	int		found;
+	void		*so = NULL;
+	char		*gm_name = NULL;
 
-	name = strsep(&p, "\t\n ");
-	if (p) while (isspace((unsigned char)*p)) p++;
-	oid = strsep(&p, "\t\n ");
-	if (p) while (isspace((unsigned char)*p)) p++;
-	lib = strsep(&p, "\t\n ");
-	if (p) while (isspace((unsigned char)*p)) p++;
-	kobj = strsep(&p, "\t\n ");
-	if (!name || !oid || !lib || !kobj)
-		return;
-
-	if (_gss_string_to_oid(oid, &mech_oid))
-		return;
-
-	/*
-	 * Check for duplicates, already loaded mechs.
-	 */
 	_gss_mg_log(10, "loading \"%s\"", name);
-	found = 0;
-	HEIM_TAILQ_FOREACH(m, &_gss_mechs, gm_link) {
-		if (gss_oid_equal(&m->gm_mech.gm_mech_oid, mech_oid)) {
-			_gss_mg_log(10, "duplicate mech, not loading");
-			found = 1;
-			break;
-		}
-	}
-	if (found)
-		return;
-
 	so = dlopen(lib, RTLD_LAZY | RTLD_LOCAL | RTLD_GROUP);
 	if (so == NULL) {
 		_gss_mg_log(1, "dlopen: %s", dlerror());
@@ -356,17 +333,16 @@ process_dlopenline(char *p)
 		goto bad;
 
 	m->gm_so = so;
+	m->gm_order = order;
+	m->gm_wildcard = wildcard;
 	m->gm_mech_oid = mech_oid;
-	m->gm_mech.gm_name = strdup(name);
+	m->gm_mech.gm_name = gm_name = strdup(name);
+	if (gm_name == NULL)
+		goto bad;
 	m->gm_mech.gm_mech_oid = *mech_oid;
 	m->gm_mech.gm_flags = 0;
 	m->gm_mech.gm_compat = calloc(1, sizeof(struct gss_mech_compat_desc_struct));
 	if (m->gm_mech.gm_compat == NULL)
-		goto bad;
-
-	major_status = gss_add_oid_set_member(&minor_status,
-	    &m->gm_mech.gm_mech_oid, &_gss_mech_oids);
-	if (GSS_ERROR(major_status))
 		goto bad;
 
 	SYM(acquire_cred);
@@ -457,19 +433,200 @@ process_dlopenline(char *p)
 	if (m->gm_name_types == NULL)
 		gss_create_empty_oid_set(&minor_status, &m->gm_name_types);
 
-	HEIM_TAILQ_INSERT_TAIL(&_gss_mechs, m, gm_link);
-	return;
+	return m;
 
 bad:
 	if (m != NULL) {
 		free(m->gm_mech.gm_compat);
 		/* do not free OID, it has been interned */
-		free((char *)m->gm_mech.gm_name);
 		free(m);
 	}
+	free(gm_name);
 	if (so != NULL)
 		dlclose(so);
+	return NULL;
+#else
+	return NULL;
 #endif
+}
+
+static void
+insert_mech_by_order(struct _gss_mech_switch *m)
+{
+	struct _gss_mech_switch *p;
+
+	HEIM_TAILQ_FOREACH(p, &_gss_mechs, gm_link) {
+		if (p->gm_order > m->gm_order) {
+			HEIM_TAILQ_INSERT_BEFORE(p, m, gm_link);
+			return;
+		}
+	}
+	HEIM_TAILQ_INSERT_TAIL(&_gss_mechs, m, gm_link);
+}
+
+static void
+process_dlopenline(char *p, size_t order,
+		   struct _gss_wildcard_mech_list *wildcards)
+{
+#ifdef HAVE_DLOPEN
+	char *name, *oid, *lib, *kobj;
+	struct _gss_mech_switch *m;
+	struct _gss_wildcard_mech *w;
+	gss_OID mech_oid;
+
+	name = strsep(&p, "\t\n ");
+	if (p) while (isspace((unsigned char)*p)) p++;
+	oid = strsep(&p, "\t\n ");
+	if (p) while (isspace((unsigned char)*p)) p++;
+	lib = strsep(&p, "\t\n ");
+	if (p) while (isspace((unsigned char)*p)) p++;
+	kobj = strsep(&p, "\t\n ");
+	if (!name || !oid || !lib || !kobj)
+		return;
+
+	if (strcmp(oid, "*") == 0) {
+		w = calloc(1, sizeof(*w));
+		if (w == NULL)
+			return;
+		w->name = strdup(name);
+		w->lib = strdup(lib);
+		w->order = order;
+		if (w->name == NULL || w->lib == NULL) {
+			free(w->name);
+			free(w->lib);
+			free(w);
+			return;
+		}
+		HEIM_TAILQ_INSERT_TAIL(wildcards, w, link);
+		return;
+	}
+
+	if (_gss_string_to_oid(oid, &mech_oid))
+		return;
+
+	m = load_dlopen_mech(name, mech_oid, lib, order, 0);
+	if (m != NULL)
+		HEIM_TAILQ_INSERT_TAIL(&_gss_mechs, m, gm_link);
+#endif
+}
+
+static int
+mech_has_attribute(gssapi_mech_interface m, gss_const_OID attribute)
+{
+	size_t i;
+
+	for (i = 0; i < m->gm_mo_num; i++) {
+		if ((m->gm_mo[i].flags & GSS_MO_MA) &&
+		    gss_oid_equal(m->gm_mo[i].option, attribute))
+			return 1;
+	}
+	return 0;
+}
+
+static int
+concrete_mechanism_p(gssapi_mech_interface m)
+{
+	if (gss_oid_equal(&m->gm_mech_oid, GSS_SPNEGO_MECHANISM))
+		return 0;
+	if (mech_has_attribute(m, GSS_C_MA_MECH_NEGO) ||
+	    mech_has_attribute(m, GSS_C_MA_MECH_PSEUDO) ||
+	    mech_has_attribute(m, GSS_C_MA_MECH_COMPOSITE))
+		return 0;
+	return 1;
+}
+
+static int
+loaded_mech_supports_oid(gssapi_mech_interface m, gss_const_OID oid)
+{
+	gss_OID_set mechs = GSS_C_NO_OID_SET;
+	OM_uint32 major, minor;
+	int present = 0;
+
+	if (m->gm_indicate_mechs == NULL)
+		return 1;
+	major = m->gm_indicate_mechs(&minor, &mechs);
+	if (major == GSS_S_COMPLETE && mechs != GSS_C_NO_OID_SET)
+		gss_test_oid_set_member(&minor, rk_UNCONST(oid), mechs, &present);
+	gss_release_oid_set(&minor, &mechs);
+	return major == GSS_S_COMPLETE && present;
+}
+
+static void
+free_loaded_mech(struct _gss_mech_switch *m)
+{
+	OM_uint32 minor;
+
+	if (m == NULL)
+		return;
+	gss_release_oid_set(&minor, &m->gm_name_types);
+	free(m->gm_mech.gm_compat);
+	free(rk_UNCONST(m->gm_mech.gm_name));
+#ifdef HAVE_DLOPEN
+	if (m->gm_so != NULL)
+		dlclose(m->gm_so);
+#endif
+	free(m);
+}
+
+static int
+build_public_mech_order(void)
+{
+	struct _gss_mech_switch *m;
+	OM_uint32 major, minor;
+
+	HEIM_TAILQ_FOREACH(m, &_gss_mechs, gm_link) {
+		if (m->gm_wildcard)
+			continue;
+		major = gss_add_oid_set_member(&minor, &m->gm_mech.gm_mech_oid,
+					      &_gss_mech_oids);
+		if (GSS_ERROR(major))
+			return ENOMEM;
+	}
+	return 0;
+}
+
+static void
+expand_wildcards(struct _gss_wildcard_mech_list *wildcards)
+{
+	struct _gss_wildcard_mech *w;
+	size_t i;
+
+	HEIM_TAILQ_FOREACH(w, wildcards, link) {
+		for (i = 0; i < _gss_mech_oids->count; i++) {
+			gss_OID oid = &_gss_mech_oids->elements[i];
+			struct _gss_mech_switch *public_entry;
+			struct _gss_mech_switch *m;
+
+			HEIM_TAILQ_FOREACH(public_entry, &_gss_mechs, gm_link) {
+				if (!public_entry->gm_wildcard &&
+				    gss_oid_equal(&public_entry->gm_mech.gm_mech_oid,
+						  oid))
+					break;
+			}
+			if (public_entry == NULL ||
+			    !concrete_mechanism_p(&public_entry->gm_mech))
+				continue;
+			m = load_dlopen_mech(w->name, oid, w->lib, w->order, 1);
+			if (m != NULL &&
+			    loaded_mech_supports_oid(&m->gm_mech, oid))
+				insert_mech_by_order(m);
+			else
+				free_loaded_mech(m);
+		}
+	}
+}
+
+static void
+free_wildcards(struct _gss_wildcard_mech_list *wildcards)
+{
+	struct _gss_wildcard_mech *w;
+
+	while ((w = HEIM_TAILQ_FIRST(wildcards)) != NULL) {
+		HEIM_TAILQ_REMOVE(wildcards, w, link);
+		free(w->name);
+		free(w->lib);
+		free(w);
+	}
 }
 
 static void
@@ -492,8 +649,11 @@ _gss_load_mech(void)
 	char		buf[256];
 	const char	*conf = secure_getenv("GSS_MECH_CONFIG");
 	int		particular_builtins = 0;
+	size_t		order = 0;
+	struct _gss_wildcard_mech_list wildcards;
 
 	heim_base_once_f(&once, &_gss_mechs, init_mech_switch_list);
+	HEIM_TAILQ_INIT(&wildcards);
 
 	HEIMDAL_MUTEX_lock(&_gss_mech_mutex);
 
@@ -514,23 +674,27 @@ _gss_load_mech(void)
 		goto out;
 	rk_cloexec_file(fp);
 
-	while (fgets(buf, sizeof(buf), fp)) {
-		switch (buf[0]) {
-		case '#':
-			break;
-		case ':':
-			if (process_colonline(buf))
-				particular_builtins = 1;
-			break;
-		default:
-			process_dlopenline(buf);
+		while (fgets(buf, sizeof(buf), fp)) {
+			switch (buf[0]) {
+			case '#':
+				break;
+			case ':':
+				if (process_colonline(buf, &order))
+					particular_builtins = 1;
+				break;
+			default:
+				process_dlopenline(buf, order++, &wildcards);
+			}
 		}
-	}
 	fclose(fp);
 
 out:
 	if (!particular_builtins)
-		enable_builtin(NULL);	/* All builtins */
+		enable_builtin(NULL, &order);	/* All builtins */
+
+	if (build_public_mech_order() == 0)
+		expand_wildcards(&wildcards);
+	free_wildcards(&wildcards);
 
 	HEIMDAL_MUTEX_unlock(&_gss_mech_mutex);
 }
@@ -538,20 +702,32 @@ out:
 gssapi_mech_interface
 __gss_get_default_mechanism(void)
 {
-	struct _gss_mech_switch *m;
-
 	_gss_load_mech();
-	m = HEIM_TAILQ_FIRST(&_gss_mechs);
-	return m ? &m->gm_mech : NULL;
+	if (_gss_mech_oids == GSS_C_NO_OID_SET ||
+	    _gss_mech_oids->count == 0)
+		return NULL;
+	return __gss_get_mechanism(&_gss_mech_oids->elements[0]);
 }
 
 gssapi_mech_interface
 __gss_get_mechanism(gss_const_OID mech)
 {
-        struct _gss_mech_switch	*m;
+	return __gss_get_mechanism_next(mech, NULL);
+}
+
+gssapi_mech_interface
+__gss_get_mechanism_next(gss_const_OID mech, gssapi_mech_interface previous)
+{
+	struct _gss_mech_switch *m;
+	int found = previous == NULL;
 
 	_gss_load_mech();
 	HEIM_TAILQ_FOREACH(m, &_gss_mechs, gm_link) {
+		if (!found) {
+			if (&m->gm_mech == previous)
+				found = 1;
+			continue;
+		}
 		if (gss_oid_equal(&m->gm_mech.gm_mech_oid, mech))
 			return &m->gm_mech;
 	}

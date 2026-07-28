@@ -50,8 +50,21 @@ _gss_find_mn(OM_uint32 *minor_status,
 	     gss_const_OID mech,
 	     struct _gss_mechanism_name ** output_mn)
 {
-	OM_uint32 major_status;
 	gssapi_mech_interface m;
+
+	m = __gss_get_mechanism(mech);
+	if (m == NULL)
+		return GSS_S_BAD_MECH;
+	return _gss_find_mn_for_mech(minor_status, name, m, output_mn);
+}
+
+OM_uint32
+_gss_find_mn_for_mech(OM_uint32 *minor_status,
+		      struct _gss_name *name,
+		      gssapi_mech_interface m,
+		      struct _gss_mechanism_name **output_mn)
+{
+	OM_uint32 major_status;
 	struct _gss_mechanism_name *mn;
 
 	*output_mn = NULL;
@@ -61,7 +74,7 @@ _gss_find_mn(OM_uint32 *minor_status,
 	    return GSS_S_COMPLETE;
 
 	HEIM_TAILQ_FOREACH(mn, &name->gn_mn, gmn_link) {
-		if (gss_oid_equal(mech, mn->gmn_mech_oid))
+		if (mn->gmn_mech == m)
 			break;
 	}
 
@@ -73,8 +86,7 @@ _gss_find_mn(OM_uint32 *minor_status,
 		if (!name->gn_value.value)
 			return GSS_S_BAD_NAME;
 
-		m = __gss_get_mechanism(mech);
-		if (!m || !m->gm_import_name)
+		if (!m->gm_import_name)
 			return (GSS_S_BAD_MECH);
 
 		mn = malloc(sizeof(struct _gss_mechanism_name));

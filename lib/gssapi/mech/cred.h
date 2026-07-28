@@ -43,6 +43,10 @@ struct _gss_cred {
 struct _gss_cred *
 _gss_mg_alloc_cred(void);
 
+gss_cred_id_t
+_gss_mg_find_mech_cred_for_mech(gss_const_cred_id_t,
+				 gssapi_mech_interface);
+
 void
 _gss_mg_release_cred(struct _gss_cred *cred);
 

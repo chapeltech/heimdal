@@ -34,6 +34,8 @@ struct _gss_mech_switch {
 	gss_OID				gm_mech_oid;
 	gss_OID_set			gm_name_types;
 	void				*gm_so;
+	size_t				gm_order;
+	unsigned int			gm_wildcard:1;
 	gssapi_mech_interface_desc	gm_mech;
 };
 HEIM_TAILQ_HEAD(_gss_mech_switch_list, _gss_mech_switch);

@@ -32,10 +32,10 @@ GSSAPI_LIB_FUNCTION OM_uint32 GSSAPI_LIB_CALL
 gss_indicate_mechs(OM_uint32 *minor_status,
     gss_OID_set *mech_set)
 {
-	struct _gss_mech_switch *m;
+	gssapi_mech_interface m;
 	OM_uint32 major_status, junk;
 	gss_OID_set set;
-	size_t i;
+	size_t i, j;
 
 	_gss_load_mech();
 
@@ -43,24 +43,27 @@ gss_indicate_mechs(OM_uint32 *minor_status,
 	if (major_status)
 		return (major_status);
 
-        /* XXX We ignore ENOMEM from gss_add_oid_set_member() */
-	HEIM_TAILQ_FOREACH(m, &_gss_mechs, gm_link) {
-		if (m->gm_mech.gm_indicate_mechs) {
-			major_status = m->gm_mech.gm_indicate_mechs(
+	/* XXX We ignore ENOMEM from gss_add_oid_set_member() */
+	for (i = 0; i < _gss_mech_oids->count; i++) {
+		m = __gss_get_mechanism(&_gss_mech_oids->elements[i]);
+		if (m == NULL)
+			continue;
+		if (m->gm_indicate_mechs) {
+			major_status = m->gm_indicate_mechs(
 			    minor_status, &set);
 			if (major_status)
 				continue;
 			major_status = GSS_S_COMPLETE;
-			for (i = 0; i < set->count; i++) {
+			for (j = 0; j < set->count; j++) {
 				major_status = gss_add_oid_set_member(
-				    minor_status, &set->elements[i], mech_set);
+				    minor_status, &set->elements[j], mech_set);
 				if (major_status)
 					break;
 			}
 			gss_release_oid_set(minor_status, &set);
 		} else {
 			major_status = gss_add_oid_set_member(
-			    minor_status, m->gm_mech_oid, mech_set);
+			    minor_status, &m->gm_mech_oid, mech_set);
 		}
 		if (major_status)
 			break;

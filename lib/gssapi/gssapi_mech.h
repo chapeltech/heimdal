@@ -642,6 +642,10 @@ typedef struct gssapi_mech_interface_desc {
 gssapi_mech_interface
 __gss_get_mechanism(gss_const_OID /* oid */);
 
+gssapi_mech_interface
+__gss_get_mechanism_next(gss_const_OID /* oid */,
+			 gssapi_mech_interface /* previous */);
+
 gss_OID
 _gss_mg_support_mechanism(gss_const_OID mech);
 

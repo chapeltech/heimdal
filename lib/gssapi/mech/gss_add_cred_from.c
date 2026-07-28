@@ -118,9 +118,9 @@ add_mech_cred_internal(OM_uint32 *minor_status,
 		"add_mech_cred_internal must be called with concrete mechanism");
 
     if (desired_name != GSS_C_NO_NAME) {
-	major_status = _gss_find_mn(minor_status,
-				    rk_UNCONST(desired_name),
-				    &m->gm_mech_oid, &mn);
+	major_status = _gss_find_mn_for_mech(minor_status,
+					     rk_UNCONST(desired_name),
+					     m, &mn);
 	if (major_status != GSS_S_COMPLETE)
 	    return major_status;
     } else
@@ -132,7 +132,7 @@ add_mech_cred_internal(OM_uint32 *minor_status,
      * add it to mut_cred.
      */
     HEIM_TAILQ_FOREACH(mc, &mut_cred->gc_mc, gmc_link) {
-	if (gss_oid_equal(&m->gm_mech_oid, mc->gmc_mech_oid))
+	if (mc->gmc_mech == m)
 	    break;
     }
 
@@ -289,4 +289,3 @@ gss_add_cred_from(OM_uint32 *minor_status,
     }
     return major_status;
 }
-

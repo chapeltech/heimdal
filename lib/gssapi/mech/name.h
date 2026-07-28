@@ -43,7 +43,11 @@ struct _gss_name {
 
 OM_uint32
 	_gss_find_mn(OM_uint32 *, struct _gss_name *, gss_const_OID,
-	      struct _gss_mechanism_name **);
+		      struct _gss_mechanism_name **);
+OM_uint32
+	_gss_find_mn_for_mech(OM_uint32 *, struct _gss_name *,
+			      gssapi_mech_interface,
+			      struct _gss_mechanism_name **);
 struct _gss_name *
 	_gss_create_name(gss_name_t new_mn, gssapi_mech_interface m);
 void	_gss_mg_release_name(struct _gss_name *);
@@ -73,5 +77,4 @@ OM_uint32
 _gss_mech_inquire_names_for_mech(OM_uint32 * minor_status,
 				 struct _gss_name_type *names,
 				 gss_OID_set *name_types);
-
 

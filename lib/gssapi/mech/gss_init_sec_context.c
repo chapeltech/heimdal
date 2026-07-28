@@ -35,6 +35,18 @@ _gss_mg_find_mech_cred(
     gss_const_cred_id_t cred_handle,
     gss_const_OID mech_type)
 {
+	gssapi_mech_interface m = __gss_get_mechanism(mech_type);
+
+	if (m == NULL)
+		return GSS_C_NO_CREDENTIAL;
+	return _gss_mg_find_mech_cred_for_mech(cred_handle, m);
+}
+
+gss_cred_id_t
+_gss_mg_find_mech_cred_for_mech(
+    gss_const_cred_id_t cred_handle,
+    gssapi_mech_interface m)
+{
 	const struct _gss_cred *cred = (const struct _gss_cred *)cred_handle;
 	struct _gss_mechanism_cred *mc;
 
@@ -42,7 +54,7 @@ _gss_mg_find_mech_cred(
 		return GSS_C_NO_CREDENTIAL;
 
 	HEIM_TAILQ_FOREACH(mc, &cred->gc_mc, gmc_link) {
-		if (gss_oid_equal(mech_type, mc->gmc_mech_oid))
+		if (mc->gmc_mech == m)
 			return mc->gmc_cred;
 	}
 	return GSS_C_NO_CREDENTIAL;

@@ -167,8 +167,11 @@ gss_acquire_cred_from(OM_uint32 *minor_status,
 	int only_mg_cred_mechs = -1;
 
 	for (i = 0; i < desired_mechs->count; i++) {
-	    m = __gss_get_mechanism(&desired_mechs->elements[i]);
-	    if (m != NULL) {
+	    gssapi_mech_interface previous = NULL;
+
+	    while ((m = __gss_get_mechanism_next(&desired_mechs->elements[i],
+						  previous)) != NULL) {
+		previous = m;
 		if ((m->gm_flags & GM_USE_MG_CRED) == 0)
 		    only_mg_cred_mechs = 0;
 		else if (only_mg_cred_mechs == -1)
@@ -208,45 +211,50 @@ gss_acquire_cred_from(OM_uint32 *minor_status,
     major_status = GSS_S_UNAVAILABLE; /* in case of no mechs */
 
     for (i = 0; i < mechs->count; i++) {
-	struct _gss_mechanism_name *mn = NULL;
-	struct _gss_mechanism_cred *mc = NULL;
-	OM_uint32 cred_time;
+	gssapi_mech_interface previous = NULL;
 
-	m = __gss_get_mechanism(&mechs->elements[i]);
-	if (m == NULL || (m->gm_flags & GM_USE_MG_CRED) != 0)
-	    continue;
+	while ((m = __gss_get_mechanism_next(&mechs->elements[i],
+					      previous)) != NULL) {
+	    struct _gss_mechanism_name *mn = NULL;
+	    struct _gss_mechanism_cred *mc = NULL;
+	    OM_uint32 cred_time;
 
-	if (desired_name != GSS_C_NO_NAME) {
-	    major_status = _gss_find_mn(minor_status, name,
-					&mechs->elements[i], &mn);
-	    if (major_status != GSS_S_COMPLETE)
+	    previous = m;
+	    if ((m->gm_flags & GM_USE_MG_CRED) != 0)
 		continue;
-	}
 
-	major_status = acquire_mech_cred(minor_status, m, mn,
-					 time_req, cred_usage,
-					 cred_store, &mc, &cred_time);
-	if (major_status != GSS_S_COMPLETE) {
-            if (mechs->count == 1)
-                _gss_mg_error(m, *minor_status);
-	    continue;
-        }
+	    if (desired_name != GSS_C_NO_NAME) {
+		major_status = _gss_find_mn_for_mech(minor_status, name,
+						     m, &mn);
+		if (major_status != GSS_S_COMPLETE)
+		    continue;
+	    }
 
-	_gss_mg_log_name(10, name, &mechs->elements[i],
-			 "gss_acquire_cred %s name: %ld/%ld",
-			 m->gm_name,
-			 (long)major_status, (long)*minor_status);
+	    major_status = acquire_mech_cred(minor_status, m, mn,
+					     time_req, cred_usage,
+					     cred_store, &mc, &cred_time);
+	    if (major_status != GSS_S_COMPLETE) {
+		if (mechs->count == 1)
+		    _gss_mg_error(m, *minor_status);
+		continue;
+	    }
 
-	HEIM_TAILQ_INSERT_TAIL(&cred->gc_mc, mc, gmc_link);
+	    _gss_mg_log_name(10, name, &mechs->elements[i],
+			     "gss_acquire_cred %s name: %ld/%ld",
+			     m->gm_name,
+			     (long)major_status, (long)*minor_status);
 
-	if (cred_time < min_time)
-	    min_time = cred_time;
-	if (actual_mechs != NULL) {
-	    major_status = gss_add_oid_set_member(minor_status,
-						  mc->gmc_mech_oid,
-						  actual_mechs);
-	    if (GSS_ERROR(major_status))
-		goto cleanup;
+	    HEIM_TAILQ_INSERT_TAIL(&cred->gc_mc, mc, gmc_link);
+
+	    if (cred_time < min_time)
+		min_time = cred_time;
+	    if (actual_mechs != NULL) {
+		major_status = gss_add_oid_set_member(minor_status,
+						      mc->gmc_mech_oid,
+						      actual_mechs);
+		if (GSS_ERROR(major_status))
+		    goto cleanup;
+	    }
 	}
     }
 
