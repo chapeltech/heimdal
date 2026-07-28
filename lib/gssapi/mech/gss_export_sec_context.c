@@ -63,7 +63,7 @@ gss_export_sec_context(OM_uint32 *minor_status,
         }
         krb5_storage_set_byteorder(sp, KRB5_STORAGE_BYTEORDER_PACKED);
 
-        verflags = 0x00;                /* Version 0 */
+        verflags = 0x01;                /* Version 1: provider identity */
 
         if (ctx->gc_target_len)
             verflags |= EXPORT_CONTEXT_FLAG_ACCUMULATING;
@@ -115,6 +115,12 @@ gss_export_sec_context(OM_uint32 *minor_status,
 					     &m->gm_mech_oid);
 	    if (major_status != GSS_S_COMPLETE)
 		goto failure;
+
+	    kret = krb5_store_string(sp, m->gm_name);
+	    if (kret) {
+		*minor_status = kret;
+		goto failure;
+	    }
 
 	    major_status = _gss_mg_store_buffer(minor_status, sp, &buf);
 	    if (major_status != GSS_S_COMPLETE)

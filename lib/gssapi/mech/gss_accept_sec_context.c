@@ -162,7 +162,7 @@ log_oid(const char *str, gss_OID mech)
 }
 
 static OM_uint32
-choose_mech(struct _gss_context *ctx)
+choose_mech(struct _gss_context *ctx, gss_OID *selected_mech)
 {
         gss_OID_desc     mech;
         gss_OID          mech_oid;
@@ -180,7 +180,7 @@ choose_mech(struct _gss_context *ctx)
 		 * "NegTokenInit2 Variation for Server-Initiation"
 		 */
                 mech_oid = &__gss_spnego_mechanism_oid_desc;
-                goto gss_get_mechanism;
+                goto found;
 	}
 
         p   += ctx->gc_oid_offset;
@@ -207,20 +207,49 @@ choose_mech(struct _gss_context *ctx)
         if (mech_oid == GSS_C_NO_OID)
                 return GSS_S_COMPLETE;
 
-gss_get_mechanism:
+found:
         /*
          * If mech_oid == GSS_C_NO_OID then the mech is non-standard
          * and we have to try all mechs (that we have a cred element
          * for, if we have a cred).
          */
         log_oid("mech oid", mech_oid);
-        ctx->gc_mech = __gss_get_mechanism(mech_oid);
-        if (!ctx->gc_mech) {
+        if (__gss_get_mechanism(mech_oid) == NULL) {
             _gss_mg_log(10, "mechanism client used is unknown");
             return (GSS_S_BAD_MECH);
         }
-        _gss_mg_log(10, "using mech \"%s\"", ctx->gc_mech->gm_name);
+        *selected_mech = mech_oid;
         return GSS_S_COMPLETE;
+}
+
+static OM_uint32
+acceptor_cred_for_mech(gssapi_mech_interface m,
+		       gss_const_cred_id_t acceptor_cred_handle,
+		       gss_const_cred_id_t *acceptor_mc)
+{
+	if (m->gm_flags & GM_USE_MG_CRED) {
+		*acceptor_mc = acceptor_cred_handle;
+		return GSS_S_COMPLETE;
+	}
+
+	*acceptor_mc = _gss_mg_find_mech_cred_for_mech(acceptor_cred_handle, m);
+	if (acceptor_cred_handle != GSS_C_NO_CREDENTIAL &&
+	    *acceptor_mc == GSS_C_NO_CREDENTIAL)
+		return GSS_S_NO_CRED;
+	return GSS_S_COMPLETE;
+}
+
+static int
+acceptor_mech_declined(OM_uint32 major_status, gss_ctx_id_t mech_ctx,
+		       gss_const_buffer_t output_token, gss_const_name_t src_name,
+		       gss_const_cred_id_t delegated_cred)
+{
+	return (major_status == GSS_S_NO_CRED ||
+		major_status == GSS_S_BAD_MECH) &&
+	       mech_ctx == GSS_C_NO_CONTEXT &&
+	       output_token->length == 0 &&
+	       src_name == GSS_C_NO_NAME &&
+	       delegated_cred == GSS_C_NO_CREDENTIAL;
 }
 
 GSSAPI_LIB_FUNCTION OM_uint32 GSSAPI_LIB_CALL
@@ -247,6 +276,7 @@ gss_accept_sec_context(OM_uint32 *minor_status,
 	gss_cred_id_t delegated_mc = GSS_C_NO_CREDENTIAL;
 	gss_name_t src_mn = GSS_C_NO_NAME;
 	gss_OID mech_ret_type = GSS_C_NO_OID;
+	gss_OID selected_mech = GSS_C_NO_OID;
         int initial;
 
         defective_token_error.length = 0;
@@ -291,11 +321,13 @@ gss_accept_sec_context(OM_uint32 *minor_status,
         ctx->gc_initial = 0;
 
         if (major_status == GSS_S_COMPLETE && initial) {
-                major_status = choose_mech(ctx);
+                major_status = choose_mech(ctx, &selected_mech);
                 if (major_status != GSS_S_COMPLETE)
                         return major_status;
         }
         m = ctx->gc_mech;
+	if (initial && selected_mech != GSS_C_NO_OID)
+		m = __gss_get_mechanism(selected_mech);
 
         if (initial && !m && acceptor_cred_handle == GSS_C_NO_CREDENTIAL) {
                 /*
@@ -393,25 +425,71 @@ gss_accept_sec_context(OM_uint32 *minor_status,
                 return GSS_S_BAD_MECH;
         }
 
-	if (m->gm_flags & GM_USE_MG_CRED) {
-		acceptor_mc = acceptor_cred_handle;
-	} else if (cred) {
-		HEIM_TAILQ_FOREACH(mc, &cred->gc_mc, gmc_link)
-			if (mc->gmc_mech == m)
-				break;
-		if (!mc) {
-		        gss_delete_sec_context(&junk, context_handle, NULL);
-			_gss_mg_log(10, "gss-asc: client sent mech %s "
-				    "but no credential was matching",
+	if (initial && selected_mech != GSS_C_NO_OID) {
+		gssapi_mech_interface previous = NULL;
+		gssapi_mech_interface first_mech = NULL;
+		OM_uint32 first_major = GSS_S_BAD_MECH;
+		OM_uint32 first_minor = 0;
+
+		while ((m = __gss_get_mechanism_next(selected_mech,
+						     previous)) != NULL) {
+			gss_ctx_id_t trial_ctx = GSS_C_NO_CONTEXT;
+			gss_buffer_desc trial_output = GSS_C_EMPTY_BUFFER;
+			gss_name_t trial_src = GSS_C_NO_NAME;
+			gss_OID trial_mech = GSS_C_NO_OID;
+			gss_cred_id_t trial_delegated = GSS_C_NO_CREDENTIAL;
+			OM_uint32 trial_flags = 0;
+			OM_uint32 trial_time = 0;
+			OM_uint32 trial_minor = 0;
+
+			previous = m;
+			major_status = acceptor_cred_for_mech(m,
+			    acceptor_cred_handle, &acceptor_mc);
+			if (major_status == GSS_S_COMPLETE) {
+				major_status = m->gm_accept_sec_context(&trial_minor,
+				    &trial_ctx, acceptor_mc, &ctx->gc_input,
+				    input_chan_bindings, &trial_src, &trial_mech,
+				    &trial_output, &trial_flags, &trial_time,
+				    &trial_delegated);
+			}
+
+			if (acceptor_mech_declined(major_status, trial_ctx,
+			    &trial_output, trial_src, trial_delegated)) {
+				if (first_mech == NULL) {
+					first_mech = m;
+					first_major = major_status;
+					first_minor = trial_minor;
+				}
+				gss_release_buffer(&junk, &trial_output);
+				continue;
+			}
+
+			ctx->gc_mech = m;
+			ctx->gc_ctx = trial_ctx;
+			*minor_status = trial_minor;
+			*output_token = trial_output;
+			src_mn = trial_src;
+			mech_ret_type = trial_mech;
+			delegated_mc = trial_delegated;
+			mech_ret_flags = trial_flags;
+			if (time_rec)
+				*time_rec = trial_time;
+			_gss_mg_log(10, "gss-asc: selected provider \"%s\"",
 				    m->gm_name);
-			HEIM_TAILQ_FOREACH(mc, &cred->gc_mc, gmc_link)
-				_gss_mg_log(10, "gss-asc: available creds were %s", mc->gmc_mech->gm_name);
-			return (GSS_S_BAD_MECH);
+			goto got_one;
 		}
-		acceptor_mc = mc->gmc_cred;
-	} else {
-		acceptor_mc = GSS_C_NO_CREDENTIAL;
+
+		gss_delete_sec_context(&junk, context_handle, NULL);
+		*minor_status = first_minor;
+		if (first_mech != NULL)
+			_gss_mg_error(first_mech, first_minor);
+		return first_major;
 	}
+
+	major_status = acceptor_cred_for_mech(m, acceptor_cred_handle,
+					     &acceptor_mc);
+	if (major_status != GSS_S_COMPLETE)
+		goto got_one;
 
 	mech_ret_flags = 0;
 	major_status = m->gm_accept_sec_context(minor_status,

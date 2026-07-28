@@ -39,6 +39,8 @@ gss_import_sec_context(OM_uint32 *minor_status,
         struct _gss_context *ctx = NULL;
 	gss_buffer_desc buf = GSS_C_EMPTY_BUFFER;
         unsigned char verflags;
+	unsigned int version;
+	char *provider = NULL;
 
         _gss_mg_log(10, "gss-isc called");
 
@@ -67,9 +69,10 @@ gss_import_sec_context(OM_uint32 *minor_status,
         if (krb5_ret_uint8(sp, &verflags))
             goto failure;
 
-        if ((verflags & EXPORT_CONTEXT_VERSION_MASK) != 0) {
+	version = verflags & EXPORT_CONTEXT_VERSION_MASK;
+        if (version > 1) {
             _gss_mg_log(10, "gss-isc failed, token version %d not recognised",
-                (int)(verflags & EXPORT_CONTEXT_VERSION_MASK));
+                (int)version);
             /* We don't recognise the version */
             goto failure;
         }
@@ -111,7 +114,22 @@ gss_import_sec_context(OM_uint32 *minor_status,
 		goto failure;
 	    }
 
-            m = __gss_get_mechanism(mech_oid);
+	    if (version == 1 && krb5_ret_string(sp, &provider))
+		goto failure;
+
+	    if (version == 0) {
+		m = __gss_get_mechanism(mech_oid);
+	    } else {
+		gssapi_mech_interface previous = NULL;
+
+		m = NULL;
+		while ((m = __gss_get_mechanism_next(mech_oid,
+						      previous)) != NULL) {
+		    previous = m;
+		    if (strcmp(m->gm_name, provider) == 0)
+			break;
+		}
+	    }
             if (m == NULL) {
                 ret = GSS_S_DEFECTIVE_TOKEN;
 		goto failure;
@@ -140,6 +158,7 @@ gss_import_sec_context(OM_uint32 *minor_status,
 	ret = GSS_S_COMPLETE;
 
 failure:
+	free(provider);
         free(ctx);
         krb5_storage_free(sp);
 	_gss_secure_release_buffer(&tmp_minor, &buf);

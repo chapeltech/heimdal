@@ -85,6 +85,22 @@ it is registered only for the concrete mechanism OIDs it advertises.
 The wildcard entry's position in the file determines its priority relative to
 each mechanism's other providers.
 .Pp
+On the first call to
+.Fn gss_init_sec_context
+or
+.Fn gss_accept_sec_context ,
+a provider may decline with
+.Dv GSS_S_BAD_MECH
+or
+.Dv GSS_S_NO_CRED
+without creating context state or an output token.
+The next provider for the same object identifier is then tried.
+Any other result, context state, or output token selects that provider
+permanently for the security context.
+Exported contexts include the provider name so that imported context state is
+returned to the same provider; provider names for a given object identifier
+should therefore be unique.
+.Pp
 The
 .Pa "/etc/gss/qop"
 file contains a list of Quality of Protection values for use with
