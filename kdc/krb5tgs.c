@@ -1018,11 +1018,14 @@ tgs_parse_request(astgs_request_t r,
 	if (ret != 0)
 	    p = failed;
 	krb5_free_principal(r->context, princ);
-	kdc_log(r->context, config, 5,
+	kdc_log(r->context, config, 0,
 		"Missing master key for decrypting keys for ticket-granting "
 		"ticket account %s with kvno %d at this KDC", p, krbtgt_kvno);
 	if (ret == 0)
 	    free(p);
+	_kdc_set_const_e_text(r,
+		"KDC cannot decrypt ticket-granting key; verify the HDB "
+		"master key configuration");
 	ret = HDB_ERR_KVNO_NOT_FOUND;
 	goto out;
     } else if (ret) {
@@ -1073,6 +1076,36 @@ next_kvno:
 
     if (r->config->warn_ticket_addresses)
         verify_ap_req_flags |= KRB5_VERIFY_AP_REQ_IGNORE_ADDRS;
+
+    {
+	size_t expected_keysize;
+
+	ret = krb5_enctype_keysize(r->context, tkey->key.keytype,
+					    &expected_keysize);
+	if (ret == 0 && tkey->key.keyvalue.length != expected_keysize) {
+	    char *etype = NULL;
+	    char *p = NULL;
+
+	    (void) krb5_enctype_to_string(r->context, tkey->key.keytype,
+					  &etype);
+	    (void) krb5_unparse_name(r->context, princ, &p);
+	    kdc_log(r->context, config, 0,
+		    "KDC database key for %s kvno %u enctype %s has length "
+		    "%lu, expected %lu; verify the HDB master key configuration",
+		    p ? p : "<unparse_name failed>", krbtgt_kvno_try,
+		    etype ? etype : "<unknown enctype>",
+		    (unsigned long)tkey->key.keyvalue.length,
+		    (unsigned long)expected_keysize);
+	    free(etype);
+	    free(p);
+	    krb5_free_principal(r->context, princ);
+	    _kdc_set_const_e_text(r,
+		"KDC database key has invalid length; verify the HDB master "
+		"key configuration");
+	    ret = KRB5_BAD_KEYSIZE;
+	    goto out;
+	}
+    }
 
     ret = krb5_verify_ap_req2(r->context,
 			      &ac,
