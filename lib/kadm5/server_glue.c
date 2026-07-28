@@ -74,6 +74,30 @@ kadm5_init_with_password_ctx(krb5_context context,
 }
 
 kadm5_ret_t
+kadm5_init_with_ext_sqlite(krb5_context context,
+			   const char *client_name,
+			   const char *password,
+			   const char *service_name,
+			   kadm5_config_params *realm_params,
+			   unsigned long struct_version,
+			   unsigned long api_version,
+			   void *sqlite,
+			   unsigned flags,
+			   void **server_handle)
+{
+    return kadm5_s_init_with_ext_sqlite(context,
+					client_name,
+					password,
+					service_name,
+					realm_params,
+					struct_version,
+					api_version,
+					sqlite,
+					flags,
+					server_handle);
+}
+
+kadm5_ret_t
 kadm5_init_with_skey(const char *client_name,
 		     const char *keytab,
 		     const char *service_name,
