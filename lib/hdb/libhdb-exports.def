@@ -76,6 +76,7 @@ EXPORTS
 	hdb_seal_keys
 	hdb_seal_keys_mkey
         hdb_set_last_modified_by
+	hdb_sqlite_create_external
 	hdb_set_master_key
 	hdb_set_master_keyfile
 	hdb_unlock

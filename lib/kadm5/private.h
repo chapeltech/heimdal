@@ -115,6 +115,8 @@ typedef struct kadm5_server_context {
     /* */
     kadm5_config_params config;
     HDB *db;
+    void *ext_sqlite;
+    unsigned ext_sqlite_flags;
     int keep_open;
     krb5_principal caller;
     unsigned acl_flags;
