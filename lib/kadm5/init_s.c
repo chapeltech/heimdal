@@ -42,6 +42,8 @@ kadm5_s_init_with_context(krb5_context context,
 			  kadm5_config_params *realm_params,
 			  unsigned long struct_version,
 			  unsigned long api_version,
+			  void *ext_sqlite,
+			  unsigned ext_sqlite_flags,
 			  void **server_handle)
 {
     kadm5_ret_t ret;
@@ -66,6 +68,9 @@ kadm5_s_init_with_context(krb5_context context,
     else
 	stash_file = ctx->config.stash_file;
 
+    ctx->ext_sqlite = ext_sqlite;
+    ctx->ext_sqlite_flags = ext_sqlite_flags;
+
     assert(dbname != NULL);
     assert(stash_file != NULL);
     assert(ctx->config.acl_file != NULL);
@@ -76,7 +81,21 @@ kadm5_s_init_with_context(krb5_context context,
     assert(ctx->log_context.socket_info != NULL);
 #endif
 
-    ret = hdb_create(ctx->context, &ctx->db, dbname);
+    if (ext_sqlite != NULL) {
+	const char sqlite_prefix[] = "sqlite:";
+
+	if (strncmp(dbname, sqlite_prefix, sizeof(sqlite_prefix) - 1) != 0) {
+	    ret = ENOTSUP;
+	    krb5_set_error_message(ctx->context, ret,
+				   "external SQLite HDB requires sqlite: dbname");
+	} else {
+	    ret = hdb_sqlite_create_external(ctx->context, &ctx->db,
+					     dbname + sizeof(sqlite_prefix) - 1,
+					     ext_sqlite, ext_sqlite_flags);
+	}
+    } else {
+	ret = hdb_create(ctx->context, &ctx->db, dbname);
+    }
     if (ret == 0)
         ret = hdb_set_master_keyfile(ctx->context,
                                      ctx->db, stash_file);
@@ -118,7 +137,9 @@ kadm5_s_dup_context(void *vin, void **out)
     ret = krb5_unparse_name(in->context, in->caller, &p);
     if (ret == 0)
         ret = kadm5_s_init_with_context(in->context, p, NULL,
-                                        &in->config, 0, 0, out);
+                                        &in->config, 0, 0,
+                                        in->ext_sqlite,
+                                        in->ext_sqlite_flags, out);
     free(p);
     return ret;
 }
@@ -139,6 +160,31 @@ kadm5_s_init_with_password_ctx(krb5_context context,
 				     realm_params,
 				     struct_version,
 				     api_version,
+				     NULL,
+				     0,
+				     server_handle);
+}
+
+kadm5_ret_t
+kadm5_s_init_with_ext_sqlite(krb5_context context,
+			     const char *client_name,
+			     const char *password,
+			     const char *service_name,
+			     kadm5_config_params *realm_params,
+			     unsigned long struct_version,
+			     unsigned long api_version,
+			     void *sqlite,
+			     unsigned flags,
+			     void **server_handle)
+{
+    return kadm5_s_init_with_context(context,
+				     client_name,
+				     service_name,
+				     realm_params,
+				     struct_version,
+				     api_version,
+				     sqlite,
+				     flags,
 				     server_handle);
 }
 
@@ -191,6 +237,8 @@ kadm5_s_init_with_skey_ctx(krb5_context context,
 				     realm_params,
 				     struct_version,
 				     api_version,
+				     NULL,
+				     0,
 				     server_handle);
 }
 
@@ -243,6 +291,8 @@ kadm5_s_init_with_creds_ctx(krb5_context context,
 				     realm_params,
 				     struct_version,
 				     api_version,
+				     NULL,
+				     0,
 				     server_handle);
 }
 

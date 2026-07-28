@@ -29,6 +29,7 @@ EXPORTS
 	kadm5_get_privs
 	kadm5_init_with_creds
 	kadm5_init_with_creds_ctx
+	kadm5_init_with_ext_sqlite
 	kadm5_init_with_password
 	kadm5_init_with_password_ctx
 	kadm5_init_with_skey
@@ -56,6 +57,7 @@ EXPORTS
 	kadm5_store_tl_data
         kadm5_unlock
 	kadm5_s_init_with_password_ctx
+	kadm5_s_init_with_ext_sqlite
 	kadm5_s_init_with_password
 	kadm5_s_init_with_skey_ctx
 	kadm5_s_init_with_skey

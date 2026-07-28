@@ -56,6 +56,19 @@ struct hdb_dbinfo;
 
 enum hdb_lockop{ HDB_RLOCK, HDB_WLOCK };
 
+/*
+ * The caller owns the outer transaction on an external SQLite handle.  The
+ * SQLite HDB backend uses private savepoints to keep each HDB operation
+ * atomic without committing or rolling back the caller's transaction.
+ */
+#define HDB_SQLITE_EXTERNAL_CALLER_TRANSACTION 0x00000001
+
+/*
+ * The external SQLite handle refers to a database file that was just created
+ * by the caller, so the normal SQLite HDB schema creation path should run.
+ */
+#define HDB_SQLITE_EXTERNAL_CREATE_SCHEMA      0x00000002
+
 /* flags for various functions */
 #define HDB_F_DECRYPT		0x00001	/* decrypt keys */
 #define HDB_F_REPLACE		0x00002	/* replace entry */
@@ -332,6 +345,10 @@ extern krb5_kt_ops hdb_kt_ops;
 extern krb5_kt_ops hdb_get_kt_ops;
 
 extern const int hdb_interface_version;
+
+krb5_error_code
+hdb_sqlite_create_external(krb5_context, HDB **, const char *, void *,
+    unsigned);
 
 #include <hdb-protos.h>
 
