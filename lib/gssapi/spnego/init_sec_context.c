@@ -63,16 +63,20 @@ initiator_approved(OM_uint32 *minor_status,
     gss_buffer_desc out;
     struct gssspnego_optimistic_ctx *sel = userptr;
     gss_OID negotiated_mech_type = GSS_C_NO_OID;
-    OM_uint32 flags = 0, time_rec = 0;
+    OM_uint32 call_flags, flags = 0, time_rec = 0;
     auth_scheme scheme;
     int negoex = 0;
+
+    call_flags = sel->req_flags;
+    if (sel->preferred_mech_type != GSS_C_NO_OID)
+	call_flags |= GSS_C_PROBEONLY;
 
     maj_stat = gss_init_sec_context(&min_stat,
 				    cred,
 				    &ctx,
 				    sel->target_name,
 				    mech,
-				    sel->req_flags,
+				    call_flags,
 				    sel->time_req,
 				    sel->input_chan_bindings,
 				    GSS_C_NO_BUFFER,
@@ -838,4 +842,3 @@ _gss_spnego_init_sec_context(OM_uint32 * minor_status,
 
     return ret;
 }
-

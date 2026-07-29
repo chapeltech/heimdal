@@ -181,6 +181,12 @@ typedef OM_uint32 gss_qop_t;
 #define GSS_C_DELEG_POLICY_FLAG 32768
 
 /*
+ * Heimdal extension for probing initial context establishment without
+ * producing a mechanism token.
+ */
+#define GSS_C_PROBEONLY 0x00080000
+
+/*
  * Credential usage options
  */
 #define GSS_C_BOTH 0

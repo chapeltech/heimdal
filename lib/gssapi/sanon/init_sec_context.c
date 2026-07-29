@@ -89,11 +89,20 @@ _gss_sanon_init_sec_context(OM_uint32 *minor,
     sanon_ctx sc = (sanon_ctx)*context_handle;
     OM_uint32 flags;
     gss_buffer_desc session_key = GSS_C_EMPTY_BUFFER;
+    int available;
 
     *minor = 0;
     _mg_buffer_zero(output_token);
 
-    if (!_gss_sanon_available_p(cred_handle, target_name, req_flags)) {
+    available = _gss_sanon_available_p(cred_handle, target_name, req_flags);
+
+    if ((req_flags & GSS_C_PROBEONLY) && sc == NULL &&
+	(input_token == GSS_C_NO_BUFFER || input_token->length == 0)) {
+	major = available ? GSS_S_COMPLETE : GSS_S_BAD_MECH;
+	goto out;
+    }
+
+    if (!available) {
 	major = GSS_S_UNAVAILABLE;
 	goto out;
     }

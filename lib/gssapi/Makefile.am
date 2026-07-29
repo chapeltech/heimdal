@@ -333,15 +333,17 @@ $(srcdir)/spnego/spnego-private.h:
 $(srcdir)/sanon/sanon-private.h:
 	cd $(srcdir) && perl ../../cf/make-proto.pl -q -P comment -p sanon/sanon-private.h $(sanonsrc) || rm -f sanon/sanon-private.h
 
-TESTS = test_oid test_names test_cfx test_ordered_provider.sh
+TESTS = test_oid test_names test_cfx test_ordered_provider.sh \
+	test_probeonly.sh
 # test_sequence
 
 test_cfx_SOURCES = krb5/test_cfx.c
 
 check_PROGRAMS = test_acquire_cred test_acquire_cred_auditdns \
-	test_oid test_names test_cfx test_ordered_provider
+	test_oid test_names test_cfx test_ordered_provider test_probeonly
 check_LTLIBRARIES = test_ordered_decline_mech.la \
-	test_ordered_accept_mech.la
+	test_ordered_accept_mech.la test_probe_first_mech.la \
+	test_probe_second_mech.la
 
 bin_PROGRAMS = gsstool gss-token
 noinst_PROGRAMS = test_cred test_kcred test_context test_add_store_cred
@@ -362,6 +364,7 @@ test_names_LDFLAGS = -lresolv
 test_names_LDADD = $(LDADD) $(top_builddir)/lib/asn1/libasn1.la
 test_context_LDADD = $(LDADD) $(top_builddir)/lib/asn1/libasn1.la $(top_builddir)/lib/wind/libwind.la
 test_ordered_provider_LDADD = $(LDADD)
+test_probeonly_LDADD = $(LDADD)
 
 test_ordered_decline_mech_la_SOURCES = test_ordered_mech.c
 test_ordered_decline_mech_la_CPPFLAGS = $(AM_CPPFLAGS) -DPROVIDER_DECLINES
@@ -373,6 +376,18 @@ test_ordered_accept_mech_la_SOURCES = test_ordered_mech.c
 test_ordered_accept_mech_la_LDFLAGS = -module -avoid-version \
 	-rpath $(abs_builddir)/.libs
 test_ordered_accept_mech_la_LIBADD = libgssapi.la
+
+test_probe_first_mech_la_SOURCES = test_probe_mech.c
+test_probe_first_mech_la_CPPFLAGS = $(AM_CPPFLAGS) -DPROBE_MECH_FIRST
+test_probe_first_mech_la_LDFLAGS = -module -avoid-version \
+	-rpath $(abs_builddir)/.libs
+test_probe_first_mech_la_LIBADD = libgssapi.la
+
+test_probe_second_mech_la_SOURCES = test_probe_mech.c
+test_probe_second_mech_la_CPPFLAGS = $(AM_CPPFLAGS) -DPROBE_MECH_SECOND
+test_probe_second_mech_la_LDFLAGS = -module -avoid-version \
+	-rpath $(abs_builddir)/.libs
+test_probe_second_mech_la_LIBADD = libgssapi.la
 
 # gss
 
