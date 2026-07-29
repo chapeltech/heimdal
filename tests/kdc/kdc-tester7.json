@@ -1,0 +1,49 @@
+[
+	{
+	"op" : "kinit",
+	"client" : "proxy-service@TEST.H5L.SE",
+	"keytab" : "FILE:server.keytab",
+	"forwardable" : true,
+	"ccache" : "MEMORY:s4u2proxy-evidence-cache"
+	},
+	{
+	"op" : "sleep",
+	"seconds" : 2
+	},
+	{
+	"op" : "kinit",
+	"client" : "proxy-service@TEST.H5L.SE",
+	"keytab" : "FILE:server.keytab",
+	"forwardable" : true,
+	"ccache" : "MEMORY:s4u2proxy-live-cache"
+	},
+	{
+	"op" : "ks4u2proxy",
+	"server" : "host/datan.test.h5l.se@TEST.H5L.SE",
+	"ccache" : "MEMORY:s4u2proxy-live-cache",
+	"evidence-ccache" : "MEMORY:s4u2proxy-evidence-cache",
+	"impersonate" : "bar@TEST.H5L.SE",
+	"authdata" : "S4U2Proxy authorization data with subkey",
+	"check-authtime" : true,
+	"require-distinct-tgt-authtime" : true
+	},
+	{
+	"op" : "ks4u2proxy",
+	"server" : "host/datan.test.h5l.se@TEST.H5L.SE",
+	"ccache" : "MEMORY:s4u2proxy-live-cache",
+	"evidence-ccache" : "MEMORY:s4u2proxy-evidence-cache",
+	"impersonate" : "bar@TEST.H5L.SE",
+	"authdata" : "S4U2Proxy authorization data without subkey",
+	"no-authenticator-subkey" : true,
+	"check-authtime" : true,
+	"require-distinct-tgt-authtime" : true
+	},
+	{
+	"op" : "kdestroy",
+	"ccache" : "MEMORY:s4u2proxy-live-cache"
+	},
+	{
+	"op" : "kdestroy",
+	"ccache" : "MEMORY:s4u2proxy-evidence-cache"
+	}
+]

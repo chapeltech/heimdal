@@ -134,7 +134,7 @@ check-kdc-weak: check-kdc krb5-weak.conf check-kdc-weak.in Makefile
 	mv check-kdc-weak.tmp check-kdc-weak
 
 check-tester: check-tester.in kdc-tester4.json kdc-tester5.json \
-	kdc-tester6.json Makefile
+	kdc-tester6.json kdc-tester7.json Makefile
 	$(do_subst) < $(srcdir)/check-tester.in > check-tester.tmp && \
 	$(chmod) +x check-tester.tmp && \
 	mv check-tester.tmp check-tester
@@ -436,6 +436,7 @@ EXTRA_DIST = \
 	kdc-tester4.json.in \
 	kdc-tester5.json \
 	kdc-tester6.json \
+	kdc-tester7.json \
 	krb5-authz.conf.in \
 	krb5-authz2.conf.in \
 	krb5-bx509.conf.in \

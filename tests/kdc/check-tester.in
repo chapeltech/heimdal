@@ -59,6 +59,7 @@ keyfile2="${hx509_data}/key2.der"
 kadmin="${kadmin} -l -A -r $R"
 
 server=host/datan.test.h5l.se
+proxy_service=proxy-service@${R}
 
 rsa=yes
 pkinit=no
@@ -90,8 +91,13 @@ ${kadmin} <<EOF || exit 1
 init --realm-max-ticket-life=1day --realm-max-renewable-life=1month ${R}
 add -p foo --use-defaults ${server}@${R}
 add -p foo --use-defaults foo@${R}
+add -p foo --use-defaults bar@${R}
+add -p foo --use-defaults ${proxy_service}
+modify --attributes=+trusted-for-delegation ${proxy_service}
+modify --constrained-delegation=${server} ${proxy_service}
 ext -k ${keytab} foo@${R}
 ext -k ${keytab} ${server}@${R}
+ext -k ${keytab} ${proxy_service}
 EOF
 
 echo "password"
@@ -117,6 +123,10 @@ sed 's/^/	/' out-log
 echo "FAST + inner TGS enc-authorization-data"
 KRB5_CONFIG="${objdir}/krb5-tester-fast.conf" \
 ${kdc_tester} ${srcdir}/kdc-tester6.json > out-log 2>&1 || exit 1
+sed 's/^/	/' out-log
+
+echo "S4U2Proxy TGS enc-authorization-data"
+${kdc_tester} ${srcdir}/kdc-tester7.json > out-log 2>&1 || exit 1
 sed 's/^/	/' out-log
 
 

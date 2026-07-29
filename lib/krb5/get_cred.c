@@ -87,7 +87,8 @@ static krb5_error_code
 set_auth_data (krb5_context context,
 	       KDC_REQ_BODY *req_body,
 	       krb5_authdata *authdata,
-	       krb5_keyblock *subkey)
+	       const krb5_keyblock *key,
+	       krb5_key_usage usage)
 {
     if(authdata->len) {
 	size_t len = 0, buf_size;
@@ -107,7 +108,7 @@ set_auth_data (krb5_context context,
 	    free (buf);
 	    return krb5_enomem(context);
 	}
-	ret = krb5_crypto_init(context, subkey, 0, &crypto);
+	ret = krb5_crypto_init(context, key, 0, &crypto);
 	if (ret) {
 	    free (buf);
 	    free (req_body->enc_authorization_data);
@@ -116,7 +117,7 @@ set_auth_data (krb5_context context,
 	}
         ret = krb5_encrypt_EncryptedData(context,
                                          crypto,
-                                         KRB5_KU_TGS_REQ_AUTH_DAT_SUBKEY,
+                                         usage,
                                          buf,
                                          len,
                                          0,
@@ -138,6 +139,66 @@ clear_auth_data(KDC_REQ_BODY *req_body)
 	free(req_body->enc_authorization_data);
 	req_body->enc_authorization_data = NULL;
     }
+}
+
+static krb5_error_code
+get_test_s4u2proxy_evidence_key(krb5_context context,
+				krb5_ccache ccache,
+				krb5_creds *in_creds,
+				krb5_keyblock *key)
+{
+    krb5_error_code ret, ret2;
+    krb5_ccache evidence_ccache = ccache;
+    krb5_boolean close_evidence_ccache = FALSE;
+    krb5_cc_cursor cursor;
+    krb5_creds cred;
+    const char *ccname;
+
+    memset(key, 0, sizeof(*key));
+
+    if (in_creds->second_ticket.length == 0) {
+	ret = KRB5_CC_NOTFOUND;
+	krb5_set_error_message(context, ret,
+			       N_("S4U2Proxy evidence ticket missing", ""));
+	return ret;
+    }
+
+    ccname = secure_getenv("HEIMDAL_TEST_S4U2PROXY_EVIDENCE_CCACHE");
+    if (ccname && ccname[0]) {
+	ret = krb5_cc_resolve(context, ccname, &evidence_ccache);
+	if (ret)
+	    return ret;
+	close_evidence_ccache = TRUE;
+    }
+
+    ret = krb5_cc_start_seq_get(context, evidence_ccache, &cursor);
+    if (ret)
+	goto out;
+
+    while ((ret = krb5_cc_next_cred(context, evidence_ccache,
+				    &cursor, &cred)) == 0) {
+	if (krb5_data_cmp(&cred.ticket, &in_creds->second_ticket) == 0) {
+	    ret = krb5_copy_keyblock_contents(context, &cred.session, key);
+	    krb5_free_cred_contents(context, &cred);
+	    break;
+	}
+	krb5_free_cred_contents(context, &cred);
+    }
+
+    ret2 = krb5_cc_end_seq_get(context, evidence_ccache, &cursor);
+    if (ret == KRB5_CC_END) {
+	ret = KRB5_CC_NOTFOUND;
+	krb5_set_error_message(context, ret,
+			       N_("S4U2Proxy evidence credential not found "
+				  "in ccache", ""));
+    }
+    if (ret == 0 && ret2)
+	ret = ret2;
+
+out:
+    if (close_evidence_ccache)
+	krb5_cc_close(context, evidence_ccache);
+    return ret;
 }
 
 /*
@@ -163,9 +224,15 @@ init_tgs_req (krb5_context context,
     krb5_auth_context ac = NULL;
     krb5_error_code ret = 0;
     krb5_data tgs_req;
+    krb5_keyblock evidence_key;
+    krb5_keyblock *authdata_key = NULL;
+    krb5_key_usage authdata_usage = KRB5_KU_TGS_REQ_AUTH_DAT_SUBKEY;
     krb5_boolean fast_inner_authdata_only = FALSE;
+    krb5_boolean no_authenticator_subkey = FALSE;
+    krb5_boolean use_fast = state != NULL;
 
     krb5_data_zero(&tgs_req);
+    memset(&evidence_key, 0, sizeof(evidence_key));
     memset(t, 0, sizeof(*t));
 
     t->pvno = 5;
@@ -255,11 +322,34 @@ init_tgs_req (krb5_context context,
     if(ret)
 	goto fail;
 
-    ret = krb5_auth_con_generatelocalsubkey(context, ac, &krbtgt->session);
-    if (ret)
-	goto fail;
+    no_authenticator_subkey =
+	flags.b.cname_in_addl_tkt && second_ticket != NULL &&
+	in_creds->authdata.len > 0 &&
+	secure_getenv("HEIMDAL_TEST_S4U2PROXY_NO_AUTHENTICATOR_SUBKEY") != NULL;
 
-    if (state) {
+    /*
+     * TGS FAST armor is derived from the PA-TGS-REQ authenticator subkey.
+     * This private test hook intentionally omits that subkey to exercise
+     * the S4U2Proxy evidence-ticket session-key fallback.
+     */
+    if (no_authenticator_subkey)
+	use_fast = FALSE;
+
+    if (no_authenticator_subkey) {
+	ret = get_test_s4u2proxy_evidence_key(context, ccache,
+					      in_creds, &evidence_key);
+	if (ret)
+	    goto fail;
+	authdata_key = &evidence_key;
+	authdata_usage = KRB5_KU_TGS_REQ_AUTH_DAT_SESSION;
+    } else {
+	ret = krb5_auth_con_generatelocalsubkey(context, ac, &krbtgt->session);
+	if (ret)
+	    goto fail;
+	authdata_key = ac->local_subkey;
+    }
+
+    if (use_fast) {
 	krb5_data empty;
 
 	krb5_data_zero(&empty);
@@ -275,12 +365,13 @@ init_tgs_req (krb5_context context,
      * while carrying it in the FAST inner body.
      */
     fast_inner_authdata_only =
-	state != NULL && in_creds->authdata.len > 0 &&
+	use_fast && in_creds->authdata.len > 0 &&
 	secure_getenv("HEIMDAL_TEST_FAST_INNER_AUTHDATA_ONLY") != NULL;
 
     if (!fast_inner_authdata_only) {
 	ret = set_auth_data(context, &t->req_body,
-			    &in_creds->authdata, ac->local_subkey);
+			    &in_creds->authdata,
+			    authdata_key, authdata_usage);
 	if (ret)
 	    goto fail;
     }
@@ -341,7 +432,7 @@ init_tgs_req (krb5_context context,
 	}
     }
 
-    if (state) {
+    if (use_fast) {
 	state->armor_ac = ac;
 	ret = _krb5_fast_create_armor(context, state, NULL);
 	state->armor_ac = NULL;
@@ -350,7 +441,8 @@ init_tgs_req (krb5_context context,
 
 	if (fast_inner_authdata_only) {
 	    ret = set_auth_data(context, &t->req_body,
-				&in_creds->authdata, ac->local_subkey);
+				&in_creds->authdata,
+				authdata_key, authdata_usage);
 	    if (ret)
 		goto fail;
 	}
@@ -378,6 +470,7 @@ fail:
 	free_TGS_REQ (t);
     }
     krb5_data_free(&tgs_req);
+    krb5_free_keyblock_contents(context, &evidence_key);
 
     return ret;
 }
@@ -573,6 +666,7 @@ get_cred_kdc(krb5_context context,
     size_t len = 0;
     Ticket second_ticket_data;
     METHOD_DATA padata;
+    krb5_boolean test_s4u2proxy_authdata;
 
     memset(&rep, 0, sizeof(rep));
     krb5_data_zero(&resp);
@@ -583,7 +677,13 @@ get_cred_kdc(krb5_context context,
     krb5_generate_random_block(&nonce, sizeof(nonce));
     nonce &= 0xffffffff;
 
-    if(flags.b.enc_tkt_in_skey && second_ticket == NULL){
+    test_s4u2proxy_authdata =
+	flags.b.cname_in_addl_tkt && second_ticket == NULL &&
+	in_creds->second_ticket.length != 0 &&
+	secure_getenv("HEIMDAL_TEST_S4U2PROXY_AUTHDATA") != NULL;
+
+    if((flags.b.enc_tkt_in_skey || test_s4u2proxy_authdata) &&
+       second_ticket == NULL){
 	ret = decode_Ticket(in_creds->second_ticket.data,
 			    in_creds->second_ticket.length,
 			    &second_ticket_data, &len);

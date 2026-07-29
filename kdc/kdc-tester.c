@@ -229,6 +229,94 @@ copy_keytab(krb5_context context, krb5_keytab from, krb5_keytab to)
     return ret;
 }	    
 
+static void
+add_test_authdata(krb5_creds *in, const char *s)
+{
+    AuthorizationDataElement ade;
+    krb5_error_code ret;
+
+    memset(&ade, 0, sizeof(ade));
+    ade.ad_type = 777;
+    ade.ad_data.data = rk_UNCONST(s);
+    ade.ad_data.length = strlen(s);
+
+    ret = add_AuthorizationData(&in->authdata, &ade);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "add_AuthorizationData");
+}
+
+struct saved_env {
+    const char *name;
+    char *value;
+};
+
+static void
+set_test_env(struct saved_env *env, const char *name, const char *value)
+{
+    const char *e = getenv(name);
+
+    env->name = name;
+    env->value = NULL;
+
+    if (e) {
+	env->value = strdup(e);
+	if (env->value == NULL)
+	    krb5_err(kdc_context, 1, ENOMEM, "strdup");
+    }
+
+    if (setenv(name, value, 1) != 0)
+	krb5_err(kdc_context, 1, errno, "setenv");
+}
+
+static void
+restore_test_env(struct saved_env *env)
+{
+    if (env->name == NULL)
+	return;
+    if (env->value) {
+	if (setenv(env->name, env->value, 1) != 0)
+	    krb5_err(kdc_context, 1, errno, "setenv");
+	free(env->value);
+    } else {
+	unsetenv(env->name);
+    }
+    env->name = NULL;
+}
+
+static krb5_timestamp
+get_ccache_tgt_authtime(krb5_ccache cc)
+{
+    krb5_creds mcred, cred;
+    krb5_error_code ret;
+    const char *realm;
+    krb5_timestamp authtime;
+
+    memset(&mcred, 0, sizeof(mcred));
+    memset(&cred, 0, sizeof(cred));
+
+    ret = krb5_cc_get_principal(kdc_context, cc, &mcred.client);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_cc_get_principal");
+
+    realm = krb5_principal_get_realm(kdc_context, mcred.client);
+    ret = krb5_make_principal(kdc_context, &mcred.server, realm,
+			      KRB5_TGS_NAME, realm, NULL);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_make_principal");
+
+    ret = krb5_cc_retrieve_cred(kdc_context, cc, 0, &mcred, &cred);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_cc_retrieve_cred");
+
+    authtime = cred.times.authtime;
+
+    krb5_free_cred_contents(kdc_context, &cred);
+    krb5_free_principal(kdc_context, mcred.server);
+    krb5_free_principal(kdc_context, mcred.client);
+
+    return authtime;
+}
+
 /*
  *
  */
@@ -237,6 +325,7 @@ static void
 eval_kinit(heim_dict_t o)
 {
     heim_string_t user, password, keytab, fast_armor_cc, pk_user_id, ccache;
+    heim_bool_t forwardable;
     krb5_get_init_creds_opt *opt;
     krb5_init_creds_context ctx;
     krb5_principal client;
@@ -267,6 +356,11 @@ eval_kinit(heim_dict_t o)
     ret = krb5_get_init_creds_opt_alloc (kdc_context, &opt);
     if (ret)
 	krb5_err(kdc_context, 1, ret, "krb5_get_init_creds_opt_alloc");
+
+    forwardable = heim_dict_get_value(o, HSTR("forwardable"));
+    if (forwardable)
+	krb5_get_init_creds_opt_set_forwardable(opt,
+						heim_bool_val(forwardable));
 
     if (pk_user_id) {
 	heim_bool_t rsaobj = heim_dict_get_value(o, HSTR("pkinit-use-rsa"));
@@ -401,19 +495,8 @@ eval_kgetcred(heim_dict_t o)
 	nostore = heim_bool_create(1);
 
     authdata = heim_dict_get_value(o, HSTR("authdata"));
-    if (authdata) {
-	AuthorizationDataElement ade;
-	const char *s = heim_string_get_utf8(authdata);
-
-	memset(&ade, 0, sizeof(ade));
-	ade.ad_type = 777;
-	ade.ad_data.data = rk_UNCONST(s);
-	ade.ad_data.length = strlen(s);
-
-	ret = add_AuthorizationData(&in.authdata, &ade);
-	if (ret)
-	    krb5_err(kdc_context, 1, ret, "add_AuthorizationData");
-    }
+    if (authdata)
+	add_test_authdata(&in, heim_string_get_utf8(authdata));
 
     ret = krb5_cc_resolve(kdc_context, heim_string_get_utf8(ccache), &cc);
     if (ret)
@@ -489,6 +572,206 @@ eval_kgetcred(heim_dict_t o)
     krb5_cc_close(kdc_context, cc);
 }
 
+/*
+ *
+ */
+
+static void
+eval_sleep(heim_dict_t o)
+{
+    heim_number_t n = heim_dict_get_value(o, HSTR("seconds"));
+    int seconds = 1;
+
+    if (n)
+	seconds = heim_number_get_int(n);
+    if (seconds < 0)
+	krb5_errx(kdc_context, 1, "negative sleep duration");
+
+    sleep((unsigned int)seconds);
+}
+
+/*
+ *
+ */
+
+static void
+eval_ks4u2proxy(heim_dict_t o)
+{
+    heim_string_t server, ccache, evidence_ccache, evidence_server;
+    heim_string_t impersonate, authdata;
+    heim_bool_t no_subkey, check_authtime, require_distinct_tgt_authtime;
+    krb5_get_creds_opt opt;
+    krb5_ccache cc = NULL, evidence_cc = NULL;
+    krb5_principal evidence_server_princ = NULL;
+    krb5_principal impersonate_princ = NULL;
+    krb5_creds *evidence = NULL, *out = NULL;
+    krb5_creds in;
+    krb5_flags options = KRB5_GC_NO_STORE;
+    krb5_kdc_flags flags;
+    krb5_error_code ret;
+    struct saved_env s4u_env = { NULL, NULL };
+    struct saved_env evidence_env = { NULL, NULL };
+    struct saved_env no_subkey_env = { NULL, NULL };
+    const char *evidence_ccache_name;
+    krb5_boolean set_no_subkey = FALSE;
+    krb5_boolean do_check_authtime = TRUE;
+    krb5_boolean require_distinct = FALSE;
+
+    if (ptop)
+	ptop->tgs_req += 2;
+
+    memset(&in, 0, sizeof(in));
+    flags.i = 0;
+
+    server = heim_dict_get_value(o, HSTR("server"));
+    if (server == NULL)
+	krb5_errx(kdc_context, 1, "no server");
+
+    ccache = heim_dict_get_value(o, HSTR("ccache"));
+    if (ccache == NULL)
+	krb5_errx(kdc_context, 1, "no ccache");
+
+    evidence_ccache = heim_dict_get_value(o, HSTR("evidence-ccache"));
+    if (evidence_ccache == NULL)
+	evidence_ccache = ccache;
+    evidence_ccache_name = heim_string_get_utf8(evidence_ccache);
+
+    impersonate = heim_dict_get_value(o, HSTR("impersonate"));
+    if (impersonate == NULL)
+	krb5_errx(kdc_context, 1, "no impersonate");
+
+    authdata = heim_dict_get_value(o, HSTR("authdata"));
+    if (authdata == NULL)
+	krb5_errx(kdc_context, 1, "no authdata");
+
+    no_subkey = heim_dict_get_value(o, HSTR("no-authenticator-subkey"));
+    set_no_subkey = no_subkey && heim_bool_val(no_subkey);
+
+    check_authtime = heim_dict_get_value(o, HSTR("check-authtime"));
+    if (check_authtime)
+	do_check_authtime = heim_bool_val(check_authtime);
+
+    require_distinct_tgt_authtime =
+	heim_dict_get_value(o, HSTR("require-distinct-tgt-authtime"));
+    require_distinct = require_distinct_tgt_authtime &&
+	heim_bool_val(require_distinct_tgt_authtime);
+
+    ret = krb5_cc_resolve(kdc_context, heim_string_get_utf8(ccache), &cc);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_cc_resolve");
+
+    ret = krb5_cc_resolve(kdc_context, evidence_ccache_name, &evidence_cc);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_cc_resolve");
+
+    evidence_server = heim_dict_get_value(o, HSTR("evidence-server"));
+    if (evidence_server) {
+	ret = krb5_parse_name(kdc_context, heim_string_get_utf8(evidence_server),
+			      &evidence_server_princ);
+	if (ret)
+	    krb5_err(kdc_context, 1, ret, "krb5_parse_name");
+    } else {
+	ret = krb5_cc_get_principal(kdc_context, evidence_cc,
+				    &evidence_server_princ);
+	if (ret)
+	    krb5_err(kdc_context, 1, ret, "krb5_cc_get_principal");
+    }
+
+    ret = krb5_parse_name(kdc_context, heim_string_get_utf8(impersonate),
+			  &impersonate_princ);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_parse_name");
+
+    ret = krb5_get_creds_opt_alloc(kdc_context, &opt);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_get_creds_opt_alloc");
+
+    ret = krb5_get_creds_opt_set_impersonate(kdc_context, opt,
+					     impersonate_princ);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_get_creds_opt_set_impersonate");
+
+    krb5_get_creds_opt_add_options(kdc_context, opt,
+				   KRB5_GC_FORWARDABLE | KRB5_GC_NO_STORE);
+
+    ret = krb5_get_creds(kdc_context, opt, evidence_cc,
+			 evidence_server_princ, &evidence);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_get_creds");
+
+    ret = krb5_cc_store_cred(kdc_context, evidence_cc, evidence);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_cc_store_cred");
+
+    ret = krb5_cc_get_principal(kdc_context, cc, &in.client);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_cc_get_principal");
+
+    ret = krb5_parse_name(kdc_context, heim_string_get_utf8(server),
+			  &in.server);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_parse_name");
+
+    add_test_authdata(&in, heim_string_get_utf8(authdata));
+
+    ret = krb5_data_copy(&in.second_ticket,
+			 evidence->ticket.data,
+			 evidence->ticket.length);
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_data_copy");
+
+    flags.b.cname_in_addl_tkt = 1;
+
+    set_test_env(&s4u_env, "HEIMDAL_TEST_S4U2PROXY_AUTHDATA", "1");
+    set_test_env(&evidence_env,
+		 "HEIMDAL_TEST_S4U2PROXY_EVIDENCE_CCACHE",
+		 evidence_ccache_name);
+    if (set_no_subkey)
+	set_test_env(&no_subkey_env,
+		     "HEIMDAL_TEST_S4U2PROXY_NO_AUTHENTICATOR_SUBKEY", "1");
+
+    ret = krb5_get_credentials_with_flags(kdc_context, options, flags,
+					  cc, &in, &out);
+
+    restore_test_env(&no_subkey_env);
+    restore_test_env(&evidence_env);
+    restore_test_env(&s4u_env);
+
+    if (ret)
+	krb5_err(kdc_context, 1, ret, "krb5_get_credentials_with_flags");
+
+    if (!krb5_principal_compare(kdc_context, evidence->client, out->client))
+	krb5_errx(kdc_context, 1,
+		  "S4U2Proxy client differs from evidence ticket client");
+
+    if (do_check_authtime) {
+	if (require_distinct) {
+	    krb5_timestamp tgt_authtime = get_ccache_tgt_authtime(cc);
+
+	    if (evidence->times.authtime == tgt_authtime)
+		krb5_errx(kdc_context, 1,
+			  "test setup did not make evidence authtime "
+			  "distinct from TGT authtime");
+	}
+
+	if (evidence->times.authtime != out->times.authtime)
+	    krb5_errx(kdc_context, 1,
+		      "S4U2Proxy authtime %ld differs from evidence "
+		      "ticket authtime %ld",
+		      (long)out->times.authtime,
+		      (long)evidence->times.authtime);
+    }
+
+    krb5_free_creds(kdc_context, out);
+    krb5_free_creds(kdc_context, evidence);
+    krb5_free_cred_contents(kdc_context, &in);
+    krb5_get_creds_opt_free(kdc_context, opt);
+    krb5_free_principal(kdc_context, impersonate_princ);
+    krb5_free_principal(kdc_context, evidence_server_princ);
+    krb5_cc_close(kdc_context, evidence_cc);
+    krb5_cc_close(kdc_context, cc);
+}
+
 
 /*
  *
@@ -538,10 +821,14 @@ eval_object(heim_object_t o)
 
 	if (strcmp(op, "repeat") == 0) {
 	    eval_repeat(o);
+	} else if (strcmp(op, "sleep") == 0) {
+	    eval_sleep(o);
 	} else if (strcmp(op, "kinit") == 0) {
 	    eval_kinit(o);
 	} else if (strcmp(op, "kgetcred") == 0) {
 	    eval_kgetcred(o);
+	} else if (strcmp(op, "ks4u2proxy") == 0) {
+	    eval_ks4u2proxy(o);
 	} else if (strcmp(op, "kdestroy") == 0) {
 	    eval_kdestroy(o);
 	} else {
