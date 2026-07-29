@@ -51,6 +51,7 @@ static char *type_string;
 static char *mech_string;
 static char *mechs_string;
 static char *ret_mech_string;
+static char *optimistic_mech_string;
 static char *localname_string;
 static char *client_name;
 static char *client_password;
@@ -384,6 +385,11 @@ loop(gss_OID mechoid,
             if (GSS_ERROR(maj_stat))
                 errx(1, "init_sec_context: %s",
                      gssapi_err(maj_stat, min_stat, mechoid));
+	    if (num_loops == 1 && optimistic_mech_string != NULL &&
+		!gss_oid_equal(actual_mech_client,
+			       string_to_oid(optimistic_mech_string)))
+		errx(1, "optimistic mech is not the expected type %s",
+		     optimistic_mech_string);
             client_done = !(maj_stat & GSS_S_CONTINUE_NEEDED);
 
 	    gss_release_buffer(&min_stat, &input_token);
@@ -900,6 +906,8 @@ static struct getargs args[] = {
     {"mech-types",0,	arg_string, &mechs_string, "mech types (names)", NULL },
     {"ret-mech-type",0,	arg_string, &ret_mech_string,
      "type of return mech", NULL },
+    {"optimistic-mech-type",0, arg_string, &optimistic_mech_string,
+     "type of optimistic mech", NULL },
     {"dns-canonicalize",0,arg_negative_flag, &dns_canon_flag,
      "use dns to canonicalize", NULL },
     {"mutual-auth",0,	arg_flag,	&mutual_auth_flag,"mutual auth", NULL },

@@ -121,6 +121,13 @@ do
 	--no-dns-canonicalize --mech-type=spnego --mech-types=krb5 \
 	--limit-enctype="${enctype}" \
 	--ret-mech-type=krb5 --mutual-auth --wrapunwrap "${target}"
+
+    test_section "KDC-free GSS SPNEGO Kerberos fallback with ${enctype}"
+    test_run env KRB5_KTNAME="${nokeytab}" ${context} \
+	--client-ccache="${cache}" --client-name="${client}" \
+	--no-dns-canonicalize --mech-type=spnego \
+	--mech-types=krb5,sanon-x25519 --optimistic-mech-type=krb5 \
+	--ret-mech-type=sanon-x25519 --anonymous --wrapunwrap "${target}"
 done
 
 test_finish
