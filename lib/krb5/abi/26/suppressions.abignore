@@ -1,0 +1,24 @@
+# libkrb5 exports a number of Heimdal-private symbols for use by other
+# libraries built and shipped as part of the same Heimdal release.  They are
+# not part of the supported external ABI.
+[suppress_function]
+  name_regexp = ^_krb5_.*
+  change_kind = all
+
+[suppress_variable]
+  name_regexp = ^_krb5_.*
+  change_kind = all
+
+# These public entry points retain the same machine calling convention.
+# Libabigail reports source-level const qualification and changes to opaque
+# objects passed only through pointers.
+[suppress_function]
+  name_regexp = ^(krb524_convert_creds_kdc|krb524_convert_creds_kdc_ccache|krb5_fwd_tgt_creds|krb5_get_error_string|krb5_kuserok|krb5_pac_get_buffer|krb5_pac_get_types|krb5_string_to_key|krb5_string_to_key_data)$
+  change_kind = function-sub-type-change
+
+# Const qualification of exported pointers does not alter their ELF data
+# representation.  The ccache operation tables are library-owned objects;
+# applications use ccache accessors rather than allocating or inspecting them.
+[suppress_variable]
+  name_regexp = ^(heimdal_long_version|heimdal_version|krb5_cc_type_api|krb5_cc_type_dcc|krb5_cc_type_file|krb5_cc_type_kcm|krb5_cc_type_memory|krb5_cc_type_scc|krb5_config_file|krb5_defkeyname|krb5_(acc|dcc|fcc|kcm|mcc|scc)_ops)$
+  change_kind = all
