@@ -67,7 +67,7 @@ jobs:
                     - name: linux-gcc
                       os: ubuntu-22.04
                       compiler: gcc
-                      cflags: '-Wnonnull'
+                      cflags: '-g -Wnonnull'
                       configureopts: '--with-readline=yes'
                       abi_platform: x86_64-linux-gnu
         steps:

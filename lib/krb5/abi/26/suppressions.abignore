@@ -10,11 +10,19 @@
   change_kind = all
 
 # These public entry points retain the same machine calling convention.
-# Libabigail reports source-level const qualification and changes to opaque
-# objects passed only through pointers.
+# Libabigail reports source-level const qualification and changes to objects
+# that these functions pass only through pointers.
 [suppress_function]
-  name_regexp = ^(krb524_convert_creds_kdc|krb524_convert_creds_kdc_ccache|krb5_fwd_tgt_creds|krb5_get_error_string|krb5_kuserok|krb5_pac_get_buffer|krb5_pac_get_types|krb5_string_to_key|krb5_string_to_key_data)$
-  change_kind = function-sub-type-change
+  name_regexp = ^(krb524_convert_creds_kdc|krb524_convert_creds_kdc_ccache|krb5_aname_to_localname|krb5_cc_cache_match|krb5_fwd_tgt_creds|krb5_get_error_string|krb5_kuserok|krb5_pac_get_buffer|krb5_pac_get_types|krb5_string_to_key|krb5_string_to_key_data)$
+  change_kind = function-subtype-change
+
+# Heimdal 8 no longer implements the digest and NTLM APIs.  Typed compatibility
+# wrappers retain their Heimdal 7 symbol names and return ENOTSUP so old
+# binaries still load and fail cleanly.  Only their intentional type change is
+# suppressed; deleting a compatibility symbol remains an ABI failure.
+[suppress_function]
+  name_regexp = ^krb5_(digest|ntlm)_.*
+  change_kind = function-subtype-change
 
 # Const qualification of exported pointers does not alter their ELF data
 # representation.  The ccache operation tables are library-owned objects;

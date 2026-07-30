@@ -85,6 +85,7 @@ run_abidiff()
 
     set +e
     abidiff \
+        --fail-no-debug-info \
         --no-added-syms \
         --headers-dir2 "$headers_dir" \
         $added_binaries \

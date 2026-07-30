@@ -700,8 +700,7 @@ typedef struct {
 
 extern const char *const heimdal_version, *const heimdal_long_version;
 
-typedef void (KRB5_CALLCONV * krb5_log_log_func_t)(krb5_context,
-						   const char*,
+typedef void (KRB5_CALLCONV * krb5_log_log_func_t)(const char*,
 						   const char*,
 						   void*);
 typedef void (KRB5_CALLCONV * krb5_log_close_func_t)(void*);
@@ -1067,4 +1066,3 @@ extern KRB5_LIB_VARIABLE const char *const krb5_cc_type_keyring;
 #endif
 
 #endif /* __KRB5_H__ */
-

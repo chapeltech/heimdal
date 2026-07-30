@@ -46,7 +46,6 @@ krb5_initlog(krb5_context context,
 }
 
 struct krb5_addlog_func_wrapper {
-    krb5_context context;
     krb5_log_log_func_t log_func;
     krb5_log_close_func_t close_func;
     void *data;
@@ -60,8 +59,8 @@ krb5_addlog_func_wrapper_log(heim_context hcontext,
 {
     struct krb5_addlog_func_wrapper *w = data;
 
-    w->log_func(w->context,
-                prefix,
+    (void)hcontext;
+    w->log_func(prefix,
                 msg,
                 w->data);
 }
@@ -90,7 +89,6 @@ krb5_addlog_func(krb5_context context,
     if (w == NULL)
 	return krb5_enomem(context);
 
-    w->context = context;
     w->log_func = log_func;
     w->close_func = close_func;
     w->data = data;
