@@ -1,0 +1,21 @@
+Baseline: initial libkrb5.so.27 ABI
+Parent commit: 208bb1eaaa452cde5271b390873cb10742686c61
+Platform: x86_64-linux-gnu
+
+Generated from the Heimdal 8 development tree after changing libkrb5's
+libtool version-info to 27:0:0:
+
+  ./configure --disable-heimdal-documentation CFLAGS="-g -O0"
+
+The retained library was unstripped and contained DWARF debug information:
+
+  SHA256 (libkrb5.so.27.0.0) =
+      aeb05f66db829184d0e22a33547ae7e2933f8b3fb101c774f4a8ba2b8f3042f0
+
+The ABI XML file was generated with abigail-tools 2.2 on Debian 12
+(bookworm), using:
+
+  --no-corpus-path --no-comp-dir-path --short-locs
+
+  SHA256 (x86_64-linux-gnu.abi) =
+      537fd9e57fd7b82e45b2433d599affd0ae1be4273ec7ee8ef618441019e07079
