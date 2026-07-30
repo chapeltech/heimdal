@@ -1,0 +1,13 @@
+Baseline: heimdal-7.8.0
+Platform: x86_64-linux-gnu
+
+Generated from a Debian 11 (bullseye) build of the heimdal-7.8.0 tag:
+
+  ./configure --prefix=/opt/heimdal-7.8 --enable-shared --disable-static \
+      --disable-otp --disable-heimdal-documentation CFLAGS="-g -O0" \
+      LIBS=-lcrypt
+
+The ABI XML file was generated from that binary with libabigail 2.2
+on Debian 12 (bookworm), using:
+
+  --no-corpus-path --no-comp-dir-path --short-locs
