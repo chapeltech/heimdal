@@ -700,13 +700,16 @@ typedef struct {
 
 extern const char *const heimdal_version, *const heimdal_long_version;
 
-typedef void (KRB5_CALLCONV * krb5_log_log_func_t)(krb5_context,
-						   const char*,
+typedef void (KRB5_CALLCONV * krb5_log_log_func_t)(const char*,
 						   const char*,
 						   void*);
 typedef void (KRB5_CALLCONV * krb5_log_close_func_t)(void*);
 
-typedef struct heim_log_facility_s krb5_log_facility;
+typedef struct krb5_log_facility {
+    char *program;
+    int len;
+    struct facility *val;
+} krb5_log_facility;
 
 typedef EncAPRepPart krb5_ap_rep_enc_part;
 

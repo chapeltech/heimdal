@@ -359,7 +359,7 @@ process_request(krb5_context context,
     r->context = context;
     r->hcontext = context->hcontext;
     r->config = config;
-    r->logf = config->logf;
+    r->logf = _krb5_unwrap_log_facility(config->logf);
     r->from = from;
     r->addr = addr;
     r->request.data = buf;
