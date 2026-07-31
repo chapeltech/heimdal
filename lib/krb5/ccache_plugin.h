@@ -37,6 +37,17 @@
 
 #define KRB5_PLUGIN_CCACHE "ccache_ops"
 
+typedef struct krb5_cc_ops_v5 {
+    krb5_cc_ops ops;
+    krb5_error_code (KRB5_CALLCONV * get_name_2)(krb5_context, krb5_ccache,
+						 const char **id,
+						 const char **collection,
+						 const char **subsidiary);
+    krb5_error_code (KRB5_CALLCONV * resolve_2)(krb5_context, krb5_ccache *id,
+						const char *collection,
+						const char *subsidiary);
+} krb5_cc_ops_v5;
+
 krb5_error_code KRB5_CALLCONV
 ccache_ops_plugin_load(krb5_context context,
 		       krb5_get_instance_func_t *func,

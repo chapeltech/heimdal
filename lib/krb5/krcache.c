@@ -2041,6 +2041,21 @@ krcc_get_default_name(krb5_context context, char **str)
     return 0;
 }
 
+static const char *
+krcc_get_name(krb5_context context, krb5_ccache id)
+{
+    const char *name = NULL;
+
+    (void) krcc_get_name_2(context, id, &name, NULL, NULL);
+    return name;
+}
+
+static krb5_error_code
+krcc_resolve(krb5_context context, krb5_ccache *id, const char *res)
+{
+    return krcc_resolve_2(context, id, res, NULL);
+}
+
 /*
  * ccache implementation storing credentials in the Linux keyring facility
  * The default is to put them at the session keyring level.
@@ -2048,10 +2063,10 @@ krcc_get_default_name(krb5_context context, char **str)
  * be stored at the process or thread level respectively.
  */
 KRB5_LIB_VARIABLE const krb5_cc_ops krb5_krcc_ops = {
-    KRB5_CC_OPS_VERSION_5,
+    KRB5_CC_OPS_VERSION_3,
     "KEYRING",
-    NULL,
-    NULL,
+    krcc_get_name,
+    krcc_resolve,
     krcc_gen_new,
     krcc_initialize,
     krcc_destroy,
@@ -2073,7 +2088,10 @@ KRB5_LIB_VARIABLE const krb5_cc_ops krb5_krcc_ops = {
     krcc_set_default,
     krcc_lastchange,
     krcc_set_kdc_offset,
-    krcc_get_kdc_offset,
+    krcc_get_kdc_offset
+};
+
+const struct krb5_cc_ops_ext _krb5_krcc_ops_ext = {
     krcc_get_name_2,
     krcc_resolve_2
 };

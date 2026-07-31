@@ -1674,6 +1674,21 @@ fcc_get_kdc_offset(krb5_context context, krb5_ccache id, krb5_deltat *kdc_offset
 }
 
 
+static const char *
+fcc_get_name(krb5_context context, krb5_ccache id)
+{
+    const char *name = NULL;
+
+    (void) fcc_get_name_2(context, id, &name, NULL, NULL);
+    return name;
+}
+
+static krb5_error_code
+fcc_resolve(krb5_context context, krb5_ccache *id, const char *res)
+{
+    return fcc_resolve_2(context, id, res, NULL);
+}
+
 /**
  * Variable containing the FILE based credential cache implementation.
  *
@@ -1681,10 +1696,10 @@ fcc_get_kdc_offset(krb5_context context, krb5_ccache id, krb5_deltat *kdc_offset
  */
 
 KRB5_LIB_VARIABLE const krb5_cc_ops krb5_fcc_ops = {
-    KRB5_CC_OPS_VERSION_5,
+    KRB5_CC_OPS_VERSION_3,
     "FILE",
-    NULL,
-    NULL,
+    fcc_get_name,
+    fcc_resolve,
     fcc_gen_new,
     fcc_initialize,
     fcc_destroy,
@@ -1706,7 +1721,10 @@ KRB5_LIB_VARIABLE const krb5_cc_ops krb5_fcc_ops = {
     fcc_set_default_cache,
     fcc_lastchange,
     fcc_set_kdc_offset,
-    fcc_get_kdc_offset,
+    fcc_get_kdc_offset
+};
+
+const struct krb5_cc_ops_ext _krb5_fcc_ops_ext = {
     fcc_get_name_2,
     fcc_resolve_2
 };
