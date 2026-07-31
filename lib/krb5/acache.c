@@ -1089,6 +1089,21 @@ acc_lastchange(krb5_context context, krb5_ccache id, krb5_timestamp *mtime)
     return 0;
 }
 
+static const char * KRB5_CALLCONV
+acc_get_name(krb5_context context, krb5_ccache id)
+{
+    const char *name = NULL;
+
+    (void) acc_get_name_2(context, id, &name, NULL, NULL);
+    return name;
+}
+
+static krb5_error_code KRB5_CALLCONV
+acc_resolve(krb5_context context, krb5_ccache *id, const char *res)
+{
+    return acc_resolve_2(context, id, res, NULL);
+}
+
 /**
  * Variable containing the API based credential cache implementation.
  *
@@ -1096,10 +1111,10 @@ acc_lastchange(krb5_context context, krb5_ccache id, krb5_timestamp *mtime)
  */
 
 KRB5_LIB_VARIABLE const krb5_cc_ops krb5_acc_ops = {
-    KRB5_CC_OPS_VERSION_5,
+    KRB5_CC_OPS_VERSION_3,
     "API",
-    NULL,
-    NULL,
+    acc_get_name,
+    acc_resolve,
     acc_gen_new,
     acc_initialize,
     acc_destroy,
@@ -1121,7 +1136,10 @@ KRB5_LIB_VARIABLE const krb5_cc_ops krb5_acc_ops = {
     acc_set_default,
     acc_lastchange,
     NULL,
-    NULL,
+    NULL
+};
+
+const struct krb5_cc_ops_ext _krb5_acc_ops_ext = {
     acc_get_name_2,
     acc_resolve_2
 };
