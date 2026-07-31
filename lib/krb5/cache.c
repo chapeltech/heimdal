@@ -34,6 +34,7 @@
  */
 
 #include "krb5_locl.h"
+#include "ccache_plugin.h"
 
 /**
  * @page krb5_ccache_intro The credential cache functions
@@ -184,6 +185,47 @@ _krb5_cc_allocate(krb5_context context,
  * and name `residual'. Return 0 or an error code.
  */
 
+struct krb5_cc_ops_ext
+_krb5_cc_get_ops_ext(const krb5_cc_ops *ops)
+{
+    struct krb5_cc_ops_ext ext = { NULL, NULL };
+
+#ifndef KCM_IS_API_CACHE
+    if (ops == &krb5_acc_ops)
+	return _krb5_acc_ops_ext;
+#endif
+    if (ops == &krb5_dcc_ops)
+	return _krb5_dcc_ops_ext;
+    if (ops == &krb5_fcc_ops)
+	return _krb5_fcc_ops_ext;
+#ifdef HAVE_KCM
+    if (ops == &krb5_kcm_ops)
+	return _krb5_kcm_ops_ext;
+#ifdef KCM_IS_API_CACHE
+    if (ops == &krb5_akcm_ops)
+	return _krb5_akcm_ops_ext;
+#endif
+#endif
+#ifdef HAVE_KEYUTILS_H
+    if (ops == &krb5_krcc_ops)
+	return _krb5_krcc_ops_ext;
+#endif
+    if (ops == &krb5_mcc_ops)
+	return _krb5_mcc_ops_ext;
+#ifdef HAVE_SCC
+    if (ops == &krb5_scc_ops)
+	return _krb5_scc_ops_ext;
+#endif
+
+    if (ops->version >= KRB5_CC_OPS_VERSION_5) {
+	const krb5_cc_ops_v5 *ops5 = (const krb5_cc_ops_v5 *)(const void *)ops;
+
+	ext.get_name_2 = ops5->get_name_2;
+	ext.resolve_2 = ops5->resolve_2;
+    }
+    return ext;
+}
+
 static krb5_error_code
 allocate_ccache(krb5_context context,
                 const krb5_cc_ops *ops,
@@ -191,6 +233,7 @@ allocate_ccache(krb5_context context,
                 const char *subsidiary,
                 krb5_ccache *id)
 {
+    struct krb5_cc_ops_ext ext;
     krb5_error_code ret = 0;
     char *exp_residual = NULL;
     int filepath;
@@ -205,11 +248,11 @@ allocate_ccache(krb5_context context,
         ret = _krb5_cc_allocate(context, ops, id);
 
     if (ret == 0) {
-        if ((*id)->ops->version < KRB5_CC_OPS_VERSION_5
-            || (*id)->ops->resolve_2 == NULL) {
+	ext = _krb5_cc_get_ops_ext((*id)->ops);
+        if (ext.resolve_2 == NULL) {
             ret = (*id)->ops->resolve(context, id, exp_residual);
         } else {
-            ret = (*id)->ops->resolve_2(context, id, exp_residual, subsidiary);
+            ret = ext.resolve_2(context, id, exp_residual, subsidiary);
         }
     }
     if (ret) {
@@ -471,13 +514,13 @@ KRB5_LIB_FUNCTION const char* KRB5_LIB_CALL
 krb5_cc_get_name(krb5_context context,
 		 krb5_ccache id)
 {
+    struct krb5_cc_ops_ext ext = _krb5_cc_get_ops_ext(id->ops);
     const char *name = NULL;
 
-    if (id->ops->version < KRB5_CC_OPS_VERSION_5
-	|| id->ops->get_name_2 == NULL)
+    if (ext.get_name_2 == NULL)
 	return id->ops->get_name(context, id);
 
-    (void) id->ops->get_name_2(context, id, &name, NULL, NULL);
+    (void) ext.get_name_2(context, id, &name, NULL, NULL);
     return name;
 }
 
@@ -491,13 +534,13 @@ krb5_cc_get_name(krb5_context context,
 KRB5_LIB_FUNCTION const char* KRB5_LIB_CALL
 krb5_cc_get_collection(krb5_context context, krb5_ccache id)
 {
+    struct krb5_cc_ops_ext ext = _krb5_cc_get_ops_ext(id->ops);
     const char *name = NULL;
 
-    if (id->ops->version < KRB5_CC_OPS_VERSION_5
-	|| id->ops->get_name_2 == NULL)
+    if (ext.get_name_2 == NULL)
 	return NULL;
 
-    (void) id->ops->get_name_2(context, id, NULL, &name, NULL);
+    (void) ext.get_name_2(context, id, NULL, &name, NULL);
     return name;
 }
 
@@ -511,11 +554,11 @@ krb5_cc_get_collection(krb5_context context, krb5_ccache id)
 KRB5_LIB_FUNCTION const char* KRB5_LIB_CALL
 krb5_cc_get_subsidiary(krb5_context context, krb5_ccache id)
 {
+    struct krb5_cc_ops_ext ext = _krb5_cc_get_ops_ext(id->ops);
     const char *name = NULL;
 
-    if (id->ops->version >= KRB5_CC_OPS_VERSION_5
-	&& id->ops->get_name_2 != NULL)
-        (void) id->ops->get_name_2(context, id, NULL, NULL, &name);
+    if (ext.get_name_2 != NULL)
+        (void) ext.get_name_2(context, id, NULL, NULL, &name);
     return name;
 }
 
