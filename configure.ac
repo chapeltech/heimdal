@@ -48,16 +48,6 @@ AC_DEFINE([_GNU_SOURCE], 1,
 AC_OBJEXT
 AC_EXEEXT
 
-dnl
-dnl this is needed when der-protos.h or der-private.h has to be generated
-dnl
-if ! test -f "$srcdir/lib/asn1/der-protos.h" ||
-   ! test -f "$srcdir/lib/asn1/der-private.h"; then
-    AC_KRB_PROG_PERL
-    AC_KRB_PERL_MOD(Getopt::Std)
-    AC_KRB_PERL_MOD(File::Compare)
-fi
-
 AC_KRB_PROG_YACC
 dnl AC_PROG_YACC
 AM_PROG_LEX
@@ -89,6 +79,27 @@ dnl
 
 AM_CONDITIONAL(CROSS_COMPILE, test "${cross_compiling}" = yes)
 
+AC_ARG_WITH([asn1-prefix],
+    AS_HELP_STRING([--with-asn1-prefix=dir],
+                   [find standalone ASN.1 tools and library below dir]),
+    [AS_IF([test "x$withval" = xyes || test "x$withval" = xno],
+           [AC_MSG_ERROR([--with-asn1-prefix requires a directory])])
+     PKG_CONFIG_PATH="$withval/lib/pkgconfig:$withval/lib64/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
+     export PKG_CONFIG_PATH
+     AS_IF([test -z "$ASN1_COMPILE"],
+           [ASN1_COMPILE="$withval/bin/asn1_compile"])])
+
+PKG_CHECK_MODULES([ASN1], [libasn1 >= 0.1.0], [],
+    [AC_MSG_ERROR([asn1_compile support library 0.1.0 or newer is required])])
+
+AC_ARG_VAR([ASN1_COMPILE], [path to the native asn1_compile program])
+AC_ARG_WITH([asn1-compiler],
+    AS_HELP_STRING([--with-asn1-compiler=path],
+                   [use this native standalone ASN.1 compiler]),
+    [AS_IF([test "x$withval" = xyes || test "x$withval" = xno],
+           [AC_MSG_ERROR([--with-asn1-compiler requires a path])])
+     ASN1_COMPILE=$withval])
+
 AC_ARG_WITH(cross-tools,
 	AS_HELP_STRING([--with-cross-tools=dir], [use cross tools in dir]),
 	[if test "$withval" = "yes"; then
@@ -98,22 +109,26 @@ AC_ARG_WITH(cross-tools,
 	])
 
 if test "${cross_compiling}" != yes ; then
-
-   ASN1_COMPILE="\$(top_builddir)/lib/asn1/asn1_compile\$(EXEEXT)"
    SLC="\$(top_builddir)/lib/sl/slc"
-
-   ASN1_COMPILE_DEP="\$(ASN1_COMPILE)"
    SLC_DEP="\$(SLC)"
 else
-   ASN1_COMPILE="${with_cross_tools}asn1_compile"
    SLC="${with_cross_tools}slc"
-
-   ASN1_COMPILE_DEP=
    SLC_DEP=
-
    ac_cv_prog_COMPILE_ET=${with_cross_tools}compile_et
-
 fi
+
+AS_IF([test -z "$ASN1_COMPILE" && test "${cross_compiling}" = yes &&
+       test -n "$with_cross_tools"],
+      [ASN1_COMPILE="${with_cross_tools}asn1_compile"])
+AS_IF([test -z "$ASN1_COMPILE"],
+      [AC_PATH_PROG([ASN1_COMPILE], [asn1_compile])])
+AS_IF([test -z "$ASN1_COMPILE"],
+      [AC_MSG_ERROR([standalone asn1_compile 0.1.0 or newer was not found])])
+
+asn1_compile_version=`$ASN1_COMPILE --version 2>/dev/null | sed -n '1s/^asn1_compile //p'`
+AS_VERSION_COMPARE([$asn1_compile_version], [0.1.0],
+    [AC_MSG_ERROR([asn1_compile 0.1.0 or newer is required])], [], [])
+ASN1_COMPILE_DEP=
 
 AX_CHECK_COMPILE_FLAG([-Wno-error=enum-conversion],
                       [WFLAGS_ENUM_CONV=-Wno-error=enum-conversion],
@@ -709,7 +724,6 @@ AC_CONFIG_FILES(Makefile 		\
 	include/kadm5/Makefile		\
 	lib/Makefile			\
 	lib/base/Makefile		\
-	lib/asn1/Makefile		\
 	lib/com_err/Makefile		\
 	lib/hx509/Makefile		\
 	lib/gssapi/Makefile		\

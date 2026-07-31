@@ -385,7 +385,7 @@ test_pkinit_san(hx509_context context, const char *p, const char *realm, ...)
     gn.element = choice_GeneralName_otherName;
     gn.u.otherName.type_id.length = 0;
     gn.u.otherName.type_id.components = 0;
-    ret = der_copy_oid(&asn1_oid_id_pkinit_san, &gn.u.otherName.type_id);
+    ret = der_copy_oid(&_hx509_oid_id_pkinit_san, &gn.u.otherName.type_id);
     if (ret == 0)
         ret = hx509_general_name_unparse(&gn, &round_trip);
     if (ret)

@@ -240,7 +240,6 @@ jobs:
                         cc -I. -I.. -DEXPECT_TIME_T_SIZE="$EXPECT_TIME_T_SIZE" -o check-time-t check-time-t.c
                         ./check-time-t
                         make -j4
-                        make -C lib/asn1 check
                         make -C lib/hx509 check TESTS=test_cert_binary
                         make DESTDIR=/tmp/heimdal-i386-root install
                     '

@@ -9,8 +9,7 @@
 
 RFC2459 DEFINITIONS ::= BEGIN
 
-IMPORTS HEIM_ANY FROM heim
-        PrincipalName, Realm FROM krb5;
+IMPORTS HEIM_ANY FROM heim;
      -- For OtherName we really want to also import:
      -- KRB5PrincipalName FROM pkinit
      -- PermanentIdentifier FROM rfc4043
@@ -299,7 +298,7 @@ AttributeTypeAndValue ::= SEQUENCE {
 
 -- RDNs really should be SET OF SingleAttribute per the RFCs, but making that
 -- change will affect lib/hx509 code, so we'll wait.  The issue is that there
--- is code in lib/hx509 and in lib/asn1/check-gen.c that assumes that the
+-- is code in lib/hx509 and compiler regression tests that assume that the
 -- `value` of an rdn is a `DirectoryString` and not an open type.
 --
 -- Also, it's really not worth making this change, as a) it will increase the
@@ -749,8 +748,20 @@ id-pkix-on-pkinit-san	OBJECT IDENTIFIER ::=
   { iso(1) org(3) dod(6) internet(1) security(5) kerberosv5(2)
     x509-sanan(2) }
 KRB5PrincipalName ::= SEQUENCE {
-       realm                   [0] Realm,
-       principalName           [1] PrincipalName
+       realm                   [0] HX509KRB5Realm,
+       principalName           [1] HX509KRB5PrincipalName
+}
+
+-- These are wire-equivalent to Realm and PrincipalName from the Kerberos
+-- module.  Define them here so that the certificate codec remains owned by
+-- libhx509 and does not introduce a libhx509 -> libkrb5 dependency cycle.
+HX509KRB5Realm ::= GeneralString
+HX509KRB5NameType ::= INTEGER {
+       HX509_KRB5_NT_PRINCIPAL(1)
+}
+HX509KRB5PrincipalName ::= SEQUENCE {
+       name-type               [0] HX509KRB5NameType,
+       name-string             [1] SEQUENCE OF GeneralString
 }
 
 -- From RFC4043:

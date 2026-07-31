@@ -842,6 +842,20 @@ HEIMDAL_KRB5_2.0 {
                 _krb5_openssl_errors;
                 _krb5_hmac_ossl;
 
+		# ASN.1 codecs and descriptors owned by libkrb5
+		asn1_*;
+		encode_*;
+		decode_*;
+		length_*;
+		copy_*;
+		free_*;
+		print_*;
+		add_*;
+		remove_*;
+		int2*;
+		*2int;
+		*_units;
+
 	local:
 		*;
 };

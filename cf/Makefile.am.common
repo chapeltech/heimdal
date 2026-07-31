@@ -4,13 +4,20 @@ SUFFIXES = .et .h .pc.in .pc
 
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/include -I$(top_srcdir)/include
 
-AM_CPPFLAGS = $(INCLUDES_roken) $(INCLUDE_openssl_crypto)
+AM_CPPFLAGS = $(INCLUDES_roken) $(INCLUDE_openssl_crypto) $(ASN1_CFLAGS)
 
 if do_roken_rename
 ROKEN_RENAME = -DROKEN_RENAME
 endif
 
 AM_CFLAGS = $(WFLAGS)
+
+ASN1_COMPILE_FLAGS = --one-code-file --type-file=krb5-types.h
+if ASN1_TEMPLATING
+ASN1_TEMPLATE_OPTION = --template
+else
+ASN1_TEMPLATE_OPTION =
+endif
 
 CLANG_FORMAT_STYLE = '{BasedOnStyle: Mozilla, AlwaysBreakAfterReturnType: TopLevelDefinitions, IndentWidth: 4, SortIncludes: false}'
 
@@ -43,6 +50,8 @@ LIB_socket		= @LIB_socket@
 LIB_syslog		= @LIB_syslog@
 LIB_tgetent		= @LIB_tgetent@
 LIB_com_err		= @LIB_com_err@
+LIB_asn1		= $(ASN1_LIBS)
+LIB_asn1template	= $(ASN1_LIBS)
 LIB_door_create		= @LIB_door_create@
 
 LIB_openssl_crypto      = @LIB_openssl_crypto@
@@ -249,8 +258,7 @@ LIB_kafs = $(top_builddir)/lib/kafs/libkafs.la $(AIX_EXTRA_KAFS)
 endif
 
 if KRB5
-LIB_krb5 = $(top_builddir)/lib/krb5/libkrb5.la \
-	$(top_builddir)/lib/asn1/libasn1.la
+LIB_krb5 = $(top_builddir)/lib/krb5/libkrb5.la $(LIB_asn1)
 LIB_gssapi = $(top_builddir)/lib/gssapi/libgssapi.la
 endif
 

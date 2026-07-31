@@ -226,8 +226,7 @@ keytab.
 @kbd{--dump-auth}=@var{file}} where @var{file} is an appropriate file.
 @item It should authenticate and dump for you the authorisation data in
 the file.
-@item The tool @kbd{lib/asn1/asn1_print} is somewhat useful for
-analysing the data.
+@item An ASN.1 DER inspection tool can be useful for analysing the data.
 @end enumerate
 
 @node Quirks of Windows 2000 KDC, Useful links when reading about the Windows, Authorisation data, Windows compatibility

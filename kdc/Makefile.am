@@ -43,7 +43,7 @@ bx509d_LDADD =	-ldl \
 		 $(LIB_heimbase) \
 		 $(LIB_openssl_crypto) \
 		 $(top_builddir)/lib/sl/libsl.la \
-		 $(top_builddir)/lib/asn1/libasn1.la \
+		 $(LIB_asn1) \
 		 $(top_builddir)/lib/krb5/libkrb5.la \
 		 $(top_builddir)/lib/hx509/libhx509.la \
 		 $(top_builddir)/lib/gssapi/libgssapi.la
@@ -61,7 +61,7 @@ httpkadmind_LDADD =	-ldl \
 		 $(LIB_heimbase) \
 		 $(LIB_openssl_crypto) \
 		 $(top_builddir)/lib/sl/libsl.la \
-		 $(top_builddir)/lib/asn1/libasn1.la \
+		 $(LIB_asn1) \
 		 $(top_builddir)/lib/krb5/libkrb5.la \
 		 $(top_builddir)/lib/hx509/libhx509.la \
 		 $(top_builddir)/lib/gssapi/libgssapi.la
@@ -122,6 +122,10 @@ libkdc_la_SOURCES = 		\
 	kdc-plugin.c		\
 	gss_preauth.c
 
+nodist_libkdc_la_SOURCES = asn1_digest_asn1.c
+BUILT_SOURCES = asn1_digest_asn1.c digest_asn1.h digest_asn1-priv.h \
+	digest_asn1_files
+
 KDC_PROTOS = $(srcdir)/kdc-protos.h $(srcdir)/kdc-private.h
 
 ALL_OBJECTS  = $(kdc_OBJECTS)
@@ -164,7 +168,7 @@ hprop_LDADD = \
 	$(top_builddir)/lib/hdb/libhdb.la \
 	$(top_builddir)/lib/krb5/libkrb5.la \
 	$(LIB_kdb)  \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(LIB_roken) \
 	$(DB3LIB) $(DB1LIB) $(LMDBLIB) $(NDBMLIB)
 
@@ -172,7 +176,7 @@ hpropd_LDADD = \
 	$(top_builddir)/lib/hdb/libhdb.la \
 	$(top_builddir)/lib/krb5/libkrb5.la \
 	$(LIB_kdb)  \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(LIB_roken) \
 	$(DB3LIB) $(DB1LIB) $(LMDBLIB) $(NDBMLIB)
 
@@ -188,13 +192,13 @@ libkdc_la_LIBADD = \
 	$(top_builddir)/lib/gss_preauth/libgss_preauth.la \
 	$(LIB_kdb)  \
 	$(LIB_openssl_crypto) \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(LIB_roken) \
 	$(DB3LIB) $(DB1LIB) $(LMDBLIB) $(NDBMLIB)
 
 LDADD = $(top_builddir)/lib/hdb/libhdb.la \
 	$(top_builddir)/lib/krb5/libkrb5.la \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(LIB_roken) \
 	$(DB3LIB) $(DB1LIB) $(LMDBLIB) $(NDBMLIB)
 
@@ -218,6 +222,7 @@ test_kdc_ca_LDADD = libkdc.la $(top_builddir)/lib/hx509/libhx509.la $(LDADD) $(L
 test_jwt_validator_LDADD = libkdc.la $(top_builddir)/lib/hx509/libhx509.la $(LDADD) $(LIB_pidfile) $(LIB_heimbase)
 
 include_HEADERS = kdc.h $(srcdir)/kdc-protos.h
+nodist_include_HEADERS = digest_asn1.h
 
 noinst_HEADERS = $(srcdir)/kdc-private.h
 
@@ -234,4 +239,14 @@ EXTRA_DIST = \
 	libkdc-version.rc \
 	string2key-version.rc \
 	libkdc-exports.def \
-	NTMakefile $(man_MANS) version-script.map
+	NTMakefile $(man_MANS) version-script.map digest.asn1
+
+CLEANFILES = $(BUILT_SOURCES) digest_asn1.json digest_asn1_oids.c \
+	digest_asn1_syms.c
+
+digest_asn1_files: $(srcdir)/digest.asn1 $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		$(srcdir)/digest.asn1 digest_asn1
+
+asn1_digest_asn1.c digest_asn1.h digest_asn1-priv.h: digest_asn1_files
+$(libkdc_la_OBJECTS): digest_asn1.h digest_asn1-priv.h

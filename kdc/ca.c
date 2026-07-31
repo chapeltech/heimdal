@@ -113,7 +113,10 @@ kdc_issue_certificate(krb5_context context,
     KRB5PrincipalName cprinc2;
 
     *out = NULL;
-    cprinc2.principalName = cprinc->name;
+    cprinc2.principalName.name_type =
+        (HX509KRB5NameType)cprinc->name.name_type;
+    cprinc2.principalName.name_string.len = cprinc->name.name_string.len;
+    cprinc2.principalName.name_string.val = cprinc->name.name_string.val;
     cprinc2.realm = cprinc->realm;
 
     /* Get configuration */

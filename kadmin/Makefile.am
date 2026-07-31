@@ -63,7 +63,7 @@ check_PROGRAMS = $(TESTS)
 LDADD_common = \
 	$(top_builddir)/lib/hdb/libhdb.la \
 	$(top_builddir)/lib/krb5/libkrb5.la \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(LIB_roken) \
 	$(DB3LIB) $(DB1LIB) $(LMDBLIB) $(NDBMLIB)
 

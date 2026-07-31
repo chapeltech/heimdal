@@ -8,9 +8,21 @@ Heimdal
 
 Heimdal is an implementation of:
 
- - ASN.1/DER,
  - PKIX, and
  - Kerberos.
+
+Heimdal uses the separate `asn1_compile` project for its schema compiler and
+generic DER/BER support library.  Build and install `asn1_compile` 0.1.0 or
+newer first; Heimdal discovers `libasn1` with `pkg-config` and uses the native
+`asn1_compile` program to generate the protocol codecs owned by each Heimdal
+library.  A non-standard installation can be selected with
+`--with-asn1-prefix=/path` or `--with-asn1-compiler=/path/asn1_compile`.
+
+For cross compilation, install a native `asn1_compile` program for the build
+machine and a target `libasn1`; pass the native program explicitly when it is
+not on `PATH`.  Heimdal release archives do not bundle either component.
+The ownership and ABI changes are described in
+[`doc/asn1-migration.md`](doc/asn1-migration.md).
 
 For information how to install see [here](https://github.com/heimdal/heimdal/wiki/Building-and-installing).
 

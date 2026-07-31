@@ -1361,7 +1361,7 @@ struct {
     const char *friendly_name;
     other_unparser_f f;
 } o_unparsers[] = {
-    { &asn1_oid_id_pkinit_san,
+    { &_hx509_oid_id_pkinit_san,
         "KerberosPrincipalName",
         _hx509_unparse_KRB5PrincipalName },
     { &asn1_oid_id_pkix_on_permanentIdentifier,
@@ -1373,7 +1373,7 @@ struct {
     { &asn1_oid_id_pkix_on_xmppAddr,
         "XMPPName",
         _hx509_unparse_utf8_string_name },
-    { &asn1_oid_id_pkinit_ms_san,
+    { &_hx509_oid_id_pkinit_ms_san,
         "MSFTKerberosPrincipalName",
         _hx509_unparse_utf8_string_name },
     { &asn1_oid_id_pkix_on_dnsSRV,

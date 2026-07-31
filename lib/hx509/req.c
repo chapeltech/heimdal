@@ -398,7 +398,7 @@ hx509_request_add_ms_upn_name(hx509_context context,
                               hx509_request req,
                               const char *upn)
 {
-    return add_utf8_other_san(context, &req->san, &asn1_oid_id_pkinit_ms_san,
+    return add_utf8_other_san(context, &req->san, &_hx509_oid_id_pkinit_ms_san,
                               upn);
 }
 
@@ -551,7 +551,7 @@ hx509_request_add_pkinit(hx509_context context,
     gn.u.otherName.type_id.components = 0;
     gn.u.otherName.value.data = NULL;
     gn.u.otherName.value.length = 0;
-    ret = der_copy_oid(&asn1_oid_id_pkinit_san, &gn.u.otherName.type_id);
+    ret = der_copy_oid(&_hx509_oid_id_pkinit_san, &gn.u.otherName.type_id);
     if (ret == 0)
         ret = _hx509_make_pkinit_san(context, princ, &gn.u.otherName.value);
     if (ret == 0)
@@ -1354,9 +1354,9 @@ san_map_type(GeneralName *san)
         hx509_san_type type;
     } map[] = {
         { &asn1_oid_id_pkix_on_dnsSRV, HX509_SAN_TYPE_DNSSRV },
-        { &asn1_oid_id_pkinit_san, HX509_SAN_TYPE_PKINIT },
+        { &_hx509_oid_id_pkinit_san, HX509_SAN_TYPE_PKINIT },
         { &asn1_oid_id_pkix_on_xmppAddr, HX509_SAN_TYPE_XMPP },
-        { &asn1_oid_id_pkinit_ms_san, HX509_SAN_TYPE_MS_UPN },
+        { &_hx509_oid_id_pkinit_ms_san, HX509_SAN_TYPE_MS_UPN },
         { &asn1_oid_id_pkix_on_permanentIdentifier, HX509_SAN_TYPE_PERMANENT_ID },
         { &asn1_oid_id_on_hardwareModuleName, HX509_SAN_TYPE_HW_MODULE },
     };

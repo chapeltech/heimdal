@@ -31,7 +31,7 @@ kinit_LDADD = \
 	$(top_builddir)/lib/krb5/libkrb5.la \
 	$(top_builddir)/lib/gssapi/libgssapi.la \
 	$(top_builddir)/lib/gss_preauth/libgss_preauth.la \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(LIB_libintl) \
 	$(LIB_roken)
 
@@ -61,7 +61,7 @@ heimtools-commands.c heimtools-commands.h: heimtools-commands.in
 
 LDADD = \
 	$(top_builddir)/lib/krb5/libkrb5.la \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(LIB_roken)
 
 EXTRA_DIST = NTMakefile $(man_MANS) \

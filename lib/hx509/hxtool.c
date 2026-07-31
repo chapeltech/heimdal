@@ -1895,7 +1895,7 @@ https_server(hx509_context contextp, hx509_ca_tbs tbs, struct cert_type_opt *opt
 static int
 https_negotiate_server(hx509_context contextp, hx509_ca_tbs tbs, struct cert_type_opt *opt)
 {
-    int ret = hx509_ca_tbs_add_eku(contextp, tbs, &asn1_oid_id_pkekuoid);
+    int ret = hx509_ca_tbs_add_eku(contextp, tbs, &_hx509_oid_id_pkekuoid);
     if (ret == 0)
         ret = hx509_ca_tbs_add_eku(contextp, tbs, &asn1_oid_id_pkix_kp_serverAuth);
     opt->pkinit++;
@@ -1918,7 +1918,7 @@ static int
 pkinit_kdc(hx509_context contextp, hx509_ca_tbs tbs, struct cert_type_opt *opt)
 {
     opt->pkinit++;
-    return hx509_ca_tbs_add_eku(contextp, tbs, &asn1_oid_id_pkkdcekuoid);
+    return hx509_ca_tbs_add_eku(contextp, tbs, &_hx509_oid_id_pkkdcekuoid);
 }
 
 static int
@@ -1928,7 +1928,7 @@ pkinit_client(hx509_context contextp, hx509_ca_tbs tbs, struct cert_type_opt *op
 
     opt->pkinit++;
 
-    ret = hx509_ca_tbs_add_eku(contextp, tbs, &asn1_oid_id_pkekuoid);
+    ret = hx509_ca_tbs_add_eku(contextp, tbs, &_hx509_oid_id_pkekuoid);
     if (ret)
 	return ret;
 
@@ -1936,7 +1936,7 @@ pkinit_client(hx509_context contextp, hx509_ca_tbs tbs, struct cert_type_opt *op
     if (ret)
 	return ret;
 
-    return hx509_ca_tbs_add_eku(context, tbs, &asn1_oid_id_pkinit_ms_eku);
+    return hx509_ca_tbs_add_eku(context, tbs, &_hx509_oid_id_pkinit_ms_eku);
 }
 
 static int
@@ -2752,7 +2752,7 @@ acert1_sans_other(struct acert_options *opt,
         free(s);
         return ret;
     }
-    if (der_heim_oid_cmp(type_id, &asn1_oid_id_pkinit_san) != 0) {
+    if (der_heim_oid_cmp(type_id, &_hx509_oid_id_pkinit_san) != 0) {
         if (opt->verbose_flag)
             fprintf(stderr, "Ignoring OtherName SAN of type %s\n", type_str);
         free(s);

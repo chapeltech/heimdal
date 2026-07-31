@@ -67,9 +67,16 @@
 #include <ocsp_asn1.h>
 #include <pkcs10_asn1.h>
 #include <asn1_err.h>
-#include <pkinit_asn1.h>
-
 #include <der.h>
+
+void _hx509_register_asn1_oids(void);
+
+extern const heim_oid _hx509_oid_id_pkekuoid;
+extern const heim_oid _hx509_oid_id_pkkdcekuoid;
+extern const heim_oid _hx509_oid_id_pkinit_san;
+extern const heim_oid _hx509_oid_id_pkinit_ms_eku;
+extern const heim_oid _hx509_oid_id_pkinit_ms_san;
+extern const heim_oid _hx509_oid_id_heim_eku_pkinit_certlife_is_max_life;
 
 #ifndef SSIZE_MAX
 #ifdef _WIN64

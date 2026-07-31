@@ -6,6 +6,16 @@ WFLAGS += $(WFLAGS_ENUM_CONV)
 
 AM_CPPFLAGS += -I../com_err -I$(srcdir)/../com_err -I../base -I$(srcdir)/../base $(INCLUDE_sqlite3) $(INCLUDE_libintl) $(INCLUDE_openssl_crypto)
 
+krb5_asn1_sources = asn1_krb5_asn1.c asn1_pkinit_asn1.c \
+	asn1_kx509_asn1.c
+krb5_asn1_headers = krb5_asn1.h pkinit_asn1.h kx509_asn1.h
+krb5_asn1_private_headers = krb5_asn1-priv.h pkinit_asn1-priv.h \
+	kx509_asn1-priv.h
+krb5_asn1_markers = krb5_asn1_files pkinit_asn1_files kx509_asn1_files
+
+BUILT_SOURCES = $(krb5_asn1_sources) $(krb5_asn1_headers) \
+	$(krb5_asn1_private_headers) $(krb5_asn1_markers)
+
 bin_PROGRAMS = verify_krb5_conf
 
 noinst_PROGRAMS =				\
@@ -59,7 +69,7 @@ check_PROGRAMS = $(TESTS) test_hostname test_ap-req test_canon test_set_kvno0 \
 		test_mkforwardable
 
 LDADD = libkrb5.la \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(top_builddir)/lib/wind/libwind.la \
 	$(LIB_heimbase) $(LIB_roken)
 
@@ -82,7 +92,7 @@ use_sqlite = $(LIB_sqlite3)
 endif
 
 libkrb5_la_LIBADD = \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(top_builddir)/lib/ipc/libheim-ipcc.la \
 	$(top_builddir)/lib/wind/libwind.la \
 	$(top_builddir)/lib/base/libheimbase.la \
@@ -97,7 +107,7 @@ libkrb5_la_LIBADD = \
 	$(LIB_door_create)
 
 librfc3961_la_LIBADD = \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(top_builddir)/lib/ipc/libheim-ipcc.la \
 	$(top_builddir)/lib/wind/libwind.la \
 	$(LIB_pkinit) \
@@ -124,6 +134,7 @@ librfc3961_la_CPPFLAGS = \
 	-DHEIMDAL_LOCALEDIR='"$(localedir)"'
 
 dist_libkrb5_la_SOURCES =			\
+	asn1_oid_registry.c			\
 	acache.c				\
 	acl.c					\
 	add_et_list.c				\
@@ -265,7 +276,10 @@ dist_libkrb5_la_SOURCES =			\
 	write_message.c
 
 nodist_libkrb5_la_SOURCES =			\
-	$(ERR_FILES)
+	$(ERR_FILES) \
+	$(krb5_asn1_sources)
+
+asn1_oid_registry.lo: $(krb5_asn1_markers)
 
 libkrb5_la_DEPENDENCIES =			\
 	version-script.map
@@ -328,9 +342,13 @@ librfc3961_la_SOURCES =				\
 	store-int.c				\
 	warn.c
 
+# The reduced RFC 3961 test library uses Kerberos wire types directly.  Keep
+# its private copy of the generated module so it does not depend on libkrb5.
+nodist_librfc3961_la_SOURCES = asn1_krb5_asn1.c
+
 test_rfc3961_LDADD = 				\
 	librfc3961.la 				\
-	$(top_builddir)/lib/asn1/libasn1.la	\
+	$(LIB_asn1)	\
 	$(top_builddir)/lib/wind/libwind.la 	\
 	$(LIB_roken)
 
@@ -399,7 +417,8 @@ dist_include_HEADERS = \
 noinst_HEADERS = $(srcdir)/krb5-private.h
 
 
-nodist_include_HEADERS = krb5_err.h k524_err.h k5e1_err.h kx509_err.h
+nodist_include_HEADERS = krb5_err.h k524_err.h k5e1_err.h kx509_err.h \
+	$(krb5_asn1_headers)
 
 # XXX use nobase_include_HEADERS = krb5/locate_plugin.h
 krb5dir = $(includedir)/krb5
@@ -422,7 +441,12 @@ CLEANFILES = \
 	krb_err.c krb_err.h \
 	k524_err.c k524_err.h \
 	k5e1_err.c k5e1_err.h \
-	kx509_err.c kx509_err.h
+	kx509_err.c kx509_err.h \
+	$(krb5_asn1_sources) $(krb5_asn1_headers) \
+	$(krb5_asn1_private_headers) $(krb5_asn1_markers) \
+	krb5_asn1.json krb5_asn1_oids.c krb5_asn1_syms.c \
+	pkinit_asn1.json pkinit_asn1_oids.c pkinit_asn1_syms.c \
+	kx509_asn1.json kx509_asn1_oids.c kx509_asn1_syms.c
 
 $(libkrb5_la_OBJECTS): krb5_err.h krb_err.h k524_err.h k5e1_err.h kx509_err.h
 
@@ -442,7 +466,8 @@ EXTRA_DIST = \
 	$(man_MANS) \
 	version-script.map \
 	test_config_strings.cfg \
-	krb5.moduli
+	krb5.moduli \
+	krb5.asn1 krb5.opt pkinit.asn1 pkinit.opt kx509.asn1
 
 #sysconf_DATA = krb5.moduli
 
@@ -457,3 +482,20 @@ k524_err.h: k524_err.et
 k5e1_err.h: k5e1_err.et
 
 kx509_err.h: kx509_err.et
+
+krb5_asn1_files: $(srcdir)/krb5.asn1 $(srcdir)/krb5.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		--option-file=$(srcdir)/krb5.opt $(srcdir)/krb5.asn1 krb5_asn1
+
+pkinit_asn1_files: $(srcdir)/pkinit.asn1 $(srcdir)/pkinit.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		--option-file=$(srcdir)/pkinit.opt $(srcdir)/pkinit.asn1 pkinit_asn1
+
+kx509_asn1_files: $(srcdir)/kx509.asn1 $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		$(srcdir)/kx509.asn1 kx509_asn1
+
+$(krb5_asn1_sources) $(krb5_asn1_headers) \
+$(krb5_asn1_private_headers): $(krb5_asn1_markers)
+
+$(libkrb5_la_OBJECTS): $(krb5_asn1_headers) $(krb5_asn1_private_headers)

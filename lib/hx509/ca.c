@@ -874,7 +874,7 @@ _hx509_make_pkinit_san(hx509_context context,
 	    goto out;
 	}
 	p.principalName.name_string.len = n;
-	p.principalName.name_type = KRB5_NT_PRINCIPAL;
+    p.principalName.name_type = HX509_KRB5_NT_PRINCIPAL;
 
 	for (i = 0, str_start = str = principal; *str != '\0'; str++) {
 	    if (*str=='\\') {
@@ -1002,7 +1002,7 @@ hx509_ca_tbs_add_san_pkinit(hx509_context context,
     ret = _hx509_make_pkinit_san(context, principal, &os);
     if (ret == 0)
         ret = hx509_ca_tbs_add_san_otherName(context, tbs,
-                                             &asn1_oid_id_pkinit_san, &os);
+                                             &_hx509_oid_id_pkinit_san, &os);
     free(os.data);
     return ret;
 }
@@ -1056,7 +1056,7 @@ hx509_ca_tbs_add_san_ms_upn(hx509_context context,
 			    hx509_ca_tbs tbs,
 			    const char *principal)
 {
-    return add_utf8_san(context, tbs, &asn1_oid_id_pkinit_ms_san, principal);
+    return add_utf8_san(context, tbs, &_hx509_oid_id_pkinit_ms_san, principal);
 }
 
 /**

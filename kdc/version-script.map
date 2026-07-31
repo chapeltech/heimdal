@@ -100,6 +100,20 @@ HEIMDAL_KDC_1.0 {
 		# needed for digest-service
 		_kdc_db_fetch;
 		_kdc_free_ent;
+
+		# ASN.1 codecs and descriptors owned by libkdc
+		asn1_*;
+		encode_*;
+		decode_*;
+		length_*;
+		copy_*;
+		free_*;
+		print_*;
+		add_*;
+		remove_*;
+		int2*;
+		*2int;
+		*_units;
 	local:
 		*;
 };

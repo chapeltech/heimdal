@@ -308,6 +308,21 @@ HEIMDAL_X509_1.2 {
 		initialize_hx_error_table_r;
 		# pkcs11 symbols
 		C_GetFunctionList;
+
+		# ASN.1 codecs and descriptors owned by libhx509
+		asn1_*;
+		encode_*;
+		decode_*;
+		length_*;
+		copy_*;
+		free_*;
+		print_*;
+		add_*;
+		remove_*;
+		int2*;
+		*2int;
+		*_units;
+		_hx509_oid_*;
 	local:
 		*;
 };
@@ -335,4 +350,3 @@ HEIMDAL_X509_1.5 {
 		hx509_jwt_sign_key;
 		hx509_jwt_verify_jwk;
 } HEIMDAL_X509_1.4;
-

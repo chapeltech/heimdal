@@ -351,6 +351,7 @@ init_openssl_hx509(hx509_context context, hx509_context_ossl *osslp)
 static void
 init_context_once(void *ignored)
 {
+    _hx509_register_asn1_oids();
 }
 
 /**
@@ -2085,7 +2086,7 @@ hx509_cert_get_pkinit_max_life(hx509_context context,
         return r;
     }
     if (hx509_cert_check_eku(context, cert,
-                             &asn1_oid_id_heim_eku_pkinit_certlife_is_max_life, 0))
+                             &_hx509_oid_id_heim_eku_pkinit_certlife_is_max_life, 0))
         return 0;
     b = hx509_cert_get_notBefore(cert);
     e = hx509_cert_get_notAfter(cert);

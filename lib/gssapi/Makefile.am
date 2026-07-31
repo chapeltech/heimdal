@@ -238,7 +238,7 @@ endif
 
 libgssapi_la_LIBADD = \
 	$(top_builddir)/lib/krb5/libkrb5.la \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(LIB_com_err) \
 	$(LIBADD_roken)
 
@@ -317,11 +317,11 @@ $(gssapi_files) gssapi_asn1.h gssapi_asn1-priv.h: gssapi_asn1_files
 	done
 
 spnego_asn1_files: $(ASN1_COMPILE_DEP) $(srcdir)/spnego/spnego.asn1 $(srcdir)/spnego/spnego.opt
-	$(ASN1_COMPILE) --option-file=$(srcdir)/spnego/spnego.opt $(srcdir)/spnego/spnego.asn1 spnego_asn1
+	$(ASN1_COMPILE) --type-file=krb5-types.h --option-file=$(srcdir)/spnego/spnego.opt $(srcdir)/spnego/spnego.asn1 spnego_asn1
 	@$(CLANG_FORMAT) -style=$(CLANG_FORMAT_STYLE) -i $$(cat spnego_asn1_files)
 
 gssapi_asn1_files: $(ASN1_COMPILE_DEP) $(srcdir)/mech/gssapi.asn1
-	$(ASN1_COMPILE) $(srcdir)/mech/gssapi.asn1 gssapi_asn1
+	$(ASN1_COMPILE) --type-file=krb5-types.h $(srcdir)/mech/gssapi.asn1 gssapi_asn1
 	@$(CLANG_FORMAT) -style=$(CLANG_FORMAT_STYLE) -i $$(cat gssapi_asn1_files)
 
 $(srcdir)/krb5/gsskrb5-private.h:
@@ -361,8 +361,8 @@ LDADD = libgssapi.la \
 	$(LIB_roken)
 
 test_names_LDFLAGS = -lresolv
-test_names_LDADD = $(LDADD) $(top_builddir)/lib/asn1/libasn1.la
-test_context_LDADD = $(LDADD) $(top_builddir)/lib/asn1/libasn1.la $(top_builddir)/lib/wind/libwind.la
+test_names_LDADD = $(LDADD) $(LIB_asn1)
+test_context_LDADD = $(LDADD) $(LIB_asn1) $(top_builddir)/lib/wind/libwind.la
 test_ordered_provider_LDADD = $(LDADD)
 test_probeonly_LDADD = $(LDADD)
 
@@ -454,5 +454,5 @@ $(srcdir)/gssapi/gssapi_oid.h $(srcdir)/mech/gss_oid.c:
 test_negoex_mech_la_SOURCES = test_negoex_mech.c $(gssapi_files)
 test_negoex_mech_la_LDFLAGS = -module
 test_negoex_mech_la_LIBADD = \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	libgssapi.la

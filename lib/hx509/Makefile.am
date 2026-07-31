@@ -2,6 +2,41 @@ include $(top_srcdir)/Makefile.am.common
 
 AM_CPPFLAGS += $(INCLUDE_openssl_crypto)
 
+hx509_asn1_sources = asn1_rfc2459_asn1.c asn1_rfc4108_asn1.c \
+	asn1_cms_asn1.c asn1_ocsp_asn1.c \
+	asn1_pkcs8_asn1.c asn1_pkcs9_asn1.c asn1_pkcs10_asn1.c \
+	asn1_pkcs12_asn1.c
+hx509_asn1_headers = rfc2459_asn1.h rfc4108_asn1.h cms_asn1.h \
+	ocsp_asn1.h pkcs8_asn1.h pkcs9_asn1.h \
+	pkcs10_asn1.h pkcs12_asn1.h
+hx509_asn1_private_headers = rfc2459_asn1-priv.h \
+	rfc4108_asn1-priv.h cms_asn1-priv.h \
+	ocsp_asn1-priv.h pkcs8_asn1-priv.h pkcs9_asn1-priv.h \
+	pkcs10_asn1-priv.h pkcs12_asn1-priv.h
+hx509_asn1_markers = rfc2459_asn1_files rfc4108_asn1_files \
+	cms_asn1_files ocsp_asn1_files pkcs8_asn1_files \
+	pkcs9_asn1_files pkcs10_asn1_files pkcs12_asn1_files
+
+hx509_template_asn1_sources = asn1_rfc2459_template_asn1.c \
+	asn1_rfc4108_template_asn1.c asn1_cms_template_asn1.c \
+	asn1_ocsp_template_asn1.c \
+	asn1_pkcs8_template_asn1.c asn1_pkcs9_template_asn1.c \
+	asn1_pkcs10_template_asn1.c asn1_pkcs12_template_asn1.c
+hx509_template_asn1_headers = rfc2459_template_asn1.h \
+	rfc4108_template_asn1.h cms_template_asn1.h \
+	ocsp_template_asn1.h pkcs8_template_asn1.h pkcs9_template_asn1.h \
+	pkcs10_template_asn1.h pkcs12_template_asn1.h
+hx509_template_asn1_private_headers = rfc2459_template_asn1-priv.h \
+	rfc4108_template_asn1-priv.h cms_template_asn1-priv.h \
+	ocsp_template_asn1-priv.h \
+	pkcs8_template_asn1-priv.h pkcs9_template_asn1-priv.h \
+	pkcs10_template_asn1-priv.h pkcs12_template_asn1-priv.h
+hx509_template_asn1_markers = rfc2459_template_asn1_files \
+	rfc4108_template_asn1_files cms_template_asn1_files \
+	ocsp_template_asn1_files \
+	pkcs8_template_asn1_files pkcs9_template_asn1_files \
+	pkcs10_template_asn1_files pkcs12_template_asn1_files
+
 lib_LTLIBRARIES = libhx509.la libhx509template.la
 libhx509_la_LDFLAGS = -version-info 5:0:0
 libhx509template_la_LDFLAGS = -version-info 5:0:0
@@ -9,11 +44,20 @@ libhx509template_la_LDFLAGS = -version-info 5:0:0
 BUILT_SOURCES =				\
 	sel-gram.h			\
 	hx509_err.c			\
-	hx509_err.h
+	hx509_err.h \
+	$(hx509_asn1_sources) $(hx509_asn1_headers) \
+	$(hx509_asn1_private_headers) $(hx509_asn1_markers)
+
+if !ASN1_TEMPLATING
+BUILT_SOURCES += $(hx509_template_asn1_sources) \
+	$(hx509_template_asn1_headers) $(hx509_template_asn1_private_headers) \
+	$(hx509_template_asn1_markers)
+endif
 
 AM_YFLAGS = -d -o sel-gram.c
 
 dist_libhx509_la_SOURCES = \
+	asn1_oid_registry.c \
 	ca.c \
 	cert.c \
 	char_map.h \
@@ -43,6 +87,7 @@ dist_libhx509_la_SOURCES = \
 	lock.c \
 	name.c \
 	peer.c \
+	pkinit_oids.c \
 	print.c \
 	softp11.c \
 	ref/pkcs11.h \
@@ -60,7 +105,7 @@ libhx509template_la_DEPENDENCIES = version-script.map
 libhx509_la_LIBADD = \
 	$(LIB_com_err) \
 	$(LIB_openssl_crypto) \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(top_builddir)/lib/wind/libwind.la \
 	$(top_builddir)/lib/base/libheimbase.la \
 	$(LIBADD_roken) \
@@ -69,7 +114,7 @@ libhx509_la_LIBADD = \
 libhx509template_la_LIBADD = \
 	$(LIB_com_err) \
 	$(LIB_openssl_crypto) \
-	$(top_builddir)/lib/asn1/libasn1template.la \
+	$(LIB_asn1template) \
 	$(top_builddir)/lib/wind/libwind.la \
 	$(top_builddir)/lib/base/libheimbase.la \
 	$(LIBADD_roken) \
@@ -86,15 +131,24 @@ libhx509template_la_LDFLAGS += $(LDFLAGS_VERSION_SCRIPT)$(srcdir)/version-script
 endif
 $(libhx509_la_OBJECTS): $(srcdir)/version-script.map $(nodist_include_HEADERS) $(priv_headers)
 $(libhx509template_la_OBJECTS): $(srcdir)/version-script.map $(nodist_include_HEADERS) $(priv_headers)
+asn1_oid_registry.lo: $(hx509_asn1_markers)
 
-nodist_libhx509_la_SOURCES = $(BUILT_SOURCES)
-nodist_libhx509template_la_SOURCES = $(BUILT_SOURCES)
+nodist_libhx509_la_SOURCES = sel-gram.h hx509_err.c hx509_err.h \
+	$(hx509_asn1_sources)
+if ASN1_TEMPLATING
+nodist_libhx509template_la_SOURCES = sel-gram.h hx509_err.c hx509_err.h \
+	$(hx509_asn1_sources)
+else
+nodist_libhx509template_la_SOURCES = sel-gram.h hx509_err.c hx509_err.h \
+	$(hx509_template_asn1_sources)
+endif
 
 dist_include_HEADERS = hx509.h $(srcdir)/hx509-protos.h
 
 noinst_HEADERS = $(srcdir)/hx509-private.h
 
-nodist_include_HEADERS = hx509_err.h
+nodist_include_HEADERS = hx509_err.h $(hx509_asn1_headers) \
+	$(hx509_template_asn1_headers)
 
 ALL_OBJECTS  = $(libhx509_la_OBJECTS)
 ALL_OBJECTS += $(hxtool_OBJECTS)
@@ -105,6 +159,10 @@ $(ALL_OBJECTS): $(HX509_PROTOS)
 
 $(libhx509_la_OBJECTS): $(srcdir)/hx_locl.h
 $(libhx509template_la_OBJECTS): $(srcdir)/hx_locl.h
+$(libhx509_la_OBJECTS): $(hx509_asn1_headers) $(hx509_asn1_private_headers)
+$(libhx509template_la_OBJECTS): $(hx509_asn1_headers) \
+	$(hx509_template_asn1_headers) $(hx509_asn1_private_headers) \
+	$(hx509_template_asn1_private_headers)
 
 $(srcdir)/hx509-protos.h: $(dist_libhx509_la_SOURCES)
 	$(heim_verbose)cd $(srcdir) && perl ../../cf/make-proto.pl -R '^(_|^C)' -E HX509_LIB -q -P comment -o hx509-protos.h $(dist_libhx509_la_SOURCES) || rm -f hx509-protos.h
@@ -124,13 +182,16 @@ $(hxtool_OBJECTS): hxtool-commands.h $(nodist_include_HEADERS)
 
 hxtool_LDADD = \
 	libhx509template.la \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(top_builddir)/lib/base/libheimbase.la \
 	$(LIB_openssl_crypto) \
 	$(LIB_roken) \
 	$(top_builddir)/lib/sl/libsl.la
 
 CLEANFILES = $(BUILT_SOURCES) sel-gram.c sel-lex.c \
+	$(hx509_template_asn1_sources) $(hx509_template_asn1_headers) \
+	$(hx509_template_asn1_private_headers) $(hx509_template_asn1_markers) \
+	*_asn1.json *_asn1_oids.c *_asn1_syms.c \
 	$(TESTS) \
 	hxtool-commands.c hxtool-commands.h *.tmp \
 	request.out \
@@ -159,18 +220,18 @@ check_PROGRAMS = $(PROGRAM_TESTS) test_soft_pkcs11
 
 LDADD = libhx509.la
 
-test_soft_pkcs11_LDADD = libhx509.la $(top_builddir)/lib/asn1/libasn1.la
+test_soft_pkcs11_LDADD = libhx509.la $(LIB_asn1)
 
-test_name_LDADD = libhx509.la $(LIB_roken) $(top_builddir)/lib/asn1/libasn1.la
+test_name_LDADD = libhx509.la $(LIB_roken) $(LIB_asn1)
 
 # Fuzzer for JWS/JWT parsing (build with: make fuzz_jose CFLAGS="-fsanitize=fuzzer,address")
 noinst_PROGRAMS = fuzz_jose
 fuzz_jose_SOURCES = fuzz_jose.c
 fuzz_jose_LDADD = libhx509.la $(LIB_roken) $(top_builddir)/lib/base/libheimbase.la
 fuzz_jose.$(OBJEXT): $(HX509_PROTOS) $(nodist_include_HEADERS)
-test_expr_LDADD = libhx509.la $(LIB_roken) $(top_builddir)/lib/asn1/libasn1.la
+test_expr_LDADD = libhx509.la $(LIB_roken) $(LIB_asn1)
 test_cert_binary_CPPFLAGS = $(AM_CPPFLAGS) -DSRCDIR=\"$(srcdir)\"
-test_cert_binary_LDADD = libhx509.la $(LIB_roken) $(top_builddir)/lib/asn1/libasn1.la
+test_cert_binary_LDADD = libhx509.la $(LIB_roken) $(LIB_asn1)
 
 TESTS = $(SCRIPT_TESTS) $(PROGRAM_TESTS)
 
@@ -411,4 +472,76 @@ EXTRA_DIST = \
 	data/yutaka-pad-broken-cert.pem \
 	data/yutaka-pad-ok-ca.pem \
 	data/yutaka-pad-ok-cert.pem \
-	data/yutaka-pad.key
+data/yutaka-pad.key
+
+EXTRA_DIST += rfc2459.asn1 rfc2459.opt rfc4108.asn1 cms.asn1 cms.opt \
+	crmf.asn1 crmf.opt ocsp.asn1 ocsp.opt pkcs8.asn1 pkcs9.asn1 \
+	pkcs10.asn1 pkcs10.opt pkcs12.asn1 tcg.asn1
+
+rfc2459_asn1_files: $(srcdir)/rfc2459.asn1 $(srcdir)/rfc2459.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		--option-file=$(srcdir)/rfc2459.opt $(srcdir)/rfc2459.asn1 rfc2459_asn1
+rfc2459_template_asn1_files: $(srcdir)/rfc2459.asn1 $(srcdir)/rfc2459.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) --template \
+		--option-file=$(srcdir)/rfc2459.opt $(srcdir)/rfc2459.asn1 rfc2459_template_asn1
+
+rfc4108_asn1_files: $(srcdir)/rfc4108.asn1 $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		$(srcdir)/rfc4108.asn1 rfc4108_asn1
+rfc4108_template_asn1_files: $(srcdir)/rfc4108.asn1 $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) --template \
+		$(srcdir)/rfc4108.asn1 rfc4108_template_asn1
+
+cms_asn1_files: $(srcdir)/cms.asn1 $(srcdir)/cms.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		--option-file=$(srcdir)/cms.opt $(srcdir)/cms.asn1 cms_asn1
+cms_template_asn1_files: $(srcdir)/cms.asn1 $(srcdir)/cms.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) --template \
+		--option-file=$(srcdir)/cms.opt $(srcdir)/cms.asn1 cms_template_asn1
+
+crmf_asn1_files: $(srcdir)/crmf.asn1 $(srcdir)/crmf.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		--option-file=$(srcdir)/crmf.opt $(srcdir)/crmf.asn1 crmf_asn1
+crmf_template_asn1_files: $(srcdir)/crmf.asn1 $(srcdir)/crmf.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) --template \
+		--option-file=$(srcdir)/crmf.opt $(srcdir)/crmf.asn1 crmf_template_asn1
+
+ocsp_asn1_files: $(srcdir)/ocsp.asn1 $(srcdir)/ocsp.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		--option-file=$(srcdir)/ocsp.opt $(srcdir)/ocsp.asn1 ocsp_asn1
+ocsp_template_asn1_files: $(srcdir)/ocsp.asn1 $(srcdir)/ocsp.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) --template \
+		--option-file=$(srcdir)/ocsp.opt $(srcdir)/ocsp.asn1 ocsp_template_asn1
+
+pkcs8_asn1_files: $(srcdir)/pkcs8.asn1 $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		$(srcdir)/pkcs8.asn1 pkcs8_asn1
+pkcs8_template_asn1_files: $(srcdir)/pkcs8.asn1 $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) --template \
+		$(srcdir)/pkcs8.asn1 pkcs8_template_asn1
+
+pkcs9_asn1_files: $(srcdir)/pkcs9.asn1 $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		$(srcdir)/pkcs9.asn1 pkcs9_asn1
+pkcs9_template_asn1_files: $(srcdir)/pkcs9.asn1 $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) --template \
+		$(srcdir)/pkcs9.asn1 pkcs9_template_asn1
+
+pkcs10_asn1_files: $(srcdir)/pkcs10.asn1 $(srcdir)/pkcs10.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		--option-file=$(srcdir)/pkcs10.opt $(srcdir)/pkcs10.asn1 pkcs10_asn1
+pkcs10_template_asn1_files: $(srcdir)/pkcs10.asn1 $(srcdir)/pkcs10.opt $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) --template \
+		--option-file=$(srcdir)/pkcs10.opt $(srcdir)/pkcs10.asn1 pkcs10_template_asn1
+
+pkcs12_asn1_files: $(srcdir)/pkcs12.asn1 $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) $(ASN1_TEMPLATE_OPTION) \
+		$(srcdir)/pkcs12.asn1 pkcs12_asn1
+pkcs12_template_asn1_files: $(srcdir)/pkcs12.asn1 $(ASN1_COMPILE_DEP)
+	$(ASN1_COMPILE) $(ASN1_COMPILE_FLAGS) --template \
+		$(srcdir)/pkcs12.asn1 pkcs12_template_asn1
+
+$(hx509_asn1_sources) $(hx509_asn1_headers) \
+$(hx509_asn1_private_headers): $(hx509_asn1_markers)
+$(hx509_template_asn1_sources) $(hx509_template_asn1_headers) \
+$(hx509_template_asn1_private_headers): $(hx509_template_asn1_markers)

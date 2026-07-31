@@ -20,7 +20,6 @@ SUBDIRS = \
 	base \
 	sl \
 	wind \
-	asn1 \
 	$(dir_sqlite) \
 	ipc \
 	hx509 \

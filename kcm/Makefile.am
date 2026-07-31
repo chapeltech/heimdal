@@ -34,7 +34,7 @@ man_MANS = kcm.8
 
 LDADD = $(top_builddir)/lib/hdb/libhdb.la \
 	$(top_builddir)/lib/krb5/libkrb5.la \
-	$(top_builddir)/lib/asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(top_builddir)/lib/ipc/libheim-ipcs.la \
 	$(LIB_roken) \
 	$(LIB_door_create) \

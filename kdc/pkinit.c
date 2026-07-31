@@ -1968,7 +1968,9 @@ match_rfc_san(krb5_context context,
 	}
 
 	memset(&principal, 0, sizeof (principal));
-	principal.name = kn.principalName;
+	principal.name.name_type = (NAME_TYPE)kn.principalName.name_type;
+	principal.name.name_string.len = kn.principalName.name_string.len;
+	principal.name.name_string.val = kn.principalName.name_string.val;
 	principal.realm = kn.realm;
 
 	if (krb5_principal_compare(context, &principal, match) == TRUE)

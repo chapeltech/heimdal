@@ -44,7 +44,7 @@
  * This file implements the kx509 service.
  *
  * The protocol, its shortcomings, and its future are described in
- * lib/krb5/hx509.c.  See also lib/asn1/kx509.asn1.
+ * lib/krb5/hx509.c.  See also lib/krb5/kx509.asn1.
  *
  * The service handles requests, decides whether to issue a certificate, and
  * does so by populating a "template" to generate a TBSCertificate and signing

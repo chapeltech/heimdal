@@ -146,6 +146,8 @@ struct gss_OID_desc_struct;
 
 #include <der.h>
 
+void _krb5_register_asn1_oids(void);
+
 #define UI_UTIL_FLAG_VERIFY         0x1 /* ask to verify password */
 #define UI_UTIL_FLAG_VERIFY_SILENT  0x2 /* silence on verify failure */
 

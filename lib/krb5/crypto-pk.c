@@ -109,7 +109,9 @@ encode_uvinfo(krb5_context context, krb5_const_principal p, krb5_data *data)
     krb5_error_code ret;
     size_t size = 0;
 
-    pn.principalName = p->name;
+    pn.principalName.name_type = (HX509KRB5NameType)p->name.name_type;
+    pn.principalName.name_string.len = p->name.name_string.len;
+    pn.principalName.name_string.val = p->name.name_string.val;
     pn.realm = p->realm;
 
     ASN1_MALLOC_ENCODE(KRB5PrincipalName, data->data, data->length,

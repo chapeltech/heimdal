@@ -660,6 +660,8 @@ init_context_once(void *ctx)
     char **config_dirs = NULL;
     const char *const *dirs;
 
+    _krb5_register_asn1_oids();
+
 #ifdef _WIN32
     dirs = sysplugin_dirs;
 #else
@@ -1781,4 +1783,3 @@ krb5_set_ossl_cnf_propq(krb5_context context,
 #endif
     return ret;
 }
-

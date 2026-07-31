@@ -63,8 +63,7 @@ DEF=$(OBJ)\heimdal.def
 
 RES=$(OBJ)\heimdal-version.res
 
-DEFSRC= ..\asn1\libasn1-exports.def \
-	..\wind\libwind-exports.def \
+DEFSRC= ..\wind\libwind-exports.def \
 	..\hx509\libhx509-exports.def \
 	$(OBJDIR)\lib\krb5\libkrb5-exports.def
 

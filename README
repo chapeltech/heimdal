@@ -1,5 +1,8 @@
 
-Heimdal is an implementation of: ASN.1/DER, PKIX, and Kerberos.
+Heimdal is an implementation of PKIX and Kerberos.  It requires version 0.1.0
+or newer of the separate asn1_compile compiler and generic DER/BER support
+library.  Install that project first; use --with-asn1-prefix=/path for a
+non-standard installation.
 
 For information how to install see
 <https://github.com/heimdal/heimdal/wiki/Building-and-installing>.

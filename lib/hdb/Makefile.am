@@ -54,7 +54,7 @@ CLEANFILES = $(BUILT_SOURCES) $(gen_files_hdb) \
 
 LDADD = libhdb.la \
 	../krb5/libkrb5.la \
-	../asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(LIB_roken) \
 	$(LIB_openldap) \
 	$(LIB_libintl) \
@@ -123,7 +123,7 @@ noinst_HEADERS = $(srcdir)/hdb-private.h
 libhdb_la_LIBADD = \
 	$(LIB_com_err) \
 	../krb5/libkrb5.la \
-	../asn1/libasn1.la \
+	$(LIB_asn1) \
 	$(LIB_sqlite3) \
 	$(LIBADD_roken) \
 	$(ldap_lib) \
@@ -155,7 +155,7 @@ $(gen_files_hdb) hdb_asn1.h hdb_asn1-priv.h: hdb_asn1_files
 	done
 
 hdb_asn1_files: $(ASN1_COMPILE_DEP) $(srcdir)/hdb.asn1
-	$(ASN1_COMPILE) --option-file=$(srcdir)/hdb.opt $(srcdir)/hdb.asn1 hdb_asn1
+	$(ASN1_COMPILE) --type-file=krb5-types.h --option-file=$(srcdir)/hdb.opt $(srcdir)/hdb.asn1 hdb_asn1
 	@$(CLANG_FORMAT) -style=$(CLANG_FORMAT_STYLE) -i $$(cat hdb_asn1_files)
 
 # to help stupid solaris make
