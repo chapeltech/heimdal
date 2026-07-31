@@ -496,7 +496,7 @@ typedef struct krb5_cc_cache_cursor_data *krb5_cc_cache_cursor;
 #define KRB5_CC_OPS_VERSION_3	3
 #define KRB5_CC_OPS_VERSION_5	5
 
-/* Only extend the structure. Do not change signatures. */
+/* Do not extend this structure.  Extensions belong in ccache_plugin.h. */
 typedef struct krb5_cc_ops {
     /* Version 0 */
     int version;
@@ -532,13 +532,6 @@ typedef struct krb5_cc_ops {
     /* Version 3 */
     krb5_error_code (KRB5_CALLCONV * set_kdc_offset)(krb5_context, krb5_ccache, krb5_deltat);
     krb5_error_code (KRB5_CALLCONV * get_kdc_offset)(krb5_context, krb5_ccache, krb5_deltat *);
-    /* Version 5 */
-    krb5_error_code (KRB5_CALLCONV * get_name_2)(krb5_context, krb5_ccache,
-						 const char **id, const char **res,
-						 const char **sub);
-    krb5_error_code (KRB5_CALLCONV * resolve_2)(krb5_context, krb5_ccache *id, const char *res,
-						const char *sub);
-    /* Add new functions here for versions 6 and above */
 } krb5_cc_ops;
 
 /*

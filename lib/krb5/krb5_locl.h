@@ -398,6 +398,36 @@ _krb5_unwrap_log_facility(krb5_log_facility *fac)
     return fac ? fac->val->fac : NULL;
 }
 
+struct krb5_cc_ops_ext {
+    krb5_error_code (KRB5_CALLCONV *get_name_2)(krb5_context, krb5_ccache,
+						const char **, const char **,
+						const char **);
+    krb5_error_code (KRB5_CALLCONV *resolve_2)(krb5_context, krb5_ccache *,
+					       const char *, const char *);
+};
+
+#ifndef KCM_IS_API_CACHE
+extern const struct krb5_cc_ops_ext _krb5_acc_ops_ext;
+#endif
+extern const struct krb5_cc_ops_ext _krb5_dcc_ops_ext;
+extern const struct krb5_cc_ops_ext _krb5_fcc_ops_ext;
+#ifdef HAVE_KCM
+extern const struct krb5_cc_ops_ext _krb5_kcm_ops_ext;
+#ifdef KCM_IS_API_CACHE
+extern const struct krb5_cc_ops_ext _krb5_akcm_ops_ext;
+#endif
+#endif
+#ifdef HAVE_KEYUTILS_H
+extern const struct krb5_cc_ops_ext _krb5_krcc_ops_ext;
+#endif
+extern const struct krb5_cc_ops_ext _krb5_mcc_ops_ext;
+#ifdef HAVE_SCC
+extern const struct krb5_cc_ops_ext _krb5_scc_ops_ext;
+#endif
+
+struct krb5_cc_ops_ext
+_krb5_cc_get_ops_ext(const krb5_cc_ops *);
+
 #define KRB5_DEFAULT_CCNAME_FILE "FILE:%{TEMP}/krb5cc_%{uid}"
 #define KRB5_DEFAULT_CCNAME_DIR "DIR:%{TEMP}/krb5cc_%{uid}_dir/"
 #define KRB5_DEFAULT_CCNAME_API "API:"

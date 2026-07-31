@@ -816,6 +816,21 @@ dcc_get_kdc_offset(krb5_context context, krb5_ccache id, krb5_deltat *kdc_offset
 }
 
 
+static const char * KRB5_CALLCONV
+dcc_get_name(krb5_context context, krb5_ccache id)
+{
+    const char *name = NULL;
+
+    (void) dcc_get_name_2(context, id, &name, NULL, NULL);
+    return name;
+}
+
+static krb5_error_code KRB5_CALLCONV
+dcc_resolve(krb5_context context, krb5_ccache *id, const char *res)
+{
+    return dcc_resolve_2(context, id, res, NULL);
+}
+
 /**
  * Variable containing the DIR based credential cache implementation.
  *
@@ -823,10 +838,10 @@ dcc_get_kdc_offset(krb5_context context, krb5_ccache id, krb5_deltat *kdc_offset
  */
 
 KRB5_LIB_VARIABLE const krb5_cc_ops krb5_dcc_ops = {
-    KRB5_CC_OPS_VERSION_5,
+    KRB5_CC_OPS_VERSION_3,
     "DIR",
-    NULL,
-    NULL,
+    dcc_get_name,
+    dcc_resolve,
     dcc_gen_new,
     dcc_initialize,
     dcc_destroy,
@@ -848,7 +863,10 @@ KRB5_LIB_VARIABLE const krb5_cc_ops krb5_dcc_ops = {
     dcc_set_default,
     dcc_lastchange,
     dcc_set_kdc_offset,
-    dcc_get_kdc_offset,
+    dcc_get_kdc_offset
+};
+
+const struct krb5_cc_ops_ext _krb5_dcc_ops_ext = {
     dcc_get_name_2,
     dcc_resolve_2
 };
