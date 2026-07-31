@@ -324,6 +324,7 @@ struct krb5_context_ossl_data {
  */
 typedef struct krb5_context_data {
     heim_context hcontext;
+    krb5_log_facility *warn_dest;
     krb5_enctype *etypes;
     krb5_enctype *cfg_etypes;
     krb5_enctype *etypes_des;/* deprecated */
@@ -386,6 +387,16 @@ typedef struct krb5_context_data {
     /* OpenSSL 3.x */
     krb5_context_ossl ossl;
 } krb5_context_data;
+
+struct facility {
+    heim_log_facility *fac;
+};
+
+static inline heim_log_facility *
+_krb5_unwrap_log_facility(krb5_log_facility *fac)
+{
+    return fac ? fac->val->fac : NULL;
+}
 
 #define KRB5_DEFAULT_CCNAME_FILE "FILE:%{TEMP}/krb5cc_%{uid}"
 #define KRB5_DEFAULT_CCNAME_DIR "DIR:%{TEMP}/krb5cc_%{uid}_dir/"

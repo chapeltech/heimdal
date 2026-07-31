@@ -37,12 +37,50 @@
  * Test run functions, to be used with valgrind to detect memoryleaks.
  */
 
+struct log_state {
+    int called;
+    int closed;
+};
+
+static void KRB5_CALLCONV
+log_func(const char *prefix, const char *msg, void *data)
+{
+    struct log_state *state = data;
+
+    if (prefix == NULL || strcmp(msg, "compat callback") != 0)
+	errx(1, "bad log callback arguments");
+    state->called++;
+}
+
+static void KRB5_CALLCONV
+close_func(void *data)
+{
+    struct log_state *state = data;
+
+    state->closed++;
+}
+
 static void
 check_log(void)
 {
+    struct krb5_log_facility_v7 {
+	char *program;
+	int len;
+	void *val;
+    };
     int i;
 
+    if (sizeof(krb5_log_facility) != sizeof(struct krb5_log_facility_v7) ||
+	offsetof(krb5_log_facility, program) !=
+	    offsetof(struct krb5_log_facility_v7, program) ||
+	offsetof(krb5_log_facility, len) !=
+	    offsetof(struct krb5_log_facility_v7, len) ||
+	offsetof(krb5_log_facility, val) !=
+	    offsetof(struct krb5_log_facility_v7, val))
+	errx(1, "krb5_log_facility layout changed");
+
     for (i = 0; i < 10; i++) {
+	struct log_state state = { 0, 0 };
 	krb5_log_facility *logfacility;
 	krb5_context context;
 	krb5_error_code ret;
@@ -53,9 +91,18 @@ check_log(void)
 
 	krb5_initlog(context, "test-mem", &logfacility);
 	krb5_addlog_dest(context, logfacility, "0/STDERR:");
+	krb5_addlog_func(context, logfacility, 0, -1,
+			 log_func, close_func, &state);
 	krb5_set_warn_dest(context, logfacility);
+	if (strcmp(logfacility->program, "test-mem") != 0 ||
+	    logfacility->len != 2 ||
+	    krb5_get_warn_dest(context) != logfacility)
+	    errx(1, "bad log facility state");
+	krb5_log(context, logfacility, 0, "compat callback");
 
 	krb5_free_context(context);
+	if (state.called != 1 || state.closed != 1)
+	    errx(1, "log callback not called or closed");
     }
 }
 
