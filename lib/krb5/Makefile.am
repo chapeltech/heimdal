@@ -277,6 +277,10 @@ if FRAMEWORK_COREFOUNDATION
 libkrb5_la_LDFLAGS += -framework CoreFoundation
 endif
 
+check-abi: libkrb5.la
+	$(SHELL) $(top_srcdir)/cf/check-library-abi.sh \
+	    $(top_builddir) libkrb5.so $(srcdir)/abi/27
+
 if versionscript
 libkrb5_la_LDFLAGS += $(LDFLAGS_VERSION_SCRIPT)$(srcdir)/version-script.map
 endif
@@ -433,6 +437,7 @@ test_config_strings.out: test_config_strings.cfg
 
 EXTRA_DIST = \
 	NTMakefile \
+	abi \
 	obsolete-symbols.c \
 	dll.c \
 	libkrb5-exports.def.in \
@@ -446,6 +451,8 @@ EXTRA_DIST = \
 	version-script.map \
 	test_config_strings.cfg \
 	krb5.moduli
+
+.PHONY: check-abi
 
 #sysconf_DATA = krb5.moduli
 
