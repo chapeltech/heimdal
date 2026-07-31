@@ -1002,7 +1002,7 @@ set_req_desc(struct MHD_Connection *connection,
     r->tgt_addresses.val = 0;
     r->hcontext = r->context ? r->context->hcontext : NULL;
     r->config = NULL;
-    r->logf = logfac;
+    r->logf = _krb5_unwrap_log_facility(logfac);
     r->csrf_token = NULL;
     r->free_list = NULL;
     r->method = method;

@@ -272,8 +272,7 @@ _gss_mg_log(int level, const char *fmt, ...)
 
     if (mg->context && _krb5_have_debug(mg->context, level)) {
 	va_start(ap, fmt);
-        krb5_vlog(mg->context, heim_get_debug_dest(mg->context->hcontext),
-                  level, fmt, ap);
+	heim_vdebug(mg->context->hcontext, level, fmt, ap);
 	va_end(ap);
     }
 
