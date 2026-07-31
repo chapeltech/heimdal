@@ -41,6 +41,7 @@
  */
 
 #include "krb5_locl.h"
+#include "ccache_plugin.h"
 #include <getarg.h>
 #include <err.h>
 
@@ -56,6 +57,127 @@ static int version_flag = 0;
 static int help_flag	= 0;
 
 #define TEST_CC_TEMPLATE "%{TEMP}/krb5-cc-test-XXXXXX"
+
+static int test_v5_get_name_called;
+static int test_v5_resolve_called;
+
+static const char *
+test_v5_get_name(krb5_context context, krb5_ccache id)
+{
+    krb5_errx(context, 1, "version 5 ccache used legacy get_name");
+}
+
+static krb5_error_code
+test_v5_resolve(krb5_context context, krb5_ccache *id, const char *residual)
+{
+    krb5_errx(context, 1, "version 5 ccache used legacy resolve");
+}
+
+static krb5_error_code
+test_v5_close(krb5_context context, krb5_ccache id)
+{
+    return 0;
+}
+
+static krb5_error_code
+test_v5_get_name_2(krb5_context context, krb5_ccache id,
+		   const char **name, const char **collection,
+		   const char **subsidiary)
+{
+    if (name)
+	*name = "cache";
+    if (collection)
+	*collection = "collection";
+    if (subsidiary)
+	*subsidiary = "subsidiary";
+    test_v5_get_name_called++;
+    return 0;
+}
+
+static krb5_error_code
+test_v5_resolve_2(krb5_context context, krb5_ccache *id,
+		  const char *collection, const char *subsidiary)
+{
+    if (collection == NULL || strcmp(collection, "collection") != 0 ||
+	subsidiary == NULL || strcmp(subsidiary, "subsidiary") != 0)
+	krb5_errx(context, 1, "version 5 ccache got wrong resolve arguments");
+    test_v5_resolve_called++;
+    return 0;
+}
+
+static const krb5_cc_ops_v5 test_v5_ops = {
+    .ops = {
+	.version = KRB5_CC_OPS_VERSION_5,
+	.prefix = "TESTV5",
+	.get_name = test_v5_get_name,
+	.resolve = test_v5_resolve,
+	.close = test_v5_close
+    },
+    .get_name_2 = test_v5_get_name_2,
+    .resolve_2 = test_v5_resolve_2
+};
+
+static void
+test_cc_ops_abi(krb5_context context)
+{
+    const krb5_cc_ops *builtins[] = {
+#ifndef KCM_IS_API_CACHE
+	&krb5_acc_ops,
+#endif
+	&krb5_dcc_ops,
+	&krb5_fcc_ops,
+#ifdef HAVE_KCM
+	&krb5_kcm_ops,
+#ifdef KCM_IS_API_CACHE
+	&krb5_akcm_ops,
+#endif
+#endif
+#ifdef HAVE_KEYUTILS_H
+	&krb5_krcc_ops,
+#endif
+	&krb5_mcc_ops,
+#ifdef HAVE_SCC
+	&krb5_scc_ops,
+#endif
+	NULL
+    };
+    krb5_context test_context;
+    krb5_ccache id;
+    krb5_error_code ret;
+    size_t i;
+
+    if (offsetof(krb5_cc_ops, get_kdc_offset) +
+	sizeof(krb5_fcc_ops.get_kdc_offset) != sizeof(krb5_cc_ops))
+	krb5_errx(context, 1, "krb5_cc_ops has fields after version 3");
+    if (offsetof(krb5_cc_ops_v5, get_name_2) != sizeof(krb5_cc_ops))
+	krb5_errx(context, 1, "krb5_cc_ops_v5 does not extend krb5_cc_ops");
+    for (i = 0; builtins[i] != NULL; i++) {
+	if (builtins[i]->version != KRB5_CC_OPS_VERSION_3 ||
+	    builtins[i]->get_name == NULL || builtins[i]->resolve == NULL)
+	    krb5_errx(context, 1, "%s ccache has incompatible version 3 ops",
+		      builtins[i]->prefix);
+    }
+
+    ret = krb5_init_context(&test_context);
+    if (ret)
+	krb5_err(context, 1, ret, "initializing version 5 ccache context");
+    ret = krb5_cc_register(test_context, &test_v5_ops.ops, FALSE);
+    if (ret)
+	krb5_err(context, 1, ret, "registering version 5 ccache");
+    ret = krb5_cc_resolve_sub(test_context, NULL, "TESTV5:collection",
+			      "subsidiary", &id);
+    if (ret)
+	krb5_err(context, 1, ret, "resolving version 5 ccache");
+    if (test_v5_resolve_called != 1)
+	krb5_errx(context, 1, "version 5 resolve callback was not called");
+    if (strcmp(krb5_cc_get_name(test_context, id), "cache") != 0 ||
+	test_v5_get_name_called != 1)
+	krb5_errx(context, 1, "version 5 ccache name is incorrect");
+    ret = krb5_cc_close(test_context, id);
+    if (ret)
+	krb5_err(context, 1, ret, "closing version 5 ccache");
+    krb5_free_context(test_context);
+}
 
 static void
 cleanup(void)
@@ -3277,6 +3399,7 @@ main(int argc, char **argv)
     if (ret)
 	errx (1, "krb5_init_context failed: %d", ret);
 
+    test_cc_ops_abi(context);
     make_dir(context);
 
     test_cache_remove(context, krb5_cc_type_file);

@@ -1562,6 +1562,21 @@ scc_set_default(krb5_context context, krb5_ccache id)
     return 0;
 }
 
+static const char *
+scc_get_name(krb5_context context, krb5_ccache id)
+{
+    const char *name = NULL;
+
+    (void) scc_get_name_2(context, id, &name, NULL, NULL);
+    return name;
+}
+
+static krb5_error_code
+scc_resolve(krb5_context context, krb5_ccache *id, const char *res)
+{
+    return scc_resolve_2(context, id, res, NULL);
+}
+
 /**
  * Variable containing the SCC based credential cache implementation.
  *
@@ -1569,10 +1584,10 @@ scc_set_default(krb5_context context, krb5_ccache id)
  */
 
 KRB5_LIB_VARIABLE const krb5_cc_ops krb5_scc_ops = {
-    KRB5_CC_OPS_VERSION_5,
+    KRB5_CC_OPS_VERSION_3,
     "SCC",
-    NULL,
-    NULL,
+    scc_get_name,
+    scc_resolve,
     scc_gen_new,
     scc_initialize,
     scc_destroy,
@@ -1594,7 +1609,10 @@ KRB5_LIB_VARIABLE const krb5_cc_ops krb5_scc_ops = {
     scc_set_default,
     NULL,
     NULL,
-    NULL,
+    NULL
+};
+
+const struct krb5_cc_ops_ext _krb5_scc_ops_ext = {
     scc_get_name_2,
     scc_resolve_2
 };

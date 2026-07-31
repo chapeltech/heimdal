@@ -31,6 +31,7 @@
  */
 
 #include "kcm_locl.h"
+#include <ccache_plugin.h>
 
 RCSID("$Id$");
 
@@ -59,6 +60,8 @@ kcmss_get_name_2(krb5_context context,
         *sub = CACHENAME(id);
     return 0;
 }
+
+
 
 static krb5_error_code
 kcmss_resolve_2(krb5_context context,
@@ -258,7 +261,8 @@ kcmss_get_version(krb5_context context,
     return 0;
 }
 
-static const krb5_cc_ops krb5_kcmss_ops = {
+static const krb5_cc_ops_v5 krb5_kcmss_ops = {
+    {
     KRB5_CC_OPS_VERSION_5,
     "KCM",
     NULL,
@@ -284,9 +288,10 @@ static const krb5_cc_ops krb5_kcmss_ops = {
     NULL,
     NULL,
     NULL,
-    NULL,
+    NULL
+    },
     kcmss_get_name_2,
-    kcmss_resolve_2,
+    kcmss_resolve_2
 };
 
 krb5_error_code
@@ -294,10 +299,9 @@ kcm_internal_ccache(krb5_context context,
 		    kcm_ccache c,
 		    krb5_ccache id)
 {
-    id->ops = &krb5_kcmss_ops;
+    id->ops = &krb5_kcmss_ops.ops;
     id->data.length = sizeof(*c);
     id->data.data = c;
 
     return 0;
 }
-
