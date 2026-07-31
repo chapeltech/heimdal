@@ -1731,7 +1731,7 @@ set_req_desc(struct MHD_Connection *connection,
     r->from = r->frombuf;
     r->free_list = NULL;
     r->config = NULL;
-    r->logf = logfac;
+    r->logf = _krb5_unwrap_log_facility(logfac);
     r->reqtype = url;
     r->reason = NULL;
     r->reply = NULL;
