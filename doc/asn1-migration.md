@@ -7,8 +7,11 @@ the history of the former `lib/asn1` subtree.
 ## Build contract
 
 Heimdal requires `libasn1 >= 0.1.0`, discovered through `pkg-config`, and a
-native `asn1_compile >= 0.1.0` program.  Use `--with-asn1-prefix=DIR` when both
-are installed below a non-standard prefix, or
+native `asn1_compile >= 0.1.0` program advertising generated-output
+compatibility version 1.  Package and output-contract versions are checked
+separately so an otherwise newer compiler cannot silently generate an
+incompatible source contract.  Use `--with-asn1-prefix=DIR` when both are
+installed below a non-standard prefix, or
 `--with-asn1-compiler=PATH`/`ASN1_COMPILE=PATH` to select the build-machine
 compiler separately.
 

@@ -125,9 +125,13 @@ AS_IF([test -z "$ASN1_COMPILE"],
 AS_IF([test -z "$ASN1_COMPILE"],
       [AC_MSG_ERROR([standalone asn1_compile 0.1.0 or newer was not found])])
 
-asn1_compile_version=`$ASN1_COMPILE --version 2>/dev/null | sed -n '1s/^asn1_compile //p'`
+asn1_compile_version_output=`"$ASN1_COMPILE" --version 2>/dev/null`
+asn1_compile_version=`echo "$asn1_compile_version_output" | sed -n '1s/^asn1_compile //p'`
 AS_VERSION_COMPARE([$asn1_compile_version], [0.1.0],
     [AC_MSG_ERROR([asn1_compile 0.1.0 or newer is required])], [], [])
+asn1_compile_output_version=`echo "$asn1_compile_version_output" | sed -n 's/^generated-output //p'`
+AS_IF([test "x$asn1_compile_output_version" != x1],
+      [AC_MSG_ERROR([asn1_compile generated-output compatibility version 1 is required])])
 ASN1_COMPILE_DEP=
 
 AX_CHECK_COMPILE_FLAG([-Wno-error=enum-conversion],
