@@ -265,6 +265,7 @@ dist_libkrb5_la_SOURCES =			\
 	write_message.c
 
 nodist_libkrb5_la_SOURCES =			\
+	obsolete-symbols.c			\
 	$(ERR_FILES)
 
 libkrb5_la_DEPENDENCIES =			\
@@ -431,6 +432,7 @@ test_config_strings.out: test_config_strings.cfg
 
 EXTRA_DIST = \
 	NTMakefile \
+	obsolete-symbols.c \
 	dll.c \
 	libkrb5-exports.def.in \
 	verify_krb5_conf-version.rc \

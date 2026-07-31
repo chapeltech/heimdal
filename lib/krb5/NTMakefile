@@ -119,6 +119,7 @@ libkrb5_OBJS =			\
 	$(OBJ)\net_read.obj		    \
 	$(OBJ)\net_write.obj		    \
 	$(OBJ)\n-fold.obj		    \
+	$(OBJ)\obsolete-symbols.obj	    \
 	$(OBJ)\pac.obj			    \
 	$(OBJ)\padata.obj		    \
 	$(OBJ)\pcache.obj		    \
