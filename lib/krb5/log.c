@@ -42,11 +42,33 @@ krb5_initlog(krb5_context context,
 	     const char *program,
 	     krb5_log_facility **fac)
 {
-    return heim_initlog(context->hcontext, program, fac);
+    krb5_log_facility *f;
+    krb5_error_code ret;
+
+    *fac = NULL;
+    f = calloc(1, sizeof(*f));
+    if (f == NULL)
+	return krb5_enomem(context);
+    f->program = strdup(program);
+    f->val = calloc(1, sizeof(*f->val));
+    if (f->program == NULL || f->val == NULL) {
+	free(f->program);
+	free(f->val);
+	free(f);
+	return krb5_enomem(context);
+    }
+    ret = heim_initlog(context->hcontext, program, &f->val->fac);
+    if (ret) {
+	free(f->program);
+	free(f->val);
+	free(f);
+	return ret;
+    }
+    *fac = f;
+    return 0;
 }
 
 struct krb5_addlog_func_wrapper {
-    krb5_context context;
     krb5_log_log_func_t log_func;
     krb5_log_close_func_t close_func;
     void *data;
@@ -60,8 +82,8 @@ krb5_addlog_func_wrapper_log(heim_context hcontext,
 {
     struct krb5_addlog_func_wrapper *w = data;
 
-    w->log_func(w->context,
-                prefix,
+    (void)hcontext;
+    w->log_func(prefix,
                 msg,
                 w->data);
 }
@@ -85,26 +107,39 @@ krb5_addlog_func(krb5_context context,
                  void *data)
 {
     struct krb5_addlog_func_wrapper *w = NULL;
+    krb5_error_code ret;
 
     w = calloc(1, sizeof(*w));
     if (w == NULL)
 	return krb5_enomem(context);
 
-    w->context = context;
     w->log_func = log_func;
     w->close_func = close_func;
     w->data = data;
 
-    return heim_addlog_func(context->hcontext, fac, min, max,
-                            krb5_addlog_func_wrapper_log,
-                            krb5_addlog_func_wrapper_close,
-                            w);
+    ret = heim_addlog_func(context->hcontext,
+			   _krb5_unwrap_log_facility(fac), min, max,
+                           krb5_addlog_func_wrapper_log,
+                           krb5_addlog_func_wrapper_close,
+                           w);
+    if (ret) {
+	free(w);
+	return ret;
+    }
+    fac->len++;
+    return 0;
 }
 
 KRB5_LIB_FUNCTION krb5_error_code KRB5_LIB_CALL
 krb5_addlog_dest(krb5_context context, krb5_log_facility *f, const char *orig)
 {
-    return heim_addlog_dest(context->hcontext, f, orig);
+    krb5_error_code ret;
+
+    ret = heim_addlog_dest(context->hcontext,
+			   _krb5_unwrap_log_facility(f), orig);
+    if (ret == 0)
+	f->len++;
+    return ret;
 }
 
 
@@ -114,15 +149,21 @@ krb5_openlog(krb5_context context,
 	     krb5_log_facility **fac)
 {
     krb5_error_code ret;
-    char **p;
-    const char *const *pc;
+    char **p, **q;
 
+    ret = krb5_initlog(context, program, fac);
+    if (ret)
+	return ret;
     p = krb5_config_get_strings(context, NULL, "logging", program, NULL);
     if (p == NULL)
 	p = krb5_config_get_strings(context, NULL, "logging", "default", NULL);
-    pc = (const char *const *)p; /* XXX strict aliasing violation */
-    ret = heim_openlog(context->hcontext, program, pc, fac);
-    krb5_config_free_strings(p);
+    if (p) {
+	for (q = p; *q && ret == 0; q++)
+	    ret = krb5_addlog_dest(context, *fac, *q);
+	krb5_config_free_strings(p);
+    } else {
+	ret = krb5_addlog_dest(context, *fac, "SYSLOG");
+    }
     return ret;
 }
 
@@ -130,7 +171,15 @@ KRB5_LIB_FUNCTION krb5_error_code KRB5_LIB_CALL
 krb5_closelog(krb5_context context,
              krb5_log_facility *fac)
 {
-    heim_closelog(context->hcontext, fac);
+    if (fac == NULL)
+	return 0;
+    heim_closelog(context->hcontext, _krb5_unwrap_log_facility(fac));
+    free(fac->val);
+    free(fac->program);
+    fac->val = NULL;
+    fac->len = 0;
+    fac->program = NULL;
+    free(fac);
     return 0;
 }
 
@@ -146,7 +195,8 @@ krb5_vlog_msg(krb5_context context,
 	      va_list ap)
      __attribute__ ((__format__ (__printf__, 5, 0)))
 {
-    return heim_vlog_msg(context->hcontext, fac, reply, level, fmt, ap);
+    return heim_vlog_msg(context->hcontext, _krb5_unwrap_log_facility(fac),
+			 reply, level, fmt, ap);
 }
 
 KRB5_LIB_FUNCTION krb5_error_code KRB5_LIB_CALL
@@ -157,7 +207,8 @@ krb5_vlog(krb5_context context,
 	  va_list ap)
      __attribute__ ((__format__ (__printf__, 4, 0)))
 {
-    return heim_vlog_msg(context->hcontext, fac, NULL, level, fmt, ap);
+    return heim_vlog_msg(context->hcontext, _krb5_unwrap_log_facility(fac),
+			 NULL, level, fmt, ap);
 }
 
 KRB5_LIB_FUNCTION krb5_error_code KRB5_LIB_CALL
@@ -173,7 +224,8 @@ krb5_log_msg(krb5_context context,
     krb5_error_code ret;
 
     va_start(ap, fmt);
-    ret = heim_vlog_msg(context->hcontext, fac, reply, level, fmt, ap);
+    ret = heim_vlog_msg(context->hcontext, _krb5_unwrap_log_facility(fac),
+			reply, level, fmt, ap);
     va_end(ap);
     return ret;
 }
@@ -191,7 +243,8 @@ krb5_log(krb5_context context,
     krb5_error_code ret;
 
     va_start(ap, fmt);
-    ret = heim_vlog(context->hcontext, fac, level, fmt, ap);
+    ret = heim_vlog(context->hcontext, _krb5_unwrap_log_facility(fac),
+		    level, fmt, ap);
     va_end(ap);
     return ret;
 }
@@ -280,5 +333,6 @@ krb5_set_debug_dest(krb5_context context, const char *program,
 KRB5_LIB_FUNCTION krb5_error_code KRB5_LIB_CALL
 krb5_set_log_dest(krb5_context context, krb5_log_facility *fac)
 {
-    return heim_set_log_dest(context->hcontext, fac);
+    return heim_set_log_dest(context->hcontext,
+			     _krb5_unwrap_log_facility(fac));
 }

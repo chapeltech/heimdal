@@ -945,6 +945,12 @@ krb5_free_context(krb5_context context)
     hx509_context_free(&context->hx509ctx);
 #endif
 
+    if (context->warn_dest) {
+	heim_set_warn_dest(context->hcontext, NULL);
+	krb5_closelog(context, context->warn_dest);
+	context->warn_dest = NULL;
+    }
+
     if (context->flags & KRB5_CTX_F_SOCKETS_INITIALIZED) {
  	rk_SOCK_EXIT();
     }

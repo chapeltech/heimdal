@@ -312,7 +312,9 @@ krb5_abortx(krb5_context context, const char *fmt, ...)
 KRB5_LIB_FUNCTION krb5_error_code KRB5_LIB_CALL
 krb5_set_warn_dest(krb5_context context, krb5_log_facility *fac)
 {
-    return heim_set_warn_dest(context->hcontext, fac);
+    context->warn_dest = fac;
+    return heim_set_warn_dest(context->hcontext,
+			      _krb5_unwrap_log_facility(fac));
 }
 
 /**
@@ -326,5 +328,5 @@ krb5_set_warn_dest(krb5_context context, krb5_log_facility *fac)
 KRB5_LIB_FUNCTION krb5_log_facility * KRB5_LIB_CALL
 krb5_get_warn_dest(krb5_context context)
 {
-    return heim_get_warn_dest(context->hcontext);
+    return context->warn_dest;
 }
