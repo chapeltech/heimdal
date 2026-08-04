@@ -1562,7 +1562,7 @@ scc_set_default(krb5_context context, krb5_ccache id)
     return 0;
 }
 
-static const char *
+static const char * KRB5_CALLCONV
 scc_get_name(krb5_context context, krb5_ccache id)
 {
     const char *name = NULL;
@@ -1571,7 +1571,7 @@ scc_get_name(krb5_context context, krb5_ccache id)
     return name;
 }
 
-static krb5_error_code
+static krb5_error_code KRB5_CALLCONV
 scc_resolve(krb5_context context, krb5_ccache *id, const char *res)
 {
     return scc_resolve_2(context, id, res, NULL);
