@@ -61,25 +61,25 @@ static int help_flag	= 0;
 static int test_v5_get_name_called;
 static int test_v5_resolve_called;
 
-static const char *
+static const char * KRB5_CALLCONV
 test_v5_get_name(krb5_context context, krb5_ccache id)
 {
     krb5_errx(context, 1, "version 5 ccache used legacy get_name");
 }
 
-static krb5_error_code
+static krb5_error_code KRB5_CALLCONV
 test_v5_resolve(krb5_context context, krb5_ccache *id, const char *residual)
 {
     krb5_errx(context, 1, "version 5 ccache used legacy resolve");
 }
 
-static krb5_error_code
+static krb5_error_code KRB5_CALLCONV
 test_v5_close(krb5_context context, krb5_ccache id)
 {
     return 0;
 }
 
-static krb5_error_code
+static krb5_error_code KRB5_CALLCONV
 test_v5_get_name_2(krb5_context context, krb5_ccache id,
 		   const char **name, const char **collection,
 		   const char **subsidiary)
@@ -94,7 +94,7 @@ test_v5_get_name_2(krb5_context context, krb5_ccache id,
     return 0;
 }
 
-static krb5_error_code
+static krb5_error_code KRB5_CALLCONV
 test_v5_resolve_2(krb5_context context, krb5_ccache *id,
 		  const char *collection, const char *subsidiary)
 {
