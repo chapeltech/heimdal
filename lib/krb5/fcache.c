@@ -1674,7 +1674,7 @@ fcc_get_kdc_offset(krb5_context context, krb5_ccache id, krb5_deltat *kdc_offset
 }
 
 
-static const char *
+static const char * KRB5_CALLCONV
 fcc_get_name(krb5_context context, krb5_ccache id)
 {
     const char *name = NULL;
@@ -1683,7 +1683,7 @@ fcc_get_name(krb5_context context, krb5_ccache id)
     return name;
 }
 
-static krb5_error_code
+static krb5_error_code KRB5_CALLCONV
 fcc_resolve(krb5_context context, krb5_ccache *id, const char *res)
 {
     return fcc_resolve_2(context, id, res, NULL);

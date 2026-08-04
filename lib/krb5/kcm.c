@@ -1279,7 +1279,7 @@ kcm_get_kdc_offset(krb5_context context, krb5_ccache id, krb5_deltat *kdc_offset
     return 0;
 }
 
-static const char *
+static const char * KRB5_CALLCONV
 kcm_get_name(krb5_context context, krb5_ccache id)
 {
     const char *name = NULL;
@@ -1288,13 +1288,13 @@ kcm_get_name(krb5_context context, krb5_ccache id)
     return name;
 }
 
-static krb5_error_code
+static krb5_error_code KRB5_CALLCONV
 kcm_resolve_kcm(krb5_context context, krb5_ccache *id, const char *res)
 {
     return kcm_resolve_2_kcm(context, id, res, NULL);
 }
 
-static krb5_error_code
+static krb5_error_code KRB5_CALLCONV
 kcm_resolve_api(krb5_context context, krb5_ccache *id, const char *res)
 {
     return kcm_resolve_2_api(context, id, res, NULL);
