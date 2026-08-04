@@ -264,9 +264,10 @@ dist_libkrb5_la_SOURCES =			\
 	warn.c					\
 	write_message.c
 
-nodist_libkrb5_la_SOURCES =			\
-	obsolete-symbols.c			\
-	$(ERR_FILES)
+nodist_libkrb5_la_SOURCES = $(ERR_FILES)
+if ENABLE_SHARED
+nodist_libkrb5_la_SOURCES += obsolete-symbols.c
+endif
 
 libkrb5_la_DEPENDENCIES =			\
 	version-script.map

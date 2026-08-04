@@ -106,6 +106,11 @@ generate_c(void)
     fprintf(c_file, "#define num_errors %d\n", number);
     fprintf(c_file, "\n");
     fprintf(c_file,
+	    "const struct error_table et_%s_error_table = { "
+	    "%s_error_strings, ERROR_TABLE_BASE_%s, num_errors };\n",
+	    name, name, name);
+    fprintf(c_file, "\n");
+    fprintf(c_file,
 	    "void initialize_%s_error_table_r(struct et_list **list)\n",
 	    name);
     fprintf(c_file, "{\n");
@@ -148,7 +153,12 @@ generate_h(void)
     fprintf(h_file, "#ifndef %s\n", fn);
     fprintf(h_file, "#define %s\n", fn);
     fprintf(h_file, "\n");
+    fprintf(h_file, "struct error_table;\n");
     fprintf(h_file, "struct et_list;\n");
+    fprintf(h_file, "\n");
+    fprintf(h_file,
+	    "extern const struct error_table et_%s_error_table;\n",
+	    name);
     fprintf(h_file, "\n");
     fprintf(h_file,
 	    "void initialize_%s_error_table_r(struct et_list **);\n",

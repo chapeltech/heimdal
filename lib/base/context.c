@@ -79,6 +79,15 @@ heim_add_et_list(heim_context context, void (*func)(struct et_list **))
     return 0;
 }
 
+void
+_heim_initialize_heim_error_table_r(struct et_list **list)
+{
+    initialize_error_table_r(list,
+                             (const char **)rk_UNCONST(et_heim_error_table.msgs),
+                             et_heim_error_table.n_msgs,
+                             et_heim_error_table.base);
+}
+
 heim_error_code
 heim_context_set_time_fmt(heim_context context, const char *fmt)
 {

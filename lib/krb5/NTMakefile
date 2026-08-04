@@ -31,7 +31,11 @@
 
 RELDIR=lib\krb5
 
-intcflags=-I$(SRCDIR) -I$(SRCDIR)\..\com_err -I$(SRCDIR)\..\base
+!ifndef STATICLIBS
+obsolete_symbols_cflag=-DBUILD_OBSOLETE_SYMBOLS
+!endif
+
+intcflags=$(obsolete_symbols_cflag) -I$(SRCDIR) -I$(SRCDIR)\..\com_err -I$(SRCDIR)\..\base
 
 !include ../../windows/NTMakefile.w32
 

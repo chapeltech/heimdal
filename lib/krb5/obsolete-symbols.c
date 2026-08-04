@@ -1,4 +1,7 @@
 #include "krb5_locl.h"
+#include <heimbasepriv.h>
+
+#if defined(PIC) || defined(BUILD_OBSOLETE_SYMBOLS)
 
 static krb5_error_code
 compat_not_implemented(void)
@@ -42,12 +45,12 @@ KRB5_LIB_FUNCTION krb5_boolean KRB5_LIB_CALL
 krb5_ntlm_rep_get_status(krb5_context, krb5_ntlm);
 KRB5_LIB_FUNCTION krb5_error_code KRB5_LIB_CALL
 krb5_ntlm_request(krb5_context, krb5_ntlm, krb5_realm, krb5_ccache);
-KRB5_LIB_FUNCTION void KRB5_LIB_CALL
+#ifndef _WIN32
+KRB5_LIB_FUNCTION void
 initialize_heim_error_table(void);
-KRB5_LIB_FUNCTION void KRB5_LIB_CALL
+KRB5_LIB_FUNCTION void
 initialize_heim_error_table_r(struct et_list **);
-
-extern const struct error_table et_heim_error_table;
+#endif
 
 #define DIGEST_ERROR_3(name, type)					\
     KRB5_LIB_FUNCTION krb5_error_code KRB5_LIB_CALL			\
@@ -359,17 +362,18 @@ krb5_ntlm_request(krb5_context context,
     return compat_not_implemented();
 }
 
-KRB5_LIB_FUNCTION void KRB5_LIB_CALL
+#ifndef _WIN32
+KRB5_LIB_FUNCTION void
 initialize_heim_error_table(void)
 {
-    initialize_heim_error_table_r(&_et_list);
+    _heim_initialize_heim_error_table_r(&_et_list);
 }
 
-KRB5_LIB_FUNCTION void KRB5_LIB_CALL
+KRB5_LIB_FUNCTION void
 initialize_heim_error_table_r(struct et_list **list)
 {
-    initialize_error_table_r(list,
-			     et_heim_error_table.msgs,
-			     et_heim_error_table.n_msgs,
-			     et_heim_error_table.base);
+    _heim_initialize_heim_error_table_r(list);
 }
+#endif
+
+#endif

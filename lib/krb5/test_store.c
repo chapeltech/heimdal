@@ -262,6 +262,29 @@ check_too_large(krb5_context context, krb5_storage *sp)
     }
 }
 
+static void
+check_heim_error_table(krb5_context context)
+{
+    struct et_list *list = NULL;
+    const char *msg;
+
+    msg = krb5_get_error_message(context, HEIM_ERR_TOO_BIG);
+    if (strcmp(msg, "Offset too large") != 0)
+	krb5_errx(context, 1, "wrong Heim error message: %s", msg);
+    krb5_free_error_message(context, msg);
+
+    initialize_heim_error_table();
+    msg = error_message(HEIM_ERR_TOO_BIG);
+    if (strcmp(msg, "Offset too large") != 0)
+	krb5_errx(context, 1, "wrong global Heim error message: %s", msg);
+
+    initialize_heim_error_table_r(&list);
+    msg = com_right(list, HEIM_ERR_TOO_BIG);
+    if (strcmp(msg, "Offset too large") != 0)
+	krb5_errx(context, 1, "wrong listed Heim error message: %s", msg);
+    free_error_table(list);
+}
+
 /*
  *
  */
@@ -314,6 +337,8 @@ main(int argc, char **argv)
     ret = krb5_init_context (&context);
     if (ret)
 	errx (1, "krb5_init_context failed: %d", ret);
+
+    check_heim_error_table(context);
 
     /*
      * Test encoding/decoding of primotive types on diffrent backends
