@@ -1,0 +1,174 @@
+---
+name: Build Asgard Heimdal packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing Asgard Heimdal release tag
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: asgard-heimdal-${{ inputs.release_tag }}
+  cancel-in-progress: false
+
+env:
+  RELEASE_TAG: ${{ inputs.release_tag }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  release:
+    name: Validate release
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check selected release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release view "$RELEASE_TAG"
+          --repo "$GITHUB_REPOSITORY" >/dev/null
+
+  debian:
+    name: Debian 13 (${{ matrix.architecture }})
+    needs: release
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - architecture: amd64
+            runner: ubuntu-24.04
+          - architecture: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    container: debian:trixie-slim
+    env:
+      ARTIFACT_DIR: ${{ github.workspace }}/artifacts
+      PACKAGING_DIR: ${{ github.workspace }}/packaging
+      SOURCE_DIR: ${{ github.workspace }}/source
+      TARGET_ARCHITECTURE: ${{ matrix.architecture }}
+    steps:
+      - name: Install checkout dependencies
+        run: |
+          apt-get update
+          apt-get install --no-install-recommends -y ca-certificates git
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: packaging
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag }}
+          fetch-depth: 0
+          path: source
+      - name: Build and validate Debian packages
+        run: |
+          "$PACKAGING_DIR/packaging/ci/build-debian"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: debian-${{ matrix.architecture }}
+          path: artifacts/*.deb
+          if-no-files-found: error
+          retention-days: 1
+
+  rpm:
+    name: EL9 (x86_64)
+    needs: release
+    runs-on: ubuntu-24.04
+    container: rockylinux:9
+    env:
+      ARTIFACT_DIR: ${{ github.workspace }}/artifacts
+      PACKAGING_DIR: ${{ github.workspace }}/packaging
+      SOURCE_DIR: ${{ github.workspace }}/source
+      TARGET_ARCHITECTURE: x86_64
+      GNUPGHOME: /tmp/archive-signing
+    steps:
+      - name: Install checkout and signing dependencies
+        run: dnf install -y ca-certificates git gnupg2 rpm-sign
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: packaging
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag }}
+          fetch-depth: 0
+          path: source
+      - name: Build and validate RPM packages
+        run: |
+          "$PACKAGING_DIR/packaging/ci/build-rpm"
+      - name: Sign and verify RPM packages
+        env:
+          ARCHIVE_SIGNING_FINGERPRINT: ${{ vars.ARCHIVE_SIGNING_FINGERPRINT }}
+          ARCHIVE_SIGNING_KEY: ${{ secrets.ARCHIVE_SIGNING_KEY }}
+          ARCHIVE_SIGNING_PASSPHRASE: ${{ secrets.ARCHIVE_SIGNING_PASSPHRASE }}
+        run: |
+          test -n "$ARCHIVE_SIGNING_KEY"
+          test -n "$ARCHIVE_SIGNING_PASSPHRASE"
+          fingerprint=$(printf '%s' "$ARCHIVE_SIGNING_FINGERPRINT" |
+            tr -d '[:space:]' | tr '[:lower:]' '[:upper:]')
+          case "$fingerprint" in
+            ????????????????????????????????????????) ;;
+            *) exit 1 ;;
+          esac
+          case "$fingerprint" in
+            *[!0-9A-F]*) exit 1 ;;
+          esac
+
+          install -d -m 700 "$GNUPGHOME"
+          printf '%s' "$ARCHIVE_SIGNING_KEY" | gpg2 --batch --import
+          passphrase_file=$GNUPGHOME/passphrase
+          public_key=$GNUPGHOME/public.asc
+          install -m 600 /dev/null "$passphrase_file"
+          printf '%s' "$ARCHIVE_SIGNING_PASSPHRASE" >"$passphrase_file"
+          gpg2 --batch --armor --export "$fingerprint" >"$public_key"
+          rpmkeys --import "$public_key"
+
+          find "$ARTIFACT_DIR" -maxdepth 1 -type f -name '*.rpm' \
+            -print0 | while IFS= read -r -d '' package; do
+              rpmsign --addsign \
+                --define "_gpg_name $fingerprint" \
+                --define "_gpg_path $GNUPGHOME" \
+                --define "_gpg_digest_algo sha256" \
+                --define "_gpg_sign_cmd_extra_args --batch --pinentry-mode loopback --passphrase-file $passphrase_file" \
+                "$package"
+              rpmkeys --checksig --verbose "$package" | \
+                grep -Eq 'Signature.*, key ID [[:xdigit:]]+: OK'
+            done
+      - name: Remove signing key material
+        if: ${{ always() }}
+        run: rm -rf "$GNUPGHOME"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rpm-el9-x86_64
+          path: artifacts/*.rpm
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    name: Publish release assets
+    needs: [debian, rpm]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - name: Create checksums
+        run: |
+          cd artifacts
+          sha256sum -- * >SHA256SUMS
+      - name: Upload packages
+        run: >-
+          gh release upload "$RELEASE_TAG" artifacts/*
+          --repo "$GITHUB_REPOSITORY" --clobber

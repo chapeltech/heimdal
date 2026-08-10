@@ -1,0 +1,11 @@
+asgard-heimdal (7.99.1+20260810.e0ee5cada) trixie; urgency=medium
+
+  * Package upstream Heimdal master with the private Asgard layout.
+
+ -- Roland C. Dowdeswell <elric@imrryr.org>  Mon, 10 Aug 2026 12:18:25 +0100
+
+asgard-heimdal (7.99.1+20260808.a68a4073b) trixie; urgency=medium
+
+  * Package the rebased Asgard Heimdal snapshot.
+
+ -- Roland C. Dowdeswell <elric@imrryr.org>  Sat, 08 Aug 2026 17:20:37 +0100
