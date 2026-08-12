@@ -102,7 +102,6 @@ jobs:
       - name: Lock package repositories to Rocky 9.6
         run: |
           grep -q '^Rocky Linux release 9\.6 ' /etc/rocky-release
-          printf '9.6\n' >/etc/dnf/vars/releasever
           rm -f /etc/yum.repos.d/*.repo
           cat >/etc/yum.repos.d/rocky-vault.repo <<'EOF'
           [baseos]
