@@ -364,6 +364,7 @@ CLEANFILES= \
 	krb5-pkinit-win.conf \
 	krb5-pkinit.conf \
 	krb5-pkinit-no-kx509.conf \
+	krb5-pkinit-require-initial.conf \
 	krb5-pkinit2.conf \
 	krb5-bx509.conf \
 	krb5-httpkadmind.conf \

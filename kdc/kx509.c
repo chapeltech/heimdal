@@ -940,9 +940,9 @@ _kdc_do_kx509(kx509_req_context r)
     /* Optional: check if Ticket is INITIAL */
     if (ret == 0 &&
         !ticket->ticket.flags.initial &&
-        !get_bool_param(r->context, TRUE,
-                        krb5_principal_get_realm(r->context, cprincipal),
-                        "require_initial_kca_tickets")) {
+        get_bool_param(r->context, TRUE,
+                       krb5_principal_get_realm(r->context, cprincipal),
+                       "require_initial_kca_tickets")) {
         ret = mk_error_response(r->context, r, 4, KRB5KDC_ERR_POLICY,
                                 "Client used non-INITIAL tickets, but kx509 "
                                 "service is configured to require INITIAL "
