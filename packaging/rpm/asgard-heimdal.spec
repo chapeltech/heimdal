@@ -1,4 +1,4 @@
-%global snapshot 20260810.e0ee5cada
+%global snapshot 20260812.a78154666
 %global private_root %{_prefix}/lib/asgard
 %global private_libdir %{_libdir}/asgard/lib
 %global private_datadir %{_datadir}/asgard/heimdal

@@ -1,3 +1,9 @@
+asgard-heimdal (7.99.1+20260812.a78154666) trixie; urgency=medium
+
+  * Correct require_initial_kca_tickets handling.
+
+ -- Roland C. Dowdeswell <elric@imrryr.org>  Wed, 12 Aug 2026 13:22:07 +0100
+
 asgard-heimdal (7.99.1+20260810.e0ee5cada) trixie; urgency=medium
 
   * Package upstream Heimdal master with the private Asgard layout.
