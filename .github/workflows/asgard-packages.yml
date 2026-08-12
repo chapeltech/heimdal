@@ -87,10 +87,10 @@ jobs:
           retention-days: 1
 
   rpm:
-    name: EL9 (x86_64)
+    name: EL9.6 (x86_64)
     needs: release
     runs-on: ubuntu-24.04
-    container: rockylinux:9
+    container: quay.io/rockylinux/rockylinux:9.6@sha256:91bbb8eb52ca462611c1f9ce5c4cede4172a31bfe64f336e82f29648694a3cfe
     env:
       ARTIFACT_DIR: ${{ github.workspace }}/artifacts
       PACKAGING_DIR: ${{ github.workspace }}/packaging
@@ -99,6 +99,10 @@ jobs:
       TARGET_ARCHITECTURE: x86_64
       GNUPGHOME: /tmp/archive-signing
     steps:
+      - name: Lock package repositories to Rocky 9.6
+        run: |
+          grep -q '^Rocky Linux release 9\.6 ' /etc/rocky-release
+          printf '9.6\n' >/etc/dnf/vars/releasever
       - name: Install checkout and signing dependencies
         run: dnf install -y ca-certificates git gnupg2 rpm-sign
       - uses: actions/checkout@v4
