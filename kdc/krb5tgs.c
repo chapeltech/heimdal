@@ -1424,6 +1424,7 @@ tgs_build_reply(astgs_request_t priv,
     else
 	kdc_log(context, config, 4,
 		"TGS-REQ %s from %s for %s", cpn, from, spn);
+    kdc_log(context, config, 10, "TGS-REQ nonce: %u", (unsigned)b->nonce);
 
     /*
      * Fetch server

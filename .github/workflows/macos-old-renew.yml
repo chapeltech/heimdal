@@ -1,0 +1,70 @@
+name: macOS System Kerberos Renewal
+
+on:
+    push:
+      branches:
+         - 'reproduce-macos-renew'
+    workflow_dispatch:
+
+jobs:
+    old-client-renew:
+        runs-on: macos-latest
+        timeout-minutes: 30
+        steps:
+            - name: Install packages
+              run: |
+                brew install autoconf automake bison libtool cpanm texinfo texi2html bash openssl@3
+                sudo cpanm install JSON
+                echo "$(brew --prefix)/bin" >> $GITHUB_PATH
+            - name: Clone repository
+              uses: actions/checkout@v4
+            - name: Verify system Kerberos client
+              run: |
+                sw_vers
+                for prog in kinit klist kgetcred kdestroy; do
+                    test -x "/usr/bin/$prog"
+                done
+                /usr/bin/kinit --version || true
+                otool -L /usr/bin/kinit
+            - name: Build current Heimdal
+              run: |
+                /bin/sh ./autogen.sh
+                mkdir build
+                cd build
+                ../configure --srcdir=`dirname "$PWD"` \
+                    --disable-heimdal-documentation \
+                    --enable-maintainer-mode \
+                    --enable-developer \
+                    --with-libedit=yes \
+                    --with-openssl="$(brew --prefix openssl@3)" \
+                    --with-older-heimdal=/usr \
+                    CFLAGS="-O0 -g -Wno-error=shadow -Wno-error=bad-function-cast -Wno-error=unused-function -Wno-error=unused-result -Wno-error=deprecated-declarations"
+                make -j4
+            - name: Stress old client renewal
+              shell: bash
+              env:
+                OLD_HEIMDAL_RENEW_LOOPS: 10000
+                OLD_HEIMDAL_RENEW_ONLY: true
+                OLD_HEIMDAL_USE_KEYTAB: true
+              run: |
+                set -o pipefail
+                cd build/tests/kdc
+                make SCRIPT_TESTS=check-old-heimdal-kdc check
+            - name: Failure diagnostics
+              if: ${{ failure() }}
+              run: |
+                ps auxww | grep -E 'kdc|kinit|check-old' | grep -v grep || true
+                find build/tests/kdc -name '*.log' -o -name 'messages.log' -o -name 'out-old-renew' | while read f; do
+                    echo "=== $f ==="
+                    cat "$f"
+                done
+            - name: Upload test logs
+              if: ${{ always() }}
+              uses: actions/upload-artifact@v4
+              with:
+                name: macos-old-renew-logs
+                path: |
+                    build/tests/kdc/*.log
+                    build/tests/kdc/*.trs
+                    build/tests/kdc/out-old-renew
+                    build/tests/kdc/old-cache.krb5

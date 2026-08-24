@@ -33,6 +33,7 @@
  */
 
 #include "kdc_locl.h"
+#include <hex.h>
 #include <vis.h>
 
 /*
@@ -282,6 +283,7 @@ static krb5_error_code
 kdc_tgs_req(kdc_request_t *rptr, int *claim)
 {
     astgs_request_t r;
+    char *request_hex = NULL;
     krb5_error_code ret;
     size_t len;
 
@@ -291,6 +293,11 @@ kdc_tgs_req(kdc_request_t *rptr, int *claim)
     ret = decode_TGS_REQ(r->request.data, r->request.length, &r->req, &len);
     if (ret)
 	return ret;
+
+    if (hex_encode(r->request.data, r->request.length, &request_hex) >= 0) {
+	kdc_log(r->context, r->config, 10, "TGS-REQ DER: %s", request_hex);
+	free(request_hex);
+    }
 
     r->reqtype = "TGS-REQ";
     r->use_request_t = 1;

@@ -77,12 +77,26 @@ old_kdestroy="${OLD_HEIMDAL}/bin/kdestroy"
 
 server=host/datan.test.h5l.se
 cache="FILE:${objdir}/old-cache.krb5"
+clientkeytab="${objdir}/old-client.keytab"
+renewconfig="${objdir}/old-renew.krb5.conf"
 
 KRB5_CONFIG="${objdir}/krb5.conf"
+current_config=
+if ${OLD_HEIMDAL_USE_KEYTAB:-false}; then
+    rm -f ${renewconfig}
+    sed 's/strict-nametypes = true/strict-nametypes = false/' \
+	${KRB5_CONFIG} > ${renewconfig}
+    cat >> ${renewconfig} <<EOF
+[kadmin]
+	default_keys = aes128-cts-hmac-sha1-96:pw-salt
+EOF
+    current_config="env KRB5_CONFIG=${renewconfig}"
+fi
 export KRB5_CONFIG
 
 # Clean up from previous runs
 rm -f ${keytabfile}
+rm -f ${clientkeytab}
 rm -f current-db*
 rm -f out-*
 rm -f mkey.file*
@@ -91,12 +105,17 @@ rm -f "${cache#FILE:}"
 > messages.log
 
 echo "Creating database"
-${kadmin} <<EOF || exit 1
+${current_config} ${kadmin} <<EOF || exit 1
 init --realm-max-ticket-life=1day --realm-max-renewable-life=1month ${R}
 add -p foo --use-defaults foo@${R}
 add -p foo --use-defaults ${server}@${R}
 check ${R}
 EOF
+
+if ${OLD_HEIMDAL_USE_KEYTAB:-false}; then
+    ${current_config} ${kadmin} ext_keytab -r -e aes128-cts-hmac-sha1-96 \
+	-k ${clientkeytab} foo@${R} || exit 1
+fi
 
 echo foo > ${objdir}/foopassword
 echo bar > ${objdir}/barpassword
@@ -105,6 +124,7 @@ ec=0
 kdcpid=
 
 cleanup() {
+    rm -f ${renewconfig}
     if [ -n "$kdcpid" ]; then
         echo "Killing KDC (pid $kdcpid)"
         kill $kdcpid 2>/dev/null
@@ -117,7 +137,8 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 echo "Starting current (new) KDC"
-${kdc} --detach --testing || { echo "KDC failed to start"; cat messages.log; exit 1; }
+${current_config} ${kdc} --detach --testing || \
+    { echo "KDC failed to start"; cat messages.log; exit 1; }
 kdcpid=`getpid kdc`
 echo "KDC running with PID $kdcpid"
 
@@ -134,8 +155,15 @@ expect Password
 password foo\n
 EOF
 
-${rkpty} ${kinitpty} ${old_kinit} -c ${cache} foo@${R} >/dev/null || \
-    { ec=1; eval "${testfailed}"; }
+if ${OLD_HEIMDAL_USE_KEYTAB:-false}; then
+    ${old_kinit} -c ${cache} -r 1month -e aes128-cts-hmac-sha1-96 \
+	-k -t ${clientkeytab} foo@${R} >/dev/null || \
+	{ ec=1; eval "${testfailed}"; }
+else
+    ${rkpty} ${kinitpty} ${old_kinit} -c ${cache} -r 1month \
+	-e aes128-cts-hmac-sha1-96 foo@${R} >/dev/null || \
+	{ ec=1; eval "${testfailed}"; }
+fi
 
 echo "Verifying ticket with older klist"
 ${old_klist} -c ${cache} || { ec=1; eval "${testfailed}"; }
@@ -145,32 +173,61 @@ ${old_klist} -c ${cache} | grep "krbtgt/${R}@${R}" > /dev/null || \
 echo "Test 1 PASSED"
 
 #
-# Test 2: Get service ticket with older kgetcred
+# Test 2: Renew TGT with older kinit
 #
 echo ""
-echo "=== Test 2: Older Heimdal kgetcred against current KDC ==="
+echo "=== Test 2: Older Heimdal kinit renewal against current KDC ==="
+
+renew_loops=${OLD_HEIMDAL_RENEW_LOOPS:-1}
+i=1
+while [ $i -le $renew_loops ]; do
+    ${old_kinit} -c ${cache} -R > out-old-renew 2>&1 || {
+	echo "Renewal failed on iteration $i"
+	cat out-old-renew
+	${old_klist} -v -c ${cache} || true
+	${klist} -v -c ${cache} || true
+	ec=1
+	eval "${testfailed}"
+    }
+    if [ $((i % 100)) -eq 0 ]; then
+	echo "Completed $i renewals"
+    fi
+    i=$((i + 1))
+done
+
+${old_klist} -c ${cache} || { ec=1; eval "${testfailed}"; }
+
+echo "Test 2 PASSED ($renew_loops renewals)"
+
+${OLD_HEIMDAL_RENEW_ONLY:-false} && exit 0
+
+#
+# Test 3: Get service ticket with older kgetcred
+#
+echo ""
+echo "=== Test 3: Older Heimdal kgetcred against current KDC ==="
 
 ${old_kgetcred} -c ${cache} ${server}@${R} || { ec=1; eval "${testfailed}"; }
 ${old_klist} -c ${cache} | grep "${server}@${R}" > /dev/null || \
     { ec=1; echo "No service ticket found"; eval "${testfailed}"; }
 
-echo "Test 2 PASSED"
-
-#
-# Test 3: Verify tickets with current klist
-#
-echo ""
-echo "=== Test 3: Verify older client tickets with current klist ==="
-
-${klist} -c ${cache} || { ec=1; eval "${testfailed}"; }
-
 echo "Test 3 PASSED"
 
 #
-# Test 4: Wrong password should fail
+# Test 4: Verify tickets with current klist
 #
 echo ""
-echo "=== Test 4: Older kinit with wrong password should fail ==="
+echo "=== Test 4: Verify older client tickets with current klist ==="
+
+${klist} -c ${cache} || { ec=1; eval "${testfailed}"; }
+
+echo "Test 4 PASSED"
+
+#
+# Test 5: Wrong password should fail
+#
+echo ""
+echo "=== Test 5: Older kinit with wrong password should fail ==="
 
 cat > ${kinitpty} <<EOF
 expect Password
@@ -180,7 +237,7 @@ EOF
 ${rkpty} ${kinitpty} ${old_kinit} -c ${cache} foo@${R} >/dev/null 2>&1 && \
     { ec=1; echo "kinit with wrong password should have failed"; eval "${testfailed}"; }
 
-echo "Test 4 PASSED"
+echo "Test 5 PASSED"
 
 #
 # Clean up

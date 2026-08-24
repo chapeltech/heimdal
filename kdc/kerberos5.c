@@ -32,6 +32,7 @@
  */
 
 #include "kdc_locl.h"
+#include <hex.h>
 
 #ifdef TIME_T_SIGNED
 #if SIZEOF_TIME_T == 4
@@ -1239,6 +1240,17 @@ _kdc_encode_reply(krb5_context context,
 	kdc_log(context, config, 4, "Failed to encode KDC-REP: %s", msg);
 	krb5_free_error_message(context, msg);
 	return ret;
+    }
+    kdc_log(context, config, 10, "KDC-REP nonce %u enc-part length: %zu",
+	    (unsigned)nonce, len);
+    if (_krb5_have_debug(context, 10)) {
+	char *enc_part_hex = NULL;
+
+	if (hex_encode(buf, len, &enc_part_hex) >= 0) {
+	    kdc_log(context, config, 10, "KDC-REP enc-part DER: %s",
+		    enc_part_hex);
+	    free(enc_part_hex);
+	}
     }
     if(buf_size != len) {
 	free(buf);
