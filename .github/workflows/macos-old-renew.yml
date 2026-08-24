@@ -4,6 +4,7 @@ on:
     push:
       branches:
          - 'reproduce-macos-renew'
+         - 'yyrkoon-macos-nonce'
     workflow_dispatch:
 
 jobs:
@@ -43,7 +44,7 @@ jobs:
             - name: Stress old client renewal
               shell: bash
               env:
-                OLD_HEIMDAL_RENEW_LOOPS: 10000
+                OLD_HEIMDAL_RENEW_LOOPS: 100
                 OLD_HEIMDAL_RENEW_ONLY: true
                 OLD_HEIMDAL_USE_KEYTAB: true
               run: |

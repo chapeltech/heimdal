@@ -651,7 +651,7 @@ TGS-REP ::= [APPLICATION 13] KDC-REP
 EncKDCRepPart ::= SEQUENCE {
 	key[0]			EncryptionKey,
 	last-req[1]		LastReq,
-	nonce[2]		Krb5UInt32,
+	nonce[2]		Krb5Int32,
 	key-expiration[3]	KerberosTime OPTIONAL,
 	flags[4]		TicketFlags,
 	authtime[5]		KerberosTime,
