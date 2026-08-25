@@ -27,20 +27,18 @@
 # callers must not depend on the records' contents.
 [suppress_type]
   type_kind = struct
-  name_regexp = ^(_krb5_get_init_creds_opt_private|facility|krb5_ccache_data|krb5_context_data|krb5_crypto_data|krb5_get_init_creds_ctx|krb5_krbhst_data|krb5_pac_data|krb5_sendto_ctx_data)$
+  name_regexp = ^(_krb5_get_init_creds_opt_private|facility|krb5_context_data|krb5_crypto_data|krb5_get_init_creds_ctx|krb5_krbhst_data|krb5_pac_data|krb5_sendto_ctx_data)$
 
-# Principal is generated ASN.1 data rather than an opaque handle.  Heimdal 8
-# appended an optional field, preserving every Heimdal 7 member and offset.
+# krb5_config_binding's anonymous enum acquired the public krb5_config_type
+# name.  Its values, size, and containing structure layout are unchanged.
 [suppress_type]
-  type_kind = struct
-  name = Principal
-  has_data_member_inserted_at = end
-  has_size_change = yes
+  type_kind = enum
+  name = krb5_config_type
 
 # These public entry points retain the same machine calling convention.
 # Libabigail reports source-level const qualification changes only.
 [suppress_function]
-  name_regexp = ^(krb5_fwd_tgt_creds|krb5_get_error_string|krb5_kuserok|krb5_pac_get_buffer|krb5_pac_get_types|krb5_string_to_key|krb5_string_to_key_data)$
+  name_regexp = ^(krb5_fwd_tgt_creds|krb5_kuserok|krb5_pac_get_buffer|krb5_pac_get_types|krb5_string_to_key|krb5_string_to_key_data)$
   change_kind = function-subtype-change
 
 # Const qualification of these exported pointers does not alter their ELF
