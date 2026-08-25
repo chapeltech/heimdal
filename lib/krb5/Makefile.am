@@ -272,7 +272,7 @@ endif
 libkrb5_la_DEPENDENCIES =			\
 	version-script.map
 
-libkrb5_la_LDFLAGS = -version-info 26:0:0
+libkrb5_la_LDFLAGS = -version-info 27:0:0
 if FRAMEWORK_COREFOUNDATION
 libkrb5_la_LDFLAGS += -framework CoreFoundation
 endif
