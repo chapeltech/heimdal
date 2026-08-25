@@ -1,0 +1,48 @@
+# libkrb5 exports a number of Heimdal-private symbols for use by other
+# libraries built and shipped as part of the same Heimdal release.  Their
+# signatures may change because all of their consumers are rebuilt together.
+# Deleting an exported private symbol is still reported unless named below.
+[suppress_function]
+  name_regexp = ^_krb5_.*
+  change_kind = function-subtype-change
+
+# These two obsolete plugin helpers were never part of the supported external
+# ABI.  Current in-tree callers use the replacement plugin interface.
+[suppress_function]
+  name = _krb5_plugin_find
+  change_kind = deleted-function
+
+[suppress_function]
+  name = _krb5_plugin_free
+  change_kind = deleted-function
+
+# These library-owned iterator constants acquired const qualification.  Their
+# ELF data representation is unchanged.
+[suppress_variable]
+  name_regexp = ^_krb5_AES_SHA(1|2)_string_to_default_iterator$
+  type_name_regexp = ^const int$
+
+# These are library-owned implementation records reached through API handles.
+# The public handle representations and calling conventions are unchanged;
+# callers must not depend on the records' contents.
+[suppress_type]
+  type_kind = struct
+  name_regexp = ^(_krb5_get_init_creds_opt_private|facility|krb5_context_data|krb5_crypto_data|krb5_get_init_creds_ctx|krb5_krbhst_data|krb5_pac_data|krb5_sendto_ctx_data)$
+
+# krb5_config_binding's anonymous enum acquired the public krb5_config_type
+# name.  Its values, size, and containing structure layout are unchanged.
+[suppress_type]
+  type_kind = enum
+  name = krb5_config_type
+
+# These public entry points retain the same machine calling convention.
+# Libabigail reports source-level const qualification changes only.
+[suppress_function]
+  name_regexp = ^(krb5_fwd_tgt_creds|krb5_kuserok|krb5_pac_get_buffer|krb5_pac_get_types|krb5_string_to_key|krb5_string_to_key_data)$
+  change_kind = function-subtype-change
+
+# Const qualification of these exported pointers does not alter their ELF
+# data representation.
+[suppress_variable]
+  name_regexp = ^(heimdal_long_version|heimdal_version|krb5_cc_type_api|krb5_cc_type_dcc|krb5_cc_type_file|krb5_cc_type_kcm|krb5_cc_type_memory|krb5_cc_type_scc|krb5_config_file|krb5_defkeyname)$
+  type_name_regexp = ^const char\\* const$
