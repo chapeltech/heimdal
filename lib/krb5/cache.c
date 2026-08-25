@@ -36,6 +36,11 @@
 #include "krb5_locl.h"
 #include "ccache_plugin.h"
 
+#define CC_INITIALIZED          0x01
+#define CC_NEED_START_REALM     0x02
+#define CC_START_TGT_STORED     0x04
+#define CC_KX509_DONE           0x08
+
 /**
  * @page krb5_ccache_intro The credential cache functions
  * @section section_krb5_ccache Kerberos credential caches
@@ -948,10 +953,7 @@ krb5_cc_initialize(krb5_context context,
 
     ret = (*id->ops->init)(context, id, primary_principal);
     if (ret == 0) {
-        id->cc_kx509_done = 0;
-        id->cc_initialized = 1;
-        id->cc_need_start_realm = 1;
-        id->cc_start_tgt_stored = 0;
+        id->initialized = CC_INITIALIZED | CC_NEED_START_REALM;
     }
     return ret;
 }
@@ -1041,7 +1043,8 @@ krb5_cc_close(krb5_context context,
      *     krb5_kx509_ext() (renamed to krb5_kx509()).  Then we wouldn't need
      *     the delegated cred handle heuristic.
      */
-    if (id->cc_initialized && id->cc_start_tgt_stored && !id->cc_kx509_done &&
+    if (id->initialized && (id->initialized & CC_START_TGT_STORED) &&
+        !(id->initialized & CC_KX509_DONE) &&
         strcmp("MEMORY", krb5_cc_get_type(context, id)) != 0) {
         krb5_boolean enabled;
 
@@ -1086,7 +1089,7 @@ krb5_cc_store_cred(krb5_context context,
         krb5_is_config_principal(context, creds->server))
         cfg = krb5_principal_get_comp_string(context, creds->server, 1);
 
-    if (id->cc_initialized && !id->cc_need_start_realm &&
+    if (id->initialized && !(id->initialized & CC_NEED_START_REALM) &&
         strcmp(cfg, "start_realm") == 0)
         return 0;
 
@@ -1094,30 +1097,34 @@ krb5_cc_store_cred(krb5_context context,
     if (ret)
         return ret;
 
-    if (id->cc_initialized && !id->cc_start_tgt_stored &&
-        id->cc_need_start_realm &&
+    if (id->initialized && !(id->initialized & CC_START_TGT_STORED) &&
+        (id->initialized & CC_NEED_START_REALM) &&
         krb5_principal_is_root_krbtgt(context, creds->server)) {
         /* Mark the first root TGT's realm as the start realm */
-        id->cc_start_tgt_stored = 1;
+        id->initialized |= CC_START_TGT_STORED;
         realm.length = strlen(creds->server->realm);
         realm.data = creds->server->realm;
         (void) krb5_cc_set_config(context, id, NULL, "start_realm", &realm);
-        id->cc_need_start_realm = 0;
-    } else if (id->cc_initialized && id->cc_start_tgt_stored &&
-               !id->cc_kx509_done && strcmp(cfg, "kx509cert") == 0) {
+        id->initialized &= ~CC_NEED_START_REALM;
+    } else if (id->initialized &&
+               (id->initialized & CC_START_TGT_STORED) &&
+               !(id->initialized & CC_KX509_DONE) &&
+               strcmp(cfg, "kx509cert") == 0) {
         /*
          * Do not attempt kx509 at cc close time -- we're copying a ccache and
          * we've already got a cert (and private key).
          */
-        id->cc_kx509_done = 1;
-    } else if (id->cc_initialized && id->cc_start_tgt_stored &&
-               !id->cc_kx509_done && strcmp(cfg, "kx509_service_status") == 0) {
+        id->initialized |= CC_KX509_DONE;
+    } else if (id->initialized &&
+               (id->initialized & CC_START_TGT_STORED) &&
+               !(id->initialized & CC_KX509_DONE) &&
+               strcmp(cfg, "kx509_service_status") == 0) {
         /*
          * Do not attempt kx509 at cc close time -- we're copying a ccache and
          * we know the kx509 service is not available.
          */
-        id->cc_kx509_done = 1;
-    } else if (id->cc_initialized && strcmp(cfg, "start_realm") == 0) {
+        id->initialized |= CC_KX509_DONE;
+    } else if (id->initialized && strcmp(cfg, "start_realm") == 0) {
         /*
          * If the caller is storing a start_realm ccconfig, then stop looking
          * for root TGTs to mark as the start_realm.
@@ -1126,7 +1133,7 @@ krb5_cc_store_cred(krb5_context context,
          * ccache implementations that don't preserve insertion order, and
          * Kerberos implementations that store this cc config before the TGT.
          */
-        id->cc_need_start_realm = 0;
+        id->initialized &= ~CC_NEED_START_REALM;
     }
     return ret;
 }
