@@ -11,8 +11,8 @@ AM_CPPFLAGS += $(ROKEN_RENAME) -I$(top_builddir)/include -I$(top_srcdir)/lib/bas
 man_MANS = asn1_print.1 asn1_compile.1
 
 lib_LTLIBRARIES = libasn1.la libasn1template.la
-libasn1_la_LDFLAGS = -version-info 8:0:0
-libasn1template_la_LDFLAGS = -version-info 8:0:0
+libasn1_la_LDFLAGS = -version-info 9:0:0
+libasn1template_la_LDFLAGS = -version-info 9:0:0
 
 noinst_LTLIBRARIES = libasn1base.la
 
