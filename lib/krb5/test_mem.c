@@ -88,6 +88,13 @@ check_log(void)
 	ret = krb5_init_context(&context);
 	if (ret)
 	    errx (1, "krb5_init_context failed: %d", ret);
+	ret = krb5_set_config(context,
+			      "[libdefaults]\n"
+			      "time_format = %s\n"
+			      "log_utc = true\n");
+	if (ret || strcmp(heim_context_get_time_fmt(context->hcontext), "%s") ||
+	    !heim_context_get_log_utc(context->hcontext))
+	    errx(1, "logging configuration not propagated");
 
 	krb5_initlog(context, "test-mem", &logfacility);
 	krb5_addlog_dest(context, logfacility, "0/STDERR:");

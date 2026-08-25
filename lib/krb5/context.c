@@ -420,6 +420,11 @@ init_context_from_config_file(krb5_context context)
     INIT_FIELD(context, bool, log_utc,
 	       FALSE, "log_utc");
 
+    ret = heim_context_set_time_fmt(context->hcontext, context->time_fmt);
+    if (ret)
+	return ret;
+    heim_context_set_log_utc(context->hcontext, context->log_utc);
+
     context->no_ticket_store =
         getenv("KRB5_NO_TICKET_STORE") != NULL;
 
@@ -562,6 +567,8 @@ cc_ops_register(krb5_context context)
     ret = _krb5_load_ccache_plugins(context);
     return ret;
 }
+
+
 
 static krb5_error_code
 cc_ops_copy(krb5_context context, const krb5_context src_context)
