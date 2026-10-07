@@ -391,8 +391,9 @@ heim_array_set_value(heim_array_t array, size_t idx, heim_object_t value)
 {
     if (idx >= array->len)
 	heim_abort("index too large");
+    heim_retain(value);
     heim_release(array->val[idx]);
-    array->val[idx] = heim_retain(value);
+    array->val[idx] = value;
 }
 
 /**

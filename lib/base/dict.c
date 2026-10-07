@@ -218,8 +218,9 @@ heim_dict_set_value(heim_dict_t dict, heim_object_t key, heim_object_t value)
 
     h = _search(dict, key);
     if (h) {
+	heim_retain(value);
 	heim_release(h->value);
-	h->value = heim_retain(value);
+	h->value = value;
     } else {
 	uintptr_t v;
 
