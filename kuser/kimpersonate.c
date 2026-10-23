@@ -57,6 +57,40 @@ static int   use_referral_realm = 0;
 static const char *enc_type = "aes256-cts-hmac-sha1-96";
 static const char *session_enc_type = NULL;
 
+static krb5_error_code
+principal_to_asn1(krb5_context context, krb5_const_principal principal,
+                  Realm *realm, PrincipalName *name)
+{
+    const size_t len = krb5_principal_get_num_comp(context, principal);
+    size_t i;
+
+    memset(name, 0, sizeof(*name));
+    *realm = strdup(krb5_principal_get_realm(context, principal));
+    if (*realm == NULL)
+        return ENOMEM;
+
+    name->name_type = krb5_principal_get_type(context, principal);
+    name->name_string.val = calloc(len, sizeof(name->name_string.val[0]));
+    if (name->name_string.val == NULL && len != 0) {
+        free(*realm);
+        *realm = NULL;
+        return ENOMEM;
+    }
+    name->name_string.len = len;
+
+    for (i = 0; i < len; i++) {
+        name->name_string.val[i] =
+            strdup(krb5_principal_get_comp_string(context, principal, i));
+        if (name->name_string.val[i] == NULL) {
+            free(*realm);
+            *realm = NULL;
+            free_PrincipalName(name);
+            return ENOMEM;
+        }
+    }
+    return 0;
+}
+
 static void
 encode_ticket(krb5_context context,
 	      EncryptionKey *skey,
@@ -81,8 +115,9 @@ encode_ticket(krb5_context context,
 
     et.flags = cred->flags.b;
     et.key = cred->session;
-    et.crealm = cred->client->realm;
-    et.cname = cred->client->name;
+    ret = principal_to_asn1(context, cred->client, &et.crealm, &et.cname);
+    if (ret)
+        krb5_err(context, 1, ret, "client principal");
     {
 	krb5_data empty_string;
 
@@ -102,6 +137,8 @@ encode_ticket(krb5_context context,
      */
 
     ASN1_MALLOC_ENCODE(EncTicketPart, buf, len, &et, &size, ret);
+    free(et.crealm);
+    free_PrincipalName(&et.cname);
     if (ret)
 	krb5_err(context, 1, ret, "EncTicketPart");
 
@@ -126,9 +163,13 @@ encode_ticket(krb5_context context,
      */
 
     ticket.tkt_vno = 5;
-    ticket.realm = cred->server->realm;
-    ticket.sname = cred->server->name;
+    ret = principal_to_asn1(context, cred->server,
+                            &ticket.realm, &ticket.sname);
+    if (ret)
+        krb5_err(context, 1, ret, "server principal");
     ASN1_MALLOC_ENCODE(Ticket, cred->ticket.data, cred->ticket.length, &ticket, &size, ret);
+    free(ticket.realm);
+    free_PrincipalName(&ticket.sname);
     free_EncryptedData(&ticket.enc_part);
     if(ret)
 	krb5_err(context, 1, ret, "encode_Ticket");
@@ -287,8 +328,10 @@ setup_env(krb5_context context, krb5_keytab *kt)
 
     /* If no session-enc-type specified on command line and this is an afs */
     /* service ticket, change default of session_enc_type to DES.       */
-    if (session_enctype_string == NULL 
-	&& strcmp("afs", *server_principal->name.name_string.val) == 0)
+    if (session_enctype_string == NULL &&
+        krb5_principal_get_num_comp(context, server_principal) != 0 &&
+	strcmp("afs", krb5_principal_get_comp_string(context,
+                                                    server_principal, 0)) == 0)
 	session_enc_type = "des-cbc-crc";
 
     if (ticket_flags_str) {

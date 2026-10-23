@@ -43,6 +43,7 @@
 #include <der.h>
 #include "cms_asn1.h"
 #include "digest_asn1.h"
+#include "krb5_api_asn1.h"
 #include "krb5_asn1.h"
 #include "kx509_asn1.h"
 #include "ocsp_asn1.h"
@@ -116,6 +117,7 @@ const struct types {
 #endif
 #include "cms_asn1_syms.c"
 #include "digest_asn1_syms.c"
+#include "krb5_api_asn1_syms.c"
 #include "krb5_asn1_syms.c"
 #include "kx509_asn1_syms.c"
 #include "ocsp_asn1_syms.c"

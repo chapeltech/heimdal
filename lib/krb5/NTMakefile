@@ -468,6 +468,8 @@ test_binaries =				\
 	$(OBJ)\test_forward.exe		\
 	$(OBJ)\test_get_addrs.exe	\
 	$(OBJ)\test_hostname.exe	\
+	$(OBJ)\test_krb5_header_order.exe \
+	$(OBJ)\test_krb5_asn1_header_order.exe \
 	$(OBJ)\test_keytab.exe		\
 	$(OBJ)\test_kuserok.exe		\
 	$(OBJ)\test_mem.exe		\

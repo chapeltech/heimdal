@@ -58,7 +58,8 @@ TESTS =						\
 check_DATA = test_config_strings.out
 
 check_PROGRAMS = $(TESTS) test_hostname test_ap-req test_canon test_set_kvno0 \
-		test_mkforwardable
+		test_mkforwardable test_krb5_header_order \
+		test_krb5_asn1_header_order
 
 LDADD = libkrb5.la \
 	$(top_builddir)/lib/asn1/libasn1.la \

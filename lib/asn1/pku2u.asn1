@@ -2,7 +2,7 @@
 
 PKU2U DEFINITIONS ::= BEGIN
 
-IMPORTS Checksum FROM krb5
+IMPORTS Checksum FROM krb5_api
 	GeneralName FROM rfc2459;
 
 GSS_KRB5_FINISHED ::= SEQUENCE {

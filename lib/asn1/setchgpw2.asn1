@@ -3,7 +3,7 @@
 SETCHGPW2 DEFINITIONS ::=
 BEGIN
 
-IMPORTS PrincipalName, Realm, ENCTYPE FROM krb5;
+IMPORTS PrincipalName, Realm, ENCTYPE FROM krb5_api;
 
 ProtocolErrorCode ::= ENUMERATED {
 	generic-error(0),

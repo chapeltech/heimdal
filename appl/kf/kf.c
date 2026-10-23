@@ -221,9 +221,9 @@ proto (int sock, const char *hostname, const char *svc,
 
     status = krb5_make_principal (context,
 				  &creds.server,
-				  principal->realm,
+				  krb5_principal_get_realm(context, principal),
 				  KRB5_TGS_NAME,
-				  principal->realm,
+				  krb5_principal_get_realm(context, principal),
 				  NULL);
 
     if (status) {

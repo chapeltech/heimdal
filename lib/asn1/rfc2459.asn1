@@ -10,7 +10,7 @@
 RFC2459 DEFINITIONS ::= BEGIN
 
 IMPORTS HEIM_ANY FROM heim
-        PrincipalName, Realm FROM krb5;
+        PrincipalName, Realm FROM krb5_api;
      -- For OtherName we really want to also import:
      -- KRB5PrincipalName FROM pkinit
      -- PermanentIdentifier FROM rfc4043

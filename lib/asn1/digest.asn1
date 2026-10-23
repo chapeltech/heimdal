@@ -3,7 +3,8 @@
 DIGEST DEFINITIONS ::=
 BEGIN
 
-IMPORTS EncryptedData, Principal FROM krb5;
+IMPORTS EncryptedData FROM krb5_api
+	Principal FROM krb5;
 
 DigestTypes ::= BIT STRING {
 	ntlm-v1(0),

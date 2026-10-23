@@ -84,6 +84,7 @@ LIBASN1_X= \
 	$(OBJ)\asn1_rfc2459_asn1.c		\
 	$(OBJ)\asn1_rfc4108_asn1.c		\
 	$(OBJ)\asn1_cms_asn1.c			\
+	$(OBJ)\asn1_krb5_api_asn1.c		\
 	$(OBJ)\asn1_krb5_asn1.c			\
 	$(OBJ)\asn1_ocsp_asn1.c			\
 	$(OBJ)\asn1_pkinit_asn1.c		\
@@ -112,6 +113,7 @@ LIBASN1_OBJS=	\
 	$(OBJ)\asn1_rfc2459_asn1.obj		\
 	$(OBJ)\asn1_rfc4108_asn1.obj		\
 	$(OBJ)\asn1_cms_asn1.obj		\
+	$(OBJ)\asn1_krb5_api_asn1.obj		\
 	$(OBJ)\asn1_krb5_asn1.obj		\
 	$(OBJ)\asn1_ocsp_asn1.obj		\
 	$(OBJ)\asn1_pkinit_asn1.obj		\
@@ -157,6 +159,7 @@ LIBASN1_S_OBJS=	\
 	$(OBJ)\asn1_rfc2459_asn1.s.obj		\
 	$(OBJ)\asn1_rfc4108_asn1.s.obj		\
 	$(OBJ)\asn1_cms_asn1.s.obj		\
+	$(OBJ)\asn1_krb5_api_asn1.s.obj		\
 	$(OBJ)\asn1_krb5_asn1.s.obj		\
 	$(OBJ)\asn1_ocsp_asn1.s.obj		\
 	$(OBJ)\asn1_pkinit_asn1.s.obj		\
@@ -215,6 +218,9 @@ $(OBJ)\asn1_rfc4108_asn1.s.obj: $(OBJ)\asn1_rfc4108_asn1.c
 	$(C2OBJ_C_MT) -Fo$@ -Fd$(@D)\ $**
 
 $(OBJ)\asn1_cms_asn1.s.obj: $(OBJ)\asn1_cms_asn1.c
+	$(C2OBJ_C_MT) -Fo$@ -Fd$(@D)\ $**
+
+$(OBJ)\asn1_krb5_api_asn1.s.obj: $(OBJ)\asn1_krb5_api_asn1.c
 	$(C2OBJ_C_MT) -Fo$@ -Fd$(@D)\ $**
 
 $(OBJ)\asn1_krb5_asn1.s.obj: $(OBJ)\asn1_krb5_asn1.c
@@ -278,7 +284,17 @@ $(**: =
 )
 <<
 
-$(OBJ)\asn1_krb5_asn1.c $(OBJ)\krb5_asn1.h: $(BINDIR)\asn1_compile.exe krb5.asn1 krb5.opt
+$(OBJ)\asn1_krb5_api_asn1.c $(OBJ)\krb5_api_asn1.h: $(BINDIR)\asn1_compile.exe krb5-api.asn1 krb5-api.opt
+	cd $(OBJ)
+	$(BINDIR)\asn1_compile.exe \
+		--template	\
+		--one-code-file	\
+		--option-file=$(SRCDIR)\krb5-api.opt \
+		$(SRCDIR)\krb5-api.asn1 krb5_api_asn1 \
+	|| ($(RM) $(OBJ)\krb5_api_asn1.h ; exit /b 1)
+	cd $(SRCDIR)
+
+$(OBJ)\asn1_krb5_asn1.c $(OBJ)\krb5_asn1.h: $(BINDIR)\asn1_compile.exe krb5.asn1 krb5.opt $(OBJ)\krb5_api_asn1.h
 	cd $(OBJ)
 	$(BINDIR)\asn1_compile.exe \
 		--template	\
@@ -432,6 +448,7 @@ GENINCFILES=					\
 	$(INCDIR)\cms_asn1.h			\
 	$(INCDIR)\crmf_asn1.h			\
 	$(INCDIR)\digest_asn1.h			\
+	$(INCDIR)\krb5_api_asn1.h		\
 	$(INCDIR)\krb5_asn1.h			\
 	$(INCDIR)\kx509_asn1.h			\
 	$(INCDIR)\ocsp_asn1.h			\
@@ -443,6 +460,7 @@ GENINCFILES=					\
 	$(INCDIR)\rfc2459_asn1.h		\
 	$(INCDIR)\rfc4108_asn1.h		\
 	$(INCDIR)\x690sample_asn1.h		\
+	$(OBJ)\krb5_api_asn1-priv.h		\
 	$(OBJ)\krb5_asn1-priv.h			\
 	$(OBJ)\ocsp_asn1-priv.h			\
 	$(OBJ)\pkinit_asn1-priv.h		\

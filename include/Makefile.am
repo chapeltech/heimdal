@@ -86,6 +86,8 @@ CLEANFILES =			\
 	krb5-protos.h		\
 	krb5-types.h		\
 	krb5.h			\
+	krb5_api_asn1.h		\
+	krb5_api_template_asn1.h	\
 	krb5_asn1.h		\
 	krb5_template_asn1.h	\
 	krb5_ccapi.h		\

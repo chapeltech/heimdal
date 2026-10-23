@@ -36,6 +36,7 @@ BUILT_SOURCES =			\
 	$(gen_files_rfc2459)	\
 	$(gen_files_rfc4108)	\
 	$(gen_files_cms)	\
+	$(gen_files_krb5_api)	\
 	$(gen_files_krb5)	\
 	$(gen_files_ocsp)	\
 	$(gen_files_pkinit)	\
@@ -50,6 +51,7 @@ BUILT_TEMPLATE_SOURCES =		\
 	$(gen_files_rfc2459_template)	\
 	$(gen_files_rfc4108_template)	\
 	$(gen_files_cms_template)	\
+	$(gen_files_krb5_api_template) \
 	$(gen_files_krb5_template)	\
 	$(gen_files_ocsp_template)	\
 	$(gen_files_pkinit_template)	\
@@ -62,6 +64,8 @@ BUILT_TEMPLATE_SOURCES =		\
 
 gen_files_krb5 = asn1_krb5_asn1.c
 gen_files_krb5_template = asn1_krb5_template_asn1.c
+gen_files_krb5_api = asn1_krb5_api_asn1.c
+gen_files_krb5_api_template = asn1_krb5_api_template_asn1.c
 gen_files_cms = asn1_cms_asn1.c
 gen_files_cms_template = asn1_cms_template_asn1.c
 gen_files_crmf = asn1_crmf_asn1.c
@@ -241,6 +245,8 @@ CLEANFILES = \
 	cms_template_asn1_files cms_template_asn1* \
 	crmf_asn1_files crmf_asn1* \
 	crmf_template_asn1_files crmf_template_asn1* \
+	krb5_api_asn1_files krb5_api_asn1* \
+	krb5_api_template_asn1_files krb5_api_template_asn1* \
 	krb5_asn1_files krb5_asn1* \
 	krb5_template_asn1_files krb5_template_asn1* \
 	ocsp_asn1_files ocsp_asn1* \
@@ -270,6 +276,8 @@ dist_include_HEADERS += $(srcdir)/der-protos.h $(srcdir)/der-private.h
 dist_include_HEADERS += asn1-common.h
 
 nodist_include_HEADERS = asn1_err.h
+nodist_include_HEADERS += krb5_api_asn1.h
+nodist_include_HEADERS += krb5_api_template_asn1.h
 nodist_include_HEADERS += krb5_asn1.h
 nodist_include_HEADERS += krb5_template_asn1.h
 nodist_include_HEADERS += pkinit_asn1.h
@@ -299,7 +307,9 @@ nodist_include_HEADERS += kx509_template_asn1.h
 nodist_include_HEADERS += x690sample_asn1.h
 nodist_include_HEADERS += x690sample_template_asn1.h
 
-priv_headers  = krb5_asn1-priv.h
+priv_headers  = krb5_api_asn1-priv.h
+priv_headers += krb5_api_template_asn1-priv.h
+priv_headers += krb5_asn1-priv.h
 priv_headers += krb5_template_asn1-priv.h
 priv_headers += pkinit_asn1-priv.h
 priv_headers += pkinit_template_asn1-priv.h
@@ -342,8 +352,10 @@ $(asn1_print_OBJECTS): $(nodist_include_HEADERS) $(priv_headers)
 
 asn1parse.h: asn1parse.c
 
-$(gen_files_krb5) krb5_asn1.h krb5_asn1-priv.h: krb5_asn1_files
-$(gen_files_krb5_template) krb5_template_asn1.h krb5_template_asn1-priv.h: krb5_template_asn1_files
+$(gen_files_krb5_api) krb5_api_asn1.h krb5_api_asn1-priv.h: krb5_api_asn1_files
+$(gen_files_krb5_api_template) krb5_api_template_asn1.h krb5_api_template_asn1-priv.h: krb5_api_template_asn1_files
+$(gen_files_krb5) krb5_asn1.h krb5_asn1-priv.h: krb5_asn1_files krb5_api_asn1.h
+$(gen_files_krb5_template) krb5_template_asn1.h krb5_template_asn1-priv.h: krb5_template_asn1_files krb5_api_asn1.h
 $(gen_files_ocsp) ocsp_asn1.h ocsp_asn1-priv.h: ocsp_asn1_files
 $(gen_files_ocsp_template) ocsp_template_asn1.h ocsp_template_asn1-priv.h: ocsp_template_asn1_files
 $(gen_files_pkinit) pkinit_asn1.h pkinit_asn1-priv.h: pkinit_asn1_files
@@ -396,6 +408,12 @@ cms_template_asn1_files: asn1_compile$(EXEEXT) $(srcdir)/cms.asn1 $(srcdir)/cms.
 crmf_template_asn1_files: asn1_compile$(EXEEXT) $(srcdir)/crmf.asn1 $(srcdir)/crmf.opt
 	$(ASN1_COMPILE) --one-code-file --template --option-file=$(srcdir)/crmf.opt $(srcdir)/crmf.asn1 crmf_template_asn1 || (rm -f crmf_template_asn1_files ; exit 1)
 	@$(CLANG_FORMAT) -style=$(CLANG_FORMAT_STYLE) -i asn1_crmf_template_asn1.c
+
+krb5_api_template_asn1_files: asn1_compile$(EXEEXT) $(srcdir)/krb5-api.asn1 $(srcdir)/krb5-api.opt
+	$(ASN1_COMPILE) --one-code-file --template			\
+			--option-file=$(srcdir)/krb5-api.opt	\
+			$(srcdir)/krb5-api.asn1 krb5_api_template_asn1 || (rm -f krb5_api_template_asn1_files ; exit 1)
+	@$(CLANG_FORMAT) -style=$(CLANG_FORMAT_STYLE) -i asn1_krb5_api_template_asn1.c
 
 krb5_template_asn1_files: asn1_compile$(EXEEXT) $(srcdir)/krb5.asn1 $(srcdir)/krb5.opt
 	$(ASN1_COMPILE) --one-code-file --template			\
@@ -452,6 +470,12 @@ cms_asn1_files: asn1_compile$(EXEEXT) $(srcdir)/cms.asn1 $(srcdir)/cms.opt
 crmf_asn1_files: asn1_compile$(EXEEXT) $(srcdir)/crmf.asn1 $(srcdir)/crmf.opt
 	$(ASN1_COMPILE) --one-code-file $(TEMPLATE_OPTION) --option-file=$(srcdir)/crmf.opt $(srcdir)/crmf.asn1 crmf_asn1 || (rm -f crmf_asn1_files ; exit 1)
 	@$(CLANG_FORMAT) -style=$(CLANG_FORMAT_STYLE) -i asn1_crmf_asn1.c
+
+krb5_api_asn1_files: asn1_compile$(EXEEXT) $(srcdir)/krb5-api.asn1 $(srcdir)/krb5-api.opt
+	$(ASN1_COMPILE) --one-code-file $(TEMPLATE_OPTION)		\
+			--option-file=$(srcdir)/krb5-api.opt	\
+			$(srcdir)/krb5-api.asn1 krb5_api_asn1 || (rm -f krb5_api_asn1_files ; exit 1)
+	@$(CLANG_FORMAT) -style=$(CLANG_FORMAT_STYLE) -i asn1_krb5_api_asn1.c
 
 krb5_asn1_files: asn1_compile$(EXEEXT) $(srcdir)/krb5.asn1 $(srcdir)/krb5.opt
 	$(ASN1_COMPILE) --one-code-file $(TEMPLATE_OPTION)		\
@@ -526,6 +550,8 @@ EXTRA_DIST =			\
 	crmf.asn1		\
 	crmf.opt		\
 	digest.asn1		\
+	krb5-api.asn1		\
+	krb5-api.opt		\
 	krb5.asn1		\
 	krb5.opt		\
 	kx509.asn1		\

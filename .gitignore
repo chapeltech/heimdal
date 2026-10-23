@@ -178,6 +178,12 @@ asn1_*_asn1.c
 /lib/asn1/digest_template_asn1.json
 /lib/asn1/digest_template_asn1_oids.c
 /lib/asn1/digest_template_asn1_syms.c
+/lib/asn1/krb5_api_asn1.json
+/lib/asn1/krb5_api_asn1_oids.c
+/lib/asn1/krb5_api_asn1_syms.c
+/lib/asn1/krb5_api_template_asn1.json
+/lib/asn1/krb5_api_template_asn1_oids.c
+/lib/asn1/krb5_api_template_asn1_syms.c
 /lib/asn1/krb5_asn1.json
 /lib/asn1/krb5_asn1_oids.c
 /lib/asn1/krb5_asn1_syms.c

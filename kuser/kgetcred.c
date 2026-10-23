@@ -338,7 +338,7 @@ main(int argc, char **argv)
     }
 
     if (nametype != KRB5_NT_UNKNOWN)
-        server->name.name_type = (NAME_TYPE)nametype;
+        krb5_principal_set_type(context, server, nametype);
 
     ret = krb5_get_creds(context, opt, cache, server, &out);
     if (ret)
